@@ -138,6 +138,7 @@ public class Pathfinder : MonoBehaviour
                 {
                     hit = Physics.SphereCastAll(new Vector3(x, HighestPoint, y), Tilesize / 16, Vector3.down, dist);
                 }
+                
                 bool free = true;
                 float maxY = -Mathf.Infinity;
                 
@@ -171,7 +172,7 @@ public class Pathfinder : MonoBehaviour
                 //We hit nothing set tile to false
                 if (free == true)
                 {
-                Map[j, i] = new Node(j, i, 0 ,ID, x, y, false);//Non walkable tile! 
+                    Map[j, i] = new Node(j, i, 0 ,ID, x, y, false);//Non walkable tile! 
                 }        
             }
         }
@@ -359,7 +360,7 @@ public class Pathfinder : MonoBehaviour
         }
         else
         {
-            //If we get a non walkable tile, then look around its neightbours
+            //If we get a non walkable tile, then look around its neighbours
             for (int i = z - 1; i < z + 2; i++)
             {
                 for (int j = x - 1; j < x + 2; j++)

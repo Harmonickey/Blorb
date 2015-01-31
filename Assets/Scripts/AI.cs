@@ -16,7 +16,7 @@ public class AI : Pathfinding {
 	
 	void Update () 
     {
-        if (Vector3.Distance(player.position, transform.position) < 25F && !moving)
+        if (Vector3.Distance(player.position, transform.position) < 45F && !moving)
         {
             if (newPath)
             {
@@ -28,7 +28,7 @@ public class AI : Pathfinding {
         {
             //Stop!
         }
-        else if (Vector3.Distance(player.position, transform.position) < 35F && moving)
+        else if (Vector3.Distance(player.position, transform.position) < 55F && moving)
         {
             if (Path.Count > 0)
             {

@@ -24,7 +24,7 @@ public class TDManager : MonoBehaviour
 
     private RaycastHit CheckPosition()
     {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        Ray ray = Camera.mainCamera.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit = new RaycastHit();
 
         if (Physics.Raycast(ray, out hit, Mathf.Infinity))

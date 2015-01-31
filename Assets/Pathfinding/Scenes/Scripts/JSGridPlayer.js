@@ -29,7 +29,7 @@ class JSGridPlayer extends JSPath
     	if (Input.GetButtonDown("Fire1"))
         {
             var ray : Ray;
-            ray = Camera.main.ScreenPointToRay(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0));
+            ray = Camera.mainCamera.ScreenPointToRay(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0));
             var hit : RaycastHit;
 
             if (Physics.Raycast(ray, hit, Mathf.Infinity))

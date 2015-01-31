@@ -65,6 +65,7 @@ public class Pathfinding : MonoBehaviour
 		{
 	        Path.Clear();
 	        Path = path;
+            //Debug.Log(path[0].x + " " + path[0].y + " " + path[0].z);
             if (Path.Count > 0)
             {
                 //Path[0] = new Vector3(Path[0].x, Path[0].y - 1, Path[0].z);
