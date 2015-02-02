@@ -27,7 +27,7 @@ public class TileMap : MonoBehaviour {
 		int numVertices = vertices_x * vertices_y;
 		int numTriangles = numTiles * 2;
 
-		//Generate the mesh data
+		//Generate vertices
 		Vector3[] vertices = new Vector3[numVertices];
 		Vector2[] UVs = new Vector2[numVertices];
 		int[] triangles = new int[numTriangles * 3];
@@ -41,6 +41,7 @@ public class TileMap : MonoBehaviour {
 			}
 		}
 
+		//Generate triangles (and other whole-tile related stuff)
 		int triangleOffset = 0;
 		int tileIndex = 0;
 		for (int y = 0; y < tiles_y; y++){
@@ -58,7 +59,8 @@ public class TileMap : MonoBehaviour {
 				triangles[triangleOffset + 5] = (y + 1) * vertices_x + x;
 			}
 		}
-		//Generate the actual mesh
+
+		//Make the actual mesh from the data
 		Mesh mesh = new Mesh();
 		mesh.vertices = vertices;
 		mesh.triangles = triangles;
