@@ -17,6 +17,10 @@ public class TileMap : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		Regenerate();
+	}
+
+	public void Regenerate () {
 		GenerateMesh();
 		GenerateTexture();
 		Debug.Log ("Tilemap complete!");
@@ -42,6 +46,8 @@ public class TileMap : MonoBehaviour {
 	}
 
 	void GenerateTexture() {
+		TileData map_data = new TileData(tiles_x, tiles_y);
+
 		int texWidth = tiles_x * pixelsPerTile;
 		int texHeight = tiles_y * pixelsPerTile;
 		Texture2D mapTexture = new Texture2D(texWidth, texHeight);
@@ -53,7 +59,7 @@ public class TileMap : MonoBehaviour {
 			for(int x = 0; x < tiles_x; x++){
 				int start_x = x*pixelsPerTile;
 				int start_y = y*pixelsPerTile;
-				Color[] pixels = tiles[Random.Range (0, tiles.Length)];
+				Color[] pixels = tiles[(int)map_data.GetTile(x, y)];
 				mapTexture.SetPixels(start_x, start_y, pixelsPerTile, pixelsPerTile, pixels);
 			}
 		}
