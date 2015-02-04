@@ -9,8 +9,10 @@ GameObject:
   m_Component:
   - 4: {fileID: 442294}
   - 212: {fileID: 21242294}
-  - 61: {fileID: 6186292}
+  - 50: {fileID: 5005258}
   - 114: {fileID: 11414160}
+  - 114: {fileID: 11463868}
+  - 61: {fileID: 6106122}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Enemy
@@ -25,21 +27,36 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 142294}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: .400000006, y: .400000006, z: .400000006}
+  m_LocalPosition: {x: -10.0799999, y: 0, z: 0}
+  m_LocalScale: {x: 1.20000005, y: 1.20000005, z: 1.20000005}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
---- !u!61 &6186292
+--- !u!50 &5005258
+Rigidbody2D:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 142294}
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0
+  m_GravityScale: 0
+  m_FixedAngle: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+--- !u!61 &6106122
 BoxCollider2D:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 142294}
   m_Enabled: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Size: {x: 1, y: 1}
+  m_Material: {fileID: 6200000, guid: eac5c5544cdc19d4b936edaa324e4f1f, type: 2}
+  m_IsTrigger: 1
+  m_Size: {x: .200000003, y: .200000003}
   m_Center: {x: 0, y: 0}
 --- !u!114 &11414160
 MonoBehaviour:
@@ -57,6 +74,18 @@ MonoBehaviour:
   Player: {fileID: 469688, guid: f30f61245f55b854181cf122dcbf9c69, type: 2}
   SearchDistance: 100
   Speed: 2
+--- !u!114 &11463868
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 142294}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2037c55190120f5408b68b9930288c44, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Player: {fileID: 469688, guid: f30f61245f55b854181cf122dcbf9c69, type: 2}
 --- !u!212 &21242294
 SpriteRenderer:
   m_ObjectHideFlags: 1

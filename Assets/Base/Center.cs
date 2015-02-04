@@ -2,7 +2,8 @@
 using System.Collections;
 
 public class Center : MonoBehaviour {
-	private float health;
+
+	private static float health;
 
 	void GameStart () {
 		health = 100f;
@@ -19,4 +20,17 @@ public class Center : MonoBehaviour {
 			GameEventManager.TriggerGameOver();
 		}
 	}
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        Damage(Enemy.hitDamage);
+    }
+
+    public static void Damage(float damage)
+    {
+        health -= damage;
+
+        Debug.Log("HEALTH: " + health);
+    }
+
 }
