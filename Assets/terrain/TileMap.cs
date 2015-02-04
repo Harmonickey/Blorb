@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using System.Collections;
-using System;
 
 [ExecuteInEditMode]
 [RequireComponent(typeof(MeshFilter))]
@@ -11,12 +10,57 @@ public class TileMap : MonoBehaviour {
 
 	public int tiles_x;
 	public int tiles_y;
+	public Texture2D tileSet;
 
 	private float tileSize = 1f/5f;
+	private int pixelsPerTile = 32;
 
 	// Use this for initialization
 	void Start () {
 		GenerateMesh();
+		GenerateTexture();
+		Debug.Log ("Tilemap complete!");
+	}
+
+	Color[][] ChopTiles(){
+		int textureTilesX = tileSet.width / pixelsPerTile;
+		int textureTilesY = tileSet.height / pixelsPerTile;
+		Color[][] tileTextures = new Color[textureTilesX*textureTilesY][];
+
+		for(int y = 0; y < textureTilesY; y++){
+			for(int x = 0; x < textureTilesX; x++){
+				int currentIndex = y * textureTilesX + x;
+				int start_x = x*pixelsPerTile;
+				int start_y = y*pixelsPerTile;
+
+				tileTextures[currentIndex] = tileSet.GetPixels(start_x, start_y, pixelsPerTile, pixelsPerTile);
+			}
+		}
+
+		return tileTextures;
+
+	}
+
+	void GenerateTexture() {
+		int texWidth = tiles_x * pixelsPerTile;
+		int texHeight = tiles_y * pixelsPerTile;
+		Texture2D mapTexture = new Texture2D(texWidth, texHeight);
+		mapTexture.filterMode = FilterMode.Point;
+
+		Color[][] tiles = ChopTiles();
+
+		for(int y = 0; y < tiles_y; y++){
+			for(int x = 0; x < tiles_x; x++){
+				int start_x = x*pixelsPerTile;
+				int start_y = y*pixelsPerTile;
+				Color[] pixels = tiles[Random.Range (0, tiles.Length)];
+				mapTexture.SetPixels(start_x, start_y, pixelsPerTile, pixelsPerTile, pixels);
+			}
+		}
+		mapTexture.Apply();
+
+		MeshRenderer meshRenderer = GetComponent<MeshRenderer>();
+		meshRenderer.sharedMaterial.mainTexture = mapTexture;
 	}
 
 	void GenerateMesh() {
@@ -35,7 +79,7 @@ public class TileMap : MonoBehaviour {
 			for (int x = 0; x < vertices_x; x++){
 				int currentVertex = y * vertices_x + x;
 				vertices[currentVertex] = new Vector3(x*tileSize, -y*tileSize, 0);
-				UVs[currentVertex] = new Vector2(0,0); //temporarily hardcoded
+				UVs[currentVertex] = new Vector2((float)x/tiles_x,(float)y/tiles_y);
 
 				//Debug.Log (String.Format("Vertex[{0}, {1}] is vertex {2}", x, -y, currentVertex));
 			}
@@ -71,9 +115,7 @@ public class TileMap : MonoBehaviour {
 
 		//Assign it to components
 		MeshFilter meshFilter = GetComponent<MeshFilter>();
-		MeshRenderer meshRenderer = GetComponent<MeshRenderer>();
 		MeshCollider meshCollider = GetComponent<MeshCollider>();
-
 		meshFilter.mesh = mesh;
 	}
 
