@@ -85,7 +85,7 @@ public class TileMap : MonoBehaviour {
 			for (int x = 0; x < vertices_x; x++){
 				int currentVertex = y * vertices_x + x;
 				vertices[currentVertex] = new Vector3(x*tileSize, -y*tileSize, 0);
-				UVs[currentVertex] = new Vector2((float)x/tiles_x,(float)y/tiles_y);
+				UVs[currentVertex] = new Vector2((float)x/tiles_x, (float)y/tiles_y);
 
 				//Debug.Log (String.Format("Vertex[{0}, {1}] is vertex {2}", x, -y, currentVertex));
 			}
