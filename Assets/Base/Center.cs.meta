@@ -2,7 +2,10 @@ fileFormatVersion: 2
 guid: a6775662968db4060b278de54d6a5fdf
 MonoImporter:
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - tower: {fileID: 455352, guid: 64564c4152f28c24aaa12f4cf8828a4f, type: 2}
+  - wall: {fileID: 455352, guid: f775f8976dc532d4db68942beabb654c, type: 2}
+  - bottom: {fileID: 476196, guid: 411f3e7092d3268459e804b05cae941f, type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

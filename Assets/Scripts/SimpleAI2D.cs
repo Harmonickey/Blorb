@@ -54,7 +54,7 @@ public class SimpleAI2D : Pathfinding2D
         }
         else
         {
-            Debug.Log("No player set in the inspector!");
+            //Debug.Log("No player set in the inspector!");
         }
 	}
 

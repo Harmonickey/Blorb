@@ -3,7 +3,13 @@ using System.Collections;
 
 public class Center : MonoBehaviour {
 
-	private static float health;
+    private const float pixelOffset = 100.0F;
+
+	private float health;
+
+    public Transform tower;
+    public Transform wall;
+    public Transform bottom;
 
 	void GameStart () {
 		health = 100f;
@@ -19,14 +25,68 @@ public class Center : MonoBehaviour {
 		if (health <= 0f) {
 			GameEventManager.TriggerGameOver();
 		}
+
+        if (Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            //Debug.Log("Init Tower");
+
+            //get the location of the top of the base
+            float offset = GetOffsetToTop();
+
+            //do the tower piece
+            Transform childTower = Instantiate(tower) as Transform;
+            childTower.transform.parent = this.transform;
+            childTower.tag = "Tower";
+            
+            //do the bottom piece as a child of the tower
+            Transform childBottom = Instantiate(bottom) as Transform;
+            childBottom.transform.parent = childTower;
+            childBottom.transform.localScale = Vector3.one;
+            childBottom.tag = "Tower";
+
+            //Debug.Log("TOWER TOP OFFSET: " + offset);
+            childTower.transform.position = new Vector3(this.transform.position.x, this.transform.position.y + offset);
+            
+        }
+        if (Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            //Debug.Log("Init Tower");
+
+            //get the location of the top of the base
+            float offset = GetOffsetToRight();
+
+            //do the tower piece
+            Transform childTower = Instantiate(tower) as Transform;
+            childTower.transform.parent = this.transform;
+            childTower.tag = "Tower";
+
+            //do the bottom piece as a child of the tower
+            Transform childBottom = Instantiate(bottom) as Transform;
+            childBottom.transform.parent = childTower;
+            childBottom.transform.localScale = Vector3.one;
+            childBottom.tag = "Tower";
+
+            //Debug.Log("TOWER TOP OFFSET: " + offset);
+            childTower.transform.position = new Vector3(this.transform.position.x + offset, this.transform.position.y);
+
+        }
 	}
 
-    void OnTriggerEnter2D(Collider2D other)
+    private float GetOffsetToTop()
     {
-        Damage(Enemy.hitDamage);
+        SpriteRenderer bottomRenderer = this.GetComponentInChildren<SpriteRenderer>();
+        //Debug.Log("HEIGHT: " + bottomRenderer.sprite.rect.height);
+        return (bottomRenderer.sprite.rect.height / pixelOffset) + 1.8F;
     }
 
-    public static void Damage(float damage)
+    private float GetOffsetToRight()
+    {
+        SpriteRenderer bottomRenderer = this.GetComponentInChildren<SpriteRenderer>();
+        //Debug.Log("WIDTH: " + bottomRenderer.sprite.rect.width);
+        return (bottomRenderer.sprite.rect.width / pixelOffset) + 2.1F;
+    }
+
+    public void Damage(float damage)
     {
         health -= damage;
 

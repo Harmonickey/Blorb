@@ -18,14 +18,30 @@ public class Enemy : MonoBehaviour {
 	
 	}
 
-    void OnTriggerEnter2D(Collider2D other)
+    void OnCollisionEnter2D(Collision2D other)
     {
-        Center.Damage(hitDamage);
-        isHitting = true;
+        Debug.Log("ENTERING COLLISION");
+        if (other.gameObject.tag == "Player")
+        {
+            Debug.Log("HIT BASE");
+            Center playerGameObject = other.gameObject.GetComponentInParent<Center>();
+
+            playerGameObject.Damage(hitDamage);
+        }
+        else if (other.gameObject.tag == "Tower")
+        {
+            Debug.Log("HIT TOWER");
+            Attachments tower = other.gameObject.GetComponentInParent<Attachments>();
+
+            tower.Damage(hitDamage);
+        }
+
+        isHitting = true; //stop jittery movement
     }
 
-    void OnTriggerExit2D(Collider2D other)
+    void OnCollisionExit2D(Collision2D other)
     {
+        Debug.Log("EXITING COLLISION");
         isHitting = false;
     }
 }
