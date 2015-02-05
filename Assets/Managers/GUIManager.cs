@@ -3,7 +3,8 @@
 public class GUIManager : MonoBehaviour {
 	private static GUIManager instance;
 	public GUIText gameOverText, instructionsText, titleText;
-	public GUITexture HUD;
+	public SpriteRenderer HUD, health;
+	public GUIStyle bgStyle;
 	
 	void Start () {
 		instance = this;
@@ -32,5 +33,9 @@ public class GUIManager : MonoBehaviour {
 		titleText.enabled = false;
 		HUD.enabled = true;
 		enabled = false;
+	}
+
+	void OnGUI () {
+		GUI.Label (new Rect (0, 0, Screen.width, Screen.height), "", bgStyle);
 	}
 }
