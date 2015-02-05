@@ -16,7 +16,7 @@ public class Center : MonoBehaviour {
 		enabled = true;
 	}
 
-	void OnTriggerEnter (Collision2D collision) {
+	void OnTriggerEnter (Collider collision) {
 		gameObject.SetActive (false);
 	}
 
