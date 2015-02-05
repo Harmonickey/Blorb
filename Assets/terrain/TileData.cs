@@ -1,7 +1,16 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+public class Tile {
+
+	private enum TileType {None, Grass, Stone};
+	private bool passable;
+	private TileType type;
+
+}
+
 public class TileData {
+
 	public int width;
 	public int height;
 	public enum TileType {None, Grass, Stone, Water, Yellow, Orange, Purple, Teal};
