@@ -123,6 +123,7 @@ public class TileMap : MonoBehaviour {
 		MeshFilter meshFilter = GetComponent<MeshFilter>();
 		MeshCollider meshCollider = GetComponent<MeshCollider>();
 		meshFilter.mesh = mesh;
+		meshCollider.sharedMesh = mesh;
 	}
 
 
