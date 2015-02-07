@@ -4,6 +4,9 @@ using System.Collections;
 public class Attachments : MonoBehaviour {
 
     private float health = 100F;
+    private bool selected = false;
+
+    public bool[] takenSpots = new bool[4] { false, false, false, false };
 
 	// Use this for initialization
 	void Start () {
@@ -12,10 +15,28 @@ public class Attachments : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-	
+        if (selected && Center.selectedBasePiece != this.transform)
+        {
+            SpriteRenderer sr = this.transform.FindChild("Bottom(Clone)").GetComponent<SpriteRenderer>();
+            sr.color = new Color(255.0f, 255.0f, 255.0f);
+            selected = false;
+        }
 	}
 
-    public void Damage(float damage)
+    void OnMouseDown()
+    {
+        if (!selected && Input.GetButtonDown("Select"))
+        {
+            Debug.Log("CLICKED ON ATTACHMENT!");
+           
+            Center.selectedBasePiece = this.transform;
+            SpriteRenderer sr = Center.selectedBasePiece.FindChild("Bottom(Clone)").GetComponent<SpriteRenderer>();
+            sr.color = new Color(0.0f, 219.0f, 255.0f);
+            selected = true;
+        }
+    }
+
+    public void takeDamage(float damage)
     {
         health -= damage;
 

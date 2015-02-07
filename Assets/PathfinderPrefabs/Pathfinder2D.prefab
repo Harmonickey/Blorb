@@ -11,7 +11,7 @@ GameObject:
   - 114: {fileID: 11400000}
   m_Layer: 0
   m_Name: Pathfinder2D
-  m_TagString: Pathfinder
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -46,14 +46,16 @@ MonoBehaviour:
   MapStartPosition: {x: -100, y: -100}
   MapEndPosition: {x: 100, y: 100}
   DisallowedTags:
-  - Wall
   - Mountain
   - Enemy
+  - 
   IgnoreTags:
+  - Player
   - Base
-  - Pathfinder
+  - Tower
+  - Wall
   MoveDiagonal: 1
-  DrawMapInEditor: 1
+  DrawMapInEditor: 0
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

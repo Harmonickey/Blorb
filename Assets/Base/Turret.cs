@@ -42,6 +42,7 @@ public class Turret : MonoBehaviour {
 		Transform nearestObj = null;
 		
 		// loop through each tagged object, remembering nearest one found
+        // this can be massively slow with lots of enemies
 		foreach (GameObject obj in taggedGameObjects) {
 			
 			Vector3 objectPos = obj.transform.position;

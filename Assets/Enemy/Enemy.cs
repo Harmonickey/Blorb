@@ -31,19 +31,7 @@ public class Enemy : MonoBehaviour {
 
     void OnCollisionEnter2D(Collision2D other)
     {
-        Debug.Log("ENTERING COLLISION");
-        if (other.gameObject.tag == "Player")
-        {
-            Debug.Log("HIT BASE");
-			other.gameObject.SendMessage("takeDamage", hitDamage);
-        }
-        else if (other.gameObject.tag == "Tower")
-        {
-            Debug.Log("HIT TOWER");
-            Attachments tower = other.gameObject.GetComponentInParent<Attachments>();
-
-            tower.Damage(hitDamage);
-        }
+        other.gameObject.SendMessage("takeDamage", hitDamage);
 
         isHitting = true; //stop jittery movement
     }
