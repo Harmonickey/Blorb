@@ -25,7 +25,7 @@ public class Enemy : MonoBehaviour {
 		healthText.text = health.ToString();
 
 		if (health <= 0f) {
-			Destroy(this);
+			Destroy(this.gameObject);
 		}
 	}
 
@@ -35,9 +35,7 @@ public class Enemy : MonoBehaviour {
         if (other.gameObject.tag == "Player")
         {
             Debug.Log("HIT BASE");
-            Center playerGameObject = other.gameObject.GetComponentInParent<Center>();
-
-            playerGameObject.Damage(hitDamage);
+			other.gameObject.SendMessage("takeDamage", hitDamage);
         }
         else if (other.gameObject.tag == "Tower")
         {
