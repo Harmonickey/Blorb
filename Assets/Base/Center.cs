@@ -16,7 +16,7 @@ public class Center : MonoBehaviour {
 		enabled = true;
 	}
 
-	void OnTriggerEnter (Collision2D collision) {
+	void OnTriggerEnter (Collider collision) {
 		gameObject.SetActive (false);
 	}
 
@@ -28,10 +28,6 @@ public class Center : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (health <= 0f) {
-			GameEventManager.TriggerGameOver();
-		}
-
         if (Input.GetKeyDown(KeyCode.UpArrow))
         {
             //Debug.Log("Init Tower");
@@ -92,9 +88,13 @@ public class Center : MonoBehaviour {
         return (bottomRenderer.sprite.rect.width / pixelOffset) + 2.1F;
     }
 
-    public void Damage(float damage)
+    public void takeDamage(float damage)
     {
         health -= damage;
+
+		if (health <= 0f) {
+			GameEventManager.TriggerGameOver();
+		}
 
         Debug.Log("HEALTH: " + health);
     }
