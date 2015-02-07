@@ -3,7 +3,9 @@ using System.Collections;
 
 public class Turret : MonoBehaviour {
 	public SpriteRenderer gun;
+	public static float fireDelay = 1f;
 	private Transform myTarget;
+	private float nextFireTime;
 	
 	void OnTriggerEnter2D (Collider2D other) {
 		Debug.Log ("Trigger!");
@@ -33,6 +35,12 @@ public class Turret : MonoBehaviour {
 			{
 				float angle = Mathf.Atan2(moveDirection.y, moveDirection.x) * Mathf.Rad2Deg;
 				gun.transform.rotation = Quaternion.AngleAxis(angle - 90f, Vector3.forward);
+			}
+
+			// decide if its time to fire
+			if (nextFireTime < Time.time) {
+				myTarget.gameObject.SendMessage("takeDamage", 10f);
+				nextFireTime = Time.time + fireDelay;
 			}
 		}
 	}
