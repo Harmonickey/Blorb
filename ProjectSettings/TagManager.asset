@@ -8,6 +8,10 @@ TagManager:
   - Waypoint
   - Obst
   - Enemy
+  - Mountain
+  - Pathfinder
+  - Tower
+  - Bottom
   - 
   Builtin Layer 0: Default
   Builtin Layer 1: TransparentFX
@@ -17,7 +21,7 @@ TagManager:
   Builtin Layer 5: UI
   Builtin Layer 6: 
   Builtin Layer 7: 
-  User Layer 8: 
+  User Layer 8: Terrain
   User Layer 9: 
   User Layer 10: 
   User Layer 11: 
@@ -45,4 +49,8 @@ TagManager:
   - name: Default
     userID: 0
     uniqueID: 0
+    locked: 0
+  - name: 
+    userID: 1
+    uniqueID: 70031809
     locked: 0

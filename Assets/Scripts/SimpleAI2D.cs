@@ -11,8 +11,11 @@ public class SimpleAI2D : Pathfinding2D
     private bool search = true;
     private float tempDistance = 0F;
 
+    private Enemy thisEnemy;
+
 	void Start () 
     {
+        thisEnemy = this.GetComponent<Enemy>();
         //Make sure that we dont dividde by 0 in our search timer coroutine
         if (SearchPerSecond == 0)
             SearchPerSecond = 1;
@@ -51,7 +54,7 @@ public class SimpleAI2D : Pathfinding2D
         }
         else
         {
-            Debug.Log("No player set in the inspector!");
+            //Debug.Log("No player set in the inspector!");
         }
 	}
 
@@ -65,23 +68,26 @@ public class SimpleAI2D : Pathfinding2D
 
     private void MoveAI()
     {
-        //Make sure we are within distance + 1 added so we dont get stuck at exactly the search distance
-        if (tempDistance < SearchDistance + 1)
-        {       
-            //if we get close enough or we are closer then the indexed position, then remove the position from our path list, 
-            if (Vector3.Distance(transform.position, Path[0]) < 0.2F || tempDistance < Vector3.Distance(Path[0], Player.position)) 
+        if (!thisEnemy.isHitting)
+        {
+            //Make sure we are within distance + 1 added so we dont get stuck at exactly the search distance
+            if (tempDistance < SearchDistance + 1)
             {
-                Path.RemoveAt(0);
-            }   
+                //if we get close enough or we are closer then the indexed position, then remove the position from our path list, 
+                if (Vector3.Distance(transform.position, Path[0]) < 0.2F || tempDistance < Vector3.Distance(Path[0], Player.position))
+                {
+                    Path.RemoveAt(0);
+                }
 
-            if(Path.Count < 1)
-                return;
+                if (Path.Count < 1)
+                    return;
 
-            //First we will create a new vector ignoreing the depth (z-axiz).
-            Vector3 ignoreZ = new Vector3(Path[0].x, Path[0].y, transform.position.z);
-            
-            //now move towards the newly created position
-            transform.position = Vector3.MoveTowards(transform.position, ignoreZ, Time.deltaTime * Speed);  
+                //First we will create a new vector ignoreing the depth (z-axiz).
+                Vector3 ignoreZ = new Vector3(Path[0].x, Path[0].y, transform.position.z);
+
+                //now move towards the newly created position
+                transform.position = Vector3.MoveTowards(transform.position, ignoreZ, Time.deltaTime * Speed);
+            }
         }
     }
 }
