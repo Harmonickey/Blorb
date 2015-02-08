@@ -10,6 +10,7 @@ public class SimpleAI2D : Pathfinding2D
 
     private bool search = true;
     private float tempDistance = 0F;
+    private Enemy thisEnemy;
 
 	void Start () 
     {
@@ -20,6 +21,8 @@ public class SimpleAI2D : Pathfinding2D
         //We do not want a negative distance
         if (SearchDistance < 0)
             SearchDistance = 0;
+
+        thisEnemy = this.transform.GetComponent<Enemy>();
 	}
 	
 	void Update () 
@@ -30,9 +33,11 @@ public class SimpleAI2D : Pathfinding2D
             //save distance so we do not have to call it multiple times
             tempDistance = Vector3.Distance(transform.position, Player.position);
 
+            
             //Check if we are able to search
-            if (search == true)
+            if (search == true && !thisEnemy.isHitting)
             {
+                Debug.Log(thisEnemy.isHitting);
                 //Start the time
                 StartCoroutine(SearchTimer());
 
@@ -44,7 +49,7 @@ public class SimpleAI2D : Pathfinding2D
             }
 
             //Make sure that we actually got a path! then call the new movement method
-            if (Path.Count > 0)
+            if (Path.Count > 0 && !thisEnemy.isHitting)
             {
                 MoveAI();
             }

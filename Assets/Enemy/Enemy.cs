@@ -6,7 +6,6 @@ public class Enemy : MonoBehaviour {
     public static float hitSpeed = 1.0f;
     public static float hitDamage = 1.0f;
     public bool isHitting = false;
-    public Transform Player;
 	public TextMesh healthText;
 	private float health = 100.0f;
 
@@ -31,6 +30,8 @@ public class Enemy : MonoBehaviour {
 
     void OnCollisionEnter2D(Collision2D other)
     {
+        Debug.Log("ENEMY HITTING");
+
         other.gameObject.SendMessage("takeDamage", hitDamage);
 
         isHitting = true; //stop jittery movement
