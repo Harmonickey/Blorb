@@ -17,7 +17,7 @@ public class Attachments : MonoBehaviour {
 	void Update () {
         if (selected && Center.selectedBasePiece != this.transform)
         {
-            SpriteRenderer sr = this.transform.FindChild("Bottom(Clone)").GetComponent<SpriteRenderer>();
+            SpriteRenderer sr = this.transform.GetComponent<SpriteRenderer>();
             sr.color = new Color(255.0f, 255.0f, 255.0f);
             selected = false;
         }

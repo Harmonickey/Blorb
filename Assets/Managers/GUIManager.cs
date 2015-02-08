@@ -21,13 +21,13 @@ public class GUIManager : MonoBehaviour {
 		GameEventManager.GameStart += GameStart;
 		GameEventManager.GameOver += GameOver;
 		gameOverText.enabled = false;
-		this.disableHUD ();
+		instance.disableHUD ();
 	}
 
 	private void GameOver () {
 		gameOverText.enabled = true;
 		instructionsText.enabled = true;
-		this.disableHUD ();
+		instance.disableHUD ();
 		enabled = true;
 	}
 	

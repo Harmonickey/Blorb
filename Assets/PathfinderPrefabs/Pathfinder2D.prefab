@@ -52,7 +52,7 @@ MonoBehaviour:
   IgnoreTags:
   - Player
   - Base
-  - Tower
+  - Turret
   - Wall
   MoveDiagonal: 1
   DrawMapInEditor: 0

@@ -13,7 +13,7 @@ GameObject:
   - 50: {fileID: 5061682}
   - 114: {fileID: 11468976}
   m_Layer: 0
-  m_Name: Tower
+  m_Name: Turret
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -57,7 +57,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 719bfcc1471504bf4aa8869de4c10071, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gun: {fileID: 21239560, guid: 7fa2a33a8d7367844a9d8e20457643e4, type: 2}
 --- !u!114 &11477802
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -90,7 +89,7 @@ SpriteRenderer:
   m_ScaleInLightmap: 1
   m_SortingLayerID: 0
   m_SortingOrder: 2
-  m_Sprite: {fileID: 21300012, guid: cac4650eae1214d7d92dd7b3fa9758b4, type: 3}
+  m_Sprite: {fileID: 21300010, guid: cac4650eae1214d7d92dd7b3fa9758b4, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1001 &100100000
 Prefab:

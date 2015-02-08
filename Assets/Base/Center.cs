@@ -19,7 +19,7 @@ public class Center : MonoBehaviour {
     public bool[] takenSpots = new bool[4] {false, false, false, false};
 
     public bool canMove = false;
-    public bool canBuild = false;
+    public bool canBuild = true; //TODO Change this to false when GameStart is fixed
 
 	void GameStart () {
 		health = 100f;
@@ -37,7 +37,7 @@ public class Center : MonoBehaviour {
         if (!selected && Input.GetButtonDown("Select"))
         { 
             selectedBasePiece = this.transform;
-            SpriteRenderer sr = selectedBasePiece.FindChild("Bottom").GetComponent<SpriteRenderer>();
+            SpriteRenderer sr = selectedBasePiece.GetComponent<SpriteRenderer>();
             sr.color = new Color(0.0f, 219.0f, 255.0f); // "selected" color
             selected = true;
         }
@@ -59,15 +59,17 @@ public class Center : MonoBehaviour {
             selected = false;
         }
 
+        canBuild = true;
         if (Center.selectedBasePiece != null && canBuild)
         {
-
+            
             if (Input.GetKeyDown(KeyCode.UpArrow))
             {
                 if (SpotTaken(0))
                     return;
-                
-                PlacePiece("Tower", BuildDirection.Up); // no x direction, pos y direction
+
+                Debug.Log("Building Turret");               
+                PlacePiece("Turret", BuildDirection.Up); // no x direction, pos y direction
 
             }
             else if (Input.GetKeyDown(KeyCode.RightArrow))
@@ -75,7 +77,7 @@ public class Center : MonoBehaviour {
                 if (SpotTaken(1))
                     return;
 
-                PlacePiece("Tower", BuildDirection.Right); // pos x direction, no y direction
+                PlacePiece("Turret", BuildDirection.Right); // pos x direction, no y direction
 
             }
             else if (Input.GetKeyDown(KeyCode.DownArrow))
@@ -83,7 +85,7 @@ public class Center : MonoBehaviour {
                 if (SpotTaken(2))
                     return;
 
-                PlacePiece("Tower", BuildDirection.Down); // no x direction, neg y direction
+                PlacePiece("Turret", BuildDirection.Down); // no x direction, neg y direction
 
             }
             else if (Input.GetKeyDown(KeyCode.LeftArrow))
@@ -91,7 +93,7 @@ public class Center : MonoBehaviour {
                 if (SpotTaken(3))
                     return;
 
-                PlacePiece("Tower", BuildDirection.Left); // neg x direction, no y direction
+                PlacePiece("Turret", BuildDirection.Left); // neg x direction, no y direction
                 
             }
         }
@@ -104,22 +106,20 @@ public class Center : MonoBehaviour {
         //get the location of the top of the base
         float offset = GetOffsetHeight();
 
-        //do the tower piece
-        Transform childTower = Instantiate(tower) as Transform;
-        childTower.transform.parent = selectedBasePiece;
-        childTower.transform.localScale = Vector3.one;
-        childTower.tag = tag;
-
-        //do the bottom piece as a child of the tower
         Transform childBottom = Instantiate(bottom) as Transform;
-        childBottom.transform.parent = childTower;
+        childBottom.transform.parent = selectedBasePiece;
         childBottom.transform.localScale = Vector3.one;
         childBottom.tag = tag;
+
+        Transform childTower = Instantiate(tower) as Transform;
+        childTower.transform.parent = childBottom;
+        childTower.transform.localScale = Vector3.one;
+        childTower.tag = tag;
 
         float xOffset = (offset + placementOffset) * (float)xDirection;
         float yOffset = (offset + placementOffset) * (float)yDirection;
 
-        childTower.transform.position = new Vector3(selectedBasePiece.position.x + xOffset, selectedBasePiece.position.y + yOffset);
+        childBottom.transform.position = new Vector3(selectedBasePiece.position.x + xOffset, selectedBasePiece.position.y + yOffset);
 
     }
 
