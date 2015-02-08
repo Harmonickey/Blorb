@@ -3,17 +3,20 @@
 public class GUIManager : MonoBehaviour {
 	private static GUIManager instance;
 	public GUIText gameOverText, instructionsText, titleText;
-	public SpriteRenderer background, health;
+	public SpriteRenderer background;
+	public TextMesh health;
 	public Camera minimap;
 
 	void enableHUD () {
 		background.enabled = true;
 		minimap.enabled = true;
+		health.renderer.enabled = true;
 	}
 
 	void disableHUD () {
 		background.enabled = false;
 		minimap.enabled = false;
+		health.renderer.enabled = false;
 	}
 
 	void Start () {

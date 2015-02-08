@@ -23,6 +23,13 @@ public class SimpleAI2D : Pathfinding2D
             SearchDistance = 0;
 
         thisEnemy = this.transform.GetComponent<Enemy>();
+
+		//Try to find the player
+		GameObject foundPlayer = GameObject.FindWithTag("Player");
+
+		if (foundPlayer) {
+			Player = foundPlayer.transform;
+		}
 	}
 	
 	void Update () 
@@ -37,7 +44,7 @@ public class SimpleAI2D : Pathfinding2D
             //Check if we are able to search
             if (search == true && !thisEnemy.isHitting)
             {
-                Debug.Log(thisEnemy.isHitting);
+                //Debug.Log(thisEnemy.isHitting);
                 //Start the time
                 StartCoroutine(SearchTimer());
 

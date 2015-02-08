@@ -5,6 +5,7 @@ public class Turret : MonoBehaviour {
 
 	public static float fireDelay = 1f;
 	public static float range = 100f;
+	public static float damage = 25f;
 	private Transform myTarget;
 	private float nextFireTime;
     private SpriteRenderer gun;
@@ -20,7 +21,7 @@ public class Turret : MonoBehaviour {
 		// decide if its time to fire
 		if (nextFireTime < Time.time) {
 			if (myTarget) {
-				myTarget.gameObject.SendMessage("takeDamage", 10f);
+				myTarget.gameObject.SendMessage("takeDamage", damage);
 			}
 
 			myTarget = GetNearestTaggedObject();

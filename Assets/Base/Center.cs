@@ -4,7 +4,7 @@ using System.Collections;
 public class Center : MonoBehaviour {
 
     private const float pixelOffset = 100.0F;
-    private const float placementOffset = 0.6f;
+    private const float placementOffset = -0.2f;
 
 	private float health;
 
@@ -15,6 +15,8 @@ public class Center : MonoBehaviour {
     public Transform wall;
 	public Transform collector;
     public Transform bottom;
+	public TextMesh healthText;
+	public SpriteRenderer playerTopRenderer;
 
     public static Transform selectedBasePiece;
 
@@ -30,6 +32,8 @@ public class Center : MonoBehaviour {
 		resourcePool = 0;
 		collectingFromResource = false;
 		enabled = true;
+		this.renderer.enabled = true;
+		playerTopRenderer.enabled = true;
         canMove = false;
         canBuild = true;
 	}
@@ -52,7 +56,9 @@ public class Center : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		GameEventManager.GameStart += GameStart;
-		//enabled = false;
+		enabled = false;
+		this.renderer.enabled = false;
+		playerTopRenderer.enabled = false;
 	}
 	
 	// Update is called once per frame
@@ -163,14 +169,12 @@ public class Center : MonoBehaviour {
     public void takeDamage(float damage)
     {
         health -= damage;
+		healthText.text = health.ToString();
 
 		if (health <= 0f) {
 			GameEventManager.TriggerGameOver();
 		}
-
-        Debug.Log("HEALTH: " + health);
     }
-
 }
 
 public abstract class BuildDirection

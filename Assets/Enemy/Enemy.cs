@@ -8,6 +8,8 @@ public class Enemy : MonoBehaviour {
     public bool isHitting = false;
 	public TextMesh healthText;
 	private float health = 100.0f;
+	private float nextHit;
+	private GameObject target;
 
 	// Use this for initialization
 	void Start () {
@@ -16,7 +18,10 @@ public class Enemy : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	
+		if (target && isHitting && nextHit < Time.time) {
+			target.SendMessage("takeDamage", hitDamage);
+			nextHit = Time.time + hitSpeed;
+		}
 	}
 
 	public void takeDamage (float amount) {
@@ -30,16 +35,19 @@ public class Enemy : MonoBehaviour {
 
     void OnCollisionEnter2D(Collision2D other)
     {
-        Debug.Log("ENEMY HITTING");
+		if (other.gameObject.tag != "Enemy") {
+			Debug.Log ("ENEMY HITTING");
+			target = other.gameObject;
 
-        other.gameObject.SendMessage("takeDamage", hitDamage);
-
-        isHitting = true; //stop jittery movement
+			isHitting = true; //stop jittery movement
+		}
     }
 
     void OnCollisionExit2D(Collision2D other)
     {
-        Debug.Log("EXITING COLLISION");
-        isHitting = false;
+		if (other.gameObject == target) {
+			Debug.Log ("EXITING COLLISION");
+			isHitting = false;
+		}
     }
 }
