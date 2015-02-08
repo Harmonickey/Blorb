@@ -14,7 +14,7 @@ GameObject:
   - 114: {fileID: 11493772}
   m_Layer: 0
   m_Name: Map
-  m_TagString: Untagged
+  m_TagString: Map
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -26,8 +26,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 193772}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -74.9000015, y: 75.4000015, z: 0}
-  m_LocalScale: {x: 30, y: 30, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 5, y: 5, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -82,8 +82,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8d0d1a91155fc04abb92bfeaafc6525, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tiles_x: 25
-  tiles_y: 25
+  tiles_x: 5
+  tiles_y: 5
   tileSet: {fileID: 2800000, guid: 035168451bc9c4e4cb12048514fa70da, type: 3}
 --- !u!1001 &100100000
 Prefab:

@@ -20,11 +20,11 @@ public class TileData {
 		//FillMap (TileType.Grass);
 	}
 
-	public TileType GetTile(int x, int y){
+	public TileType GetTileType(int x, int y){
 		return tiles[x, y];
 	}
 
-	public void SetTile(int x, int y, TileType t){
+	public void SetTileType(int x, int y, TileType t){
 		tiles[x,y] = t;
 	}
 
@@ -51,13 +51,34 @@ public class TileData {
 	}
 
 	public bool isResource(int x, int y){
-		return isResource(tiles[x,y]);
+		if (x > 0 && y > 0 && x < width && y < height){
+			return isResource(tiles[x,y]);
+		}
+		else {
+			return false;
+		}
+	}
+
+	public bool isResource(Vector3 position){
+		return isResource((int)position.x, (int)position.y);
+	}
+
+	public Resource GetResource(Vector3 position){
+		if (isResource(position)){
+			foreach (Resource r in resources){
+				if (position.Equals(r.getPosition())){
+					return r;
+				}
+			}
+		}
+
+		return null;
 	}
 
 	public void FillRange(TileType t, int left, int top, int bottom_offset, int right_offset){
 		for(int x = 0; x < right_offset; x++){
 			for(int y = 0; y < bottom_offset; y++){
-				SetTile (left + x,top + y,t);
+				SetTileType(left + x,top + y,t);
 			}
 		}
 	}
@@ -76,7 +97,7 @@ public class TileData {
 		for(int x = 0; x < width; x++){
 			for(int y = 0; y < height; y++){
 				TileType t = GetRandomEnum<TileType>();
-				SetTile(x, y, t);
+				SetTileType(x, y, t);
 			}
 		}
 	}
@@ -87,14 +108,14 @@ public class TileData {
 			for(int y = 0; y < height; y++){
 				float tileChance = Random.Range(0f, 1f);
 				if (tileChance > 0.99f){
-					SetTile(x, y, TileType.Resource);
+					SetTileType(x, y, TileType.Resource);
 					//other resource placing stuff
 				}
 				else if (tileChance > 0.9f) {
-					SetTile(x, y, TileType.Stone);
+					SetTileType(x, y, TileType.Stone);
 				}
 				else {
-					SetTile(x, y, TileType.Grass);
+					SetTileType(x, y, TileType.Grass);
 				}
 
 				FillRange(TileType.Grass, width/3, height/3, width/3, height/3);
@@ -120,40 +141,4 @@ public class TileData {
 		T V = (T)A.GetValue(UnityEngine.Random.Range(0,A.Length));
 		return V;
 	}
-}
-
-public class Resource {
-	
-	private int value = 1000;
-	private int depletionRate = 1;
-	private bool isDepleting = false;
-
-	private Vector3 position;
-
-	public Resource(int x, int y, int value, int depletionRate){
-		this.value = value;
-		this.depletionRate = depletionRate;
-		position = new Vector3(x, y, 0);
-	}
-
-	public Resource(int x, int y){
-		position = new Vector3(x, y, 0);
-	}
-
-	public Vector3 getPosition(){
-		return position;
-	}
-
-	public void Deplete(GameObject depletor){
-		value -= depletionRate;
-		ResourcePool pool = depletor.GetComponent<ResourcePool>();
-		if (pool){
-			pool.Add(depletionRate);
-		}
-	}
-
-	public void Empty(){
-		value = 0;
-	}
-	
 }

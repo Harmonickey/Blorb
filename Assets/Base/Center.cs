@@ -7,12 +7,18 @@ public class Center : MonoBehaviour {
 
 	private float health;
 
+	public int resourcePool;
+	public bool collectingFromResource = false;
+
     public Transform tower;
     public Transform wall;
+	public Transform collector;
     public Transform bottom;
 
 	void GameStart () {
 		health = 100f;
+		resourcePool = 0;
+		collectingFromResource = false;
 		enabled = true;
 	}
 
@@ -72,8 +78,27 @@ public class Center : MonoBehaviour {
             childTower.transform.position = new Vector3(this.transform.position.x + offset, this.transform.position.y);
 
         }
-	}
+		if (Input.GetKeyDown (KeyCode.LeftArrow)){
+			//Debug.Log("Init Resource Collector");
+			float offset = GetOffsetToRight();
 
+			//do the tower piece
+			Transform childTower = Instantiate(collector) as Transform;
+			childTower.transform.parent = this.transform;
+			childTower.tag = "Tower";
+			
+			//do the bottom piece as a child of the tower
+			/*Transform childBottom = Instantiate(bottom) as Transform;
+			childBottom.transform.parent = childTower;
+			childBottom.transform.localScale = Vector3.one;
+			childBottom.tag = "Tower";*/
+			
+			//Debug.Log("TOWER TOP OFFSET: " + offset);
+			childTower.transform.position = new Vector3(this.transform.position.x + offset, this.transform.position.y);
+            
+        }
+    }
+    
     private float GetOffsetToTop()
     {
         SpriteRenderer bottomRenderer = this.GetComponentInChildren<SpriteRenderer>();

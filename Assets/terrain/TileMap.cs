@@ -12,7 +12,7 @@ public class TileMap : MonoBehaviour {
 	public int tiles_y;
 	public Texture2D tileSet;
 
-	private float tileSize = 1f/5f;
+	private float tileSize = 1f;
 	private int pixelsPerTile = 32;
 	private TileData tileData;
 
@@ -28,6 +28,33 @@ public class TileMap : MonoBehaviour {
 		Debug.Log ("Tilemap complete!");
 	}
 
+	public Vector3 PositionToTile(Vector3 pos){
+		Vector3 trueTileSize = tileSize * transform.localScale; //maybe lossyScale?
+		int tileOffsetWidth = tiles_x/2;
+		int tileOffsetHeight = tiles_y/2;
+
+
+		return new Vector3 (Mathf.FloorToInt(pos.x/trueTileSize.x) + tileOffsetWidth, -1*Mathf.FloorToInt(pos.y/trueTileSize.y) + tileOffsetHeight, 0);
+	}
+	
+	public Vector3 TileToPosition(int x, int y){
+		Vector3 trueTileSize = tileSize * transform.localScale; //maybe lossyScale?
+		
+		return new Vector3 (x * trueTileSize.x, y*trueTileSize.y, 0);
+    }
+
+	public bool IsResource(int x, int y){
+		return tileData.isResource(x, y);
+	}
+
+	public bool IsResource(Vector3 position){
+		return tileData.isResource(position);
+	}
+
+	public Resource GetResource(Vector3 position){
+		return tileData.GetResource(position);
+	}
+    
 	Color[][] ChopTiles(){
 		int textureTilesX = tileSet.width / pixelsPerTile;
 		int textureTilesY = tileSet.height / pixelsPerTile;
@@ -61,7 +88,7 @@ public class TileMap : MonoBehaviour {
 			for(int x = 0; x < tiles_x; x++){
 				int start_x = x*pixelsPerTile;
 				int start_y = y*pixelsPerTile;
-				Color[] pixels = tiles[(int)tileData.GetTile(x, y)];
+				Color[] pixels = tiles[(int)tileData.GetTileType(x, y)];
 				mapTexture.SetPixels(start_x, start_y, pixelsPerTile, pixelsPerTile, pixels);
 			}
 		}
@@ -127,5 +154,7 @@ public class TileMap : MonoBehaviour {
 		meshFilter.mesh = mesh;
 		meshCollider.sharedMesh = mesh;
 	}
+
+
 
 }
