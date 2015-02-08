@@ -13,6 +13,7 @@ TagManager:
   - Tower
   - Bottom
   - Turret
+  - Map
   - Wall
   - 
   Builtin Layer 0: Default

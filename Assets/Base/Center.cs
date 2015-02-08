@@ -8,8 +8,12 @@ public class Center : MonoBehaviour {
 
 	private float health;
 
+	public int resourcePool;
+	public bool collectingFromResource = false;
+
     public Transform tower;
     public Transform wall;
+	public Transform collector;
     public Transform bottom;
 
     public static Transform selectedBasePiece;
@@ -23,6 +27,8 @@ public class Center : MonoBehaviour {
 
 	void GameStart () {
 		health = 100f;
+		resourcePool = 0;
+		collectingFromResource = false;
 		enabled = true;
         canMove = false;
         canBuild = true;
@@ -94,7 +100,6 @@ public class Center : MonoBehaviour {
                     return;
 
                 PlacePiece("Turret", BuildDirection.Left); // neg x direction, no y direction
-                
             }
         }
 	}
@@ -138,7 +143,6 @@ public class Center : MonoBehaviour {
                 return true;
             takenSpots[spot] = true;
         }
-
         return false;
     }
 
