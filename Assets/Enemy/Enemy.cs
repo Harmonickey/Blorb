@@ -36,7 +36,6 @@ public class Enemy : MonoBehaviour {
     void OnCollisionEnter2D(Collision2D other)
     {
 		if (other.gameObject.tag != "Enemy") {
-			Debug.Log ("ENEMY HITTING");
 			target = other.gameObject;
 
 			isHitting = true; //stop jittery movement
@@ -46,7 +45,6 @@ public class Enemy : MonoBehaviour {
     void OnCollisionExit2D(Collision2D other)
     {
 		if (other.gameObject == target) {
-			Debug.Log ("EXITING COLLISION");
 			isHitting = false;
 		}
     }

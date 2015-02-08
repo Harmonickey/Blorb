@@ -5,16 +5,18 @@ public class WaveManager : MonoBehaviour {
 	public Transform enemy;
 	public static float waveDelay = 3.0f;
 	public static float enemySpawnDelay = 2.0f;
-	public int enemiesPerWave = 15;
+	public int enemiesPerWave = 10;
 
 	private float startNextWave;
 	private float spawnNextEnemy;
-	private int enemiesSpawned = 0;
+	private int enemiesSpawned;
 	private bool waveStarted = false;
 
 	void GameStart() {
 		enabled = true;
 		startNextWave = Time.time + waveDelay;
+
+		enemiesSpawned = 0;
 	}
 
 	void GameOver() {
@@ -25,6 +27,7 @@ public class WaveManager : MonoBehaviour {
 		}
 
 		enabled = false;
+		waveStarted = false;
 	}
 
 	// Use this for initialization
