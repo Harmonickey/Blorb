@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 public class GridPlayer2D : Pathfinding2D
 {
+
     void Update()
     {
         FindPath();
@@ -15,7 +16,7 @@ public class GridPlayer2D : Pathfinding2D
 
     private void FindPath()
     {
-        if (Input.GetButtonDown("Fire1"))
+        if (Input.GetButtonDown("Move") && this.transform.GetComponent<Center>().canMove)
         {
             Ray ray = Camera.main.ScreenPointToRay(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0));
             RaycastHit hit;

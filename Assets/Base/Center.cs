@@ -4,6 +4,7 @@ using System.Collections;
 public class Center : MonoBehaviour {
 
     private const float pixelOffset = 100.0F;
+    private const float placementOffset = 0.6f;
 
 	private float health;
 
@@ -11,81 +12,148 @@ public class Center : MonoBehaviour {
     public Transform wall;
     public Transform bottom;
 
+    public static Transform selectedBasePiece;
+
+    private bool selected = false;
+
+    public bool[] takenSpots = new bool[4] {false, false, false, false};
+
+    public bool canMove = false;
+    public bool canBuild = true; //TODO Change this to false when GameStart is fixed
+
 	void GameStart () {
 		health = 100f;
 		enabled = true;
+        canMove = false;
+        canBuild = true;
 	}
 
 	void OnTriggerEnter (Collider collision) {
 		gameObject.SetActive (false);
 	}
 
+    void OnMouseDown()
+    {
+        if (!selected && Input.GetButtonDown("Select"))
+        { 
+            selectedBasePiece = this.transform;
+            SpriteRenderer sr = selectedBasePiece.GetComponent<SpriteRenderer>();
+            sr.color = new Color(0.0f, 219.0f, 255.0f); // "selected" color
+            selected = true;
+        }
+    }
+
 	// Use this for initialization
 	void Start () {
 		GameEventManager.GameStart += GameStart;
-		enabled = false;
+		//enabled = false;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-        if (Input.GetKeyDown(KeyCode.UpArrow))
+
+        if (selected && Center.selectedBasePiece != this.transform)
         {
-            //Debug.Log("Init Tower");
-
-            //get the location of the top of the base
-            float offset = GetOffsetToTop();
-
-            //do the tower piece
-            Transform childTower = Instantiate(tower) as Transform;
-            childTower.transform.parent = this.transform;
-            childTower.tag = "Tower";
-            
-            //do the bottom piece as a child of the tower
-            Transform childBottom = Instantiate(bottom) as Transform;
-            childBottom.transform.parent = childTower;
-            childBottom.transform.localScale = Vector3.one;
-            childBottom.tag = "Tower";
-
-            //Debug.Log("TOWER TOP OFFSET: " + offset);
-            childTower.transform.position = new Vector3(this.transform.position.x, this.transform.position.y + offset);
-            
+            SpriteRenderer sr = this.transform.FindChild("Bottom").GetComponent<SpriteRenderer>();
+            sr.color = new Color(255.0f, 255.0f, 255.0f); //return to original sprite color
+            selected = false;
         }
-        if (Input.GetKeyDown(KeyCode.RightArrow))
+
+        canBuild = true;
+        if (Center.selectedBasePiece != null && canBuild)
         {
-            //Debug.Log("Init Tower");
+            
+            if (Input.GetKeyDown(KeyCode.UpArrow))
+            {
+                if (SpotTaken(0))
+                    return;
 
-            //get the location of the top of the base
-            float offset = GetOffsetToRight();
+                Debug.Log("Building Turret");               
+                PlacePiece("Turret", BuildDirection.Up); // no x direction, pos y direction
 
-            //do the tower piece
-            Transform childTower = Instantiate(tower) as Transform;
-            childTower.transform.parent = this.transform;
-            childTower.tag = "Tower";
+            }
+            else if (Input.GetKeyDown(KeyCode.RightArrow))
+            {
+                if (SpotTaken(1))
+                    return;
 
-            //do the bottom piece as a child of the tower
-            Transform childBottom = Instantiate(bottom) as Transform;
-            childBottom.transform.parent = childTower;
-            childBottom.transform.localScale = Vector3.one;
-            childBottom.tag = "Tower";
+                PlacePiece("Turret", BuildDirection.Right); // pos x direction, no y direction
 
-            //Debug.Log("TOWER TOP OFFSET: " + offset);
-            childTower.transform.position = new Vector3(this.transform.position.x + offset, this.transform.position.y);
+            }
+            else if (Input.GetKeyDown(KeyCode.DownArrow))
+            {
+                if (SpotTaken(2))
+                    return;
 
+                PlacePiece("Turret", BuildDirection.Down); // no x direction, neg y direction
+
+            }
+            else if (Input.GetKeyDown(KeyCode.LeftArrow))
+            {
+                if (SpotTaken(3))
+                    return;
+
+                PlacePiece("Turret", BuildDirection.Left); // neg x direction, no y direction
+                
+            }
         }
 	}
 
-    private float GetOffsetToTop()
+    private void PlacePiece(string tag, int[] direction)
     {
-        SpriteRenderer bottomRenderer = this.GetComponentInChildren<SpriteRenderer>();
-        //Debug.Log("HEIGHT: " + bottomRenderer.sprite.rect.height);
-        return (bottomRenderer.sprite.rect.height / pixelOffset) + 1.8F;
+        float xDirection = (float)direction[0];
+        float yDirection = (float)direction[1];
+        //get the location of the top of the base
+        float offset = GetOffsetHeight();
+
+        Transform childBottom = Instantiate(bottom) as Transform;
+        childBottom.transform.parent = selectedBasePiece;
+        childBottom.transform.localScale = Vector3.one;
+        childBottom.tag = tag;
+
+        Transform childTower = Instantiate(tower) as Transform;
+        childTower.transform.parent = childBottom;
+        childTower.transform.localScale = Vector3.one;
+        childTower.tag = tag;
+
+        float xOffset = (offset + placementOffset) * (float)xDirection;
+        float yOffset = (offset + placementOffset) * (float)yDirection;
+
+        childBottom.transform.position = new Vector3(selectedBasePiece.position.x + xOffset, selectedBasePiece.position.y + yOffset);
+
     }
 
-    private float GetOffsetToRight()
+    private bool SpotTaken(int spot)
     {
-        SpriteRenderer bottomRenderer = this.GetComponentInChildren<SpriteRenderer>();
+        if (Center.selectedBasePiece != this.transform)
+        {
+            Attachments attachmentAttr = selectedBasePiece.GetComponent<Attachments>();
+            if (attachmentAttr.takenSpots[spot] == true)
+                return true;
+            attachmentAttr.takenSpots[spot] = true;
+        }
+        else
+        {
+            if (takenSpots[spot] == true)
+                return true;
+            takenSpots[spot] = true;
+        }
+
+        return false;
+    }
+
+    private float GetOffsetHeight()
+    {
+        SpriteRenderer bottomRenderer = selectedBasePiece.GetComponentInChildren<SpriteRenderer>();
+        //Debug.Log("HEIGHT: " + bottomRenderer.sprite.rect.height);
+        return (bottomRenderer.sprite.rect.height / pixelOffset);// +1.8F;
+    }
+
+    private float GetOffsetWidth()
+    {
+        SpriteRenderer bottomRenderer = selectedBasePiece.GetComponentInChildren<SpriteRenderer>();
         //Debug.Log("WIDTH: " + bottomRenderer.sprite.rect.width);
-        return (bottomRenderer.sprite.rect.width / pixelOffset) + 2.1F;
+        return (bottomRenderer.sprite.rect.width / pixelOffset);// +2.1F;
     }
 
     public void takeDamage(float damage)
@@ -99,4 +167,12 @@ public class Center : MonoBehaviour {
         Debug.Log("HEALTH: " + health);
     }
 
+}
+
+public abstract class BuildDirection
+{
+    public static int[] Up = new int[2] { 0, 1 };
+    public static int[] Right = new int[2] { 1, 0 };
+    public static int[] Down = new int[2] { 0, -1 };
+    public static int[] Left = new int[2] { -1, 0 };
 }

@@ -2,15 +2,17 @@
 using System.Collections;
 
 public class Turret : MonoBehaviour {
-	public SpriteRenderer gun;
+
 	public static float fireDelay = 1f;
 	public static float range = 100f;
 	private Transform myTarget;
 	private float nextFireTime;
+    private SpriteRenderer gun;
+    public float publicAngle;
 
 	// Use this for initialization
 	void Start () {
-		
+        gun = this.transform.GetComponent<SpriteRenderer>();
 	}
 	
 	// Update is called once per frame
@@ -30,6 +32,7 @@ public class Turret : MonoBehaviour {
 			if (moveDirection != Vector3.zero) 
 			{
 				float angle = Mathf.Atan2(moveDirection.y, moveDirection.x) * Mathf.Rad2Deg;
+                
 				gun.transform.rotation = Quaternion.AngleAxis(angle - 90f, Vector3.forward);
 			}
 		}
@@ -42,6 +45,7 @@ public class Turret : MonoBehaviour {
 		Transform nearestObj = null;
 		
 		// loop through each tagged object, remembering nearest one found
+        // this can be massively slow with lots of enemies
 		foreach (GameObject obj in taggedGameObjects) {
 			
 			Vector3 objectPos = obj.transform.position;
