@@ -45,7 +45,9 @@ public class Center : MonoBehaviour {
     void OnMouseDown()
     {
         if (!selected && Input.GetButtonDown("Select"))
-        { 
+        {
+            Debug.Log("Clicked on main base!");
+
             selectedBasePiece = this.transform;
             SpriteRenderer sr = selectedBasePiece.GetComponent<SpriteRenderer>();
             sr.color = new Color(0.0f, 219.0f, 255.0f); // "selected" color
@@ -66,7 +68,7 @@ public class Center : MonoBehaviour {
 
         if (selected && Center.selectedBasePiece != this.transform)
         {
-            SpriteRenderer sr = this.transform.FindChild("Bottom").GetComponent<SpriteRenderer>();
+            SpriteRenderer sr = this.transform.GetComponent<SpriteRenderer>();
             sr.color = new Color(255.0f, 255.0f, 255.0f); //return to original sprite color
             selected = false;
         }
