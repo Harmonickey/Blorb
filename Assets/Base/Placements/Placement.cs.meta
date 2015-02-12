@@ -1,0 +1,12 @@
+fileFormatVersion: 2
+guid: 467f88343fbc76e4cad7b3cdafb1437b
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - player: {instanceID: 0}
+  - turretPlacement: {instanceID: 0}
+  - collectorPlacement: {instanceID: 0}
+  - wallPlacement: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 

@@ -15,6 +15,9 @@ TagManager:
   - Turret
   - Map
   - Wall
+  - Placement
+  - Collector
+  - TestPiece
   - 
   Builtin Layer 0: Default
   Builtin Layer 1: TransparentFX
