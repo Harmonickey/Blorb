@@ -11,6 +11,7 @@ public class TileMap : MonoBehaviour {
 	public int tiles_x;
 	public int tiles_y;
 	public Texture2D tileSet;
+	public Transform mountain;
 
 	private float tileSize = 1f;
 	private int pixelsPerTile = 32;
@@ -25,6 +26,7 @@ public class TileMap : MonoBehaviour {
 	public void Regenerate () {
 		GenerateMesh();
 		GenerateTexture();
+		CreateImpassibleObjects();
 		Debug.Log ("Tilemap complete!");
 	}
 
@@ -39,8 +41,10 @@ public class TileMap : MonoBehaviour {
 	
 	public Vector3 TileToPosition(int x, int y){
 		Vector3 trueTileSize = tileSize * transform.localScale; //maybe lossyScale?
+		//int x_offset = ?;
+		//int y_offset = ?;
 		
-		return new Vector3 (x * trueTileSize.x, y*trueTileSize.y, 0);
+		return new Vector3 (x * trueTileSize.x + 0.5f * trueTileSize.x, -y*trueTileSize.y - 0.5f * trueTileSize.y, 0);
     }
 
 	public bool IsResource(int x, int y){
@@ -75,8 +79,6 @@ public class TileMap : MonoBehaviour {
 	}
 
 	void GenerateTexture() {
-
-
 		int texWidth = tiles_x * pixelsPerTile;
 		int texHeight = tiles_y * pixelsPerTile;
 		Texture2D mapTexture = new Texture2D(texWidth, texHeight);
@@ -129,13 +131,26 @@ public class TileMap : MonoBehaviour {
 				//Debug.Log (String.Format ("tileIndex = {0}", tileIndex));
 				triangleOffset = tileIndex * 6;
 
-				triangles[triangleOffset + 0] = y * vertices_x + x;
-				triangles[triangleOffset + 1] = y * vertices_x + x + 1;
-				triangles[triangleOffset + 2] = (y + 1) * vertices_x + x + 1;
+				int topLeftVertex = y * vertices_x + x; 
+				int topRightVertex = y * vertices_x + x + 1;
+				int bottomLeftVertex = (y + 1) * vertices_x + x;
+				int bottomRightVertex = (y + 1) * vertices_x + x + 1;
 
-				triangles[triangleOffset + 3] = y * vertices_x + x;
-				triangles[triangleOffset + 4] = (y + 1) * vertices_x + x + 1;
-				triangles[triangleOffset + 5] = (y + 1) * vertices_x + x;
+				triangles[triangleOffset + 0] = topLeftVertex;
+				triangles[triangleOffset + 1] = topRightVertex;
+				triangles[triangleOffset + 2] = bottomRightVertex;
+
+				triangles[triangleOffset + 3] = topLeftVertex;
+				triangles[triangleOffset + 4] = bottomRightVertex;
+				triangles[triangleOffset + 5] = bottomLeftVertex;
+
+				if(!tileData.isPassable(x, y)){
+					vertices[topLeftVertex].z = 0.001f;
+					vertices[topRightVertex].z = 0.001f;
+					vertices[bottomLeftVertex].z = 0.001f;
+					vertices[bottomRightVertex].z = 0.001f;
+				}
+
 			}
 		}
 
@@ -153,6 +168,18 @@ public class TileMap : MonoBehaviour {
 		MeshCollider meshCollider = GetComponent<MeshCollider>();
 		meshFilter.mesh = mesh;
 		meshCollider.sharedMesh = mesh;
+	}
+
+	void CreateImpassibleObjects(){
+		for (int y = 0; y < tiles_y; y++){
+			for (int x = 0; x < tiles_x; x++){
+				if (!tileData.isPassable(x, y)){
+					Transform newMountain = Instantiate(mountain) as Transform;
+					newMountain.transform.position = TileToPosition(x, y);
+					newMountain.tag = "Mountain";
+				}
+			}
+		}
 	}
 
 
