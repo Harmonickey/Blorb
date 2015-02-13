@@ -41,6 +41,10 @@ public class TileData {
 		return isPassable(tiles[x,y]);
 	}
 
+	public bool isPassable(Vector2 t){
+		return isPassable(t.x, t.y);
+	}
+
 	public static bool isResource(TileType t){
 		if (t == TileType.Resource){
 			return true;
@@ -74,6 +78,21 @@ public class TileData {
 
 		return null;
 	}
+
+	public float GetDistance(Vector2 start, Vector2 end){
+		if (0 < start.x && start.x < width && 
+		    0 < start.y && start.y < height && 
+		    0 < end.x && end.x < width && 
+		    0 < end.y && end.y < height){
+
+			float x_squared = (end.x - start.x) * (end.x-start.x);
+			float y_squared = (end.y - start.y) * (end.y-start.y);
+
+			return Mathf.Sqrt(x_squared + y_squared);
+		}
+	}
+
+	//Map generation and filling algorithms after here
 
 	public void FillRange(TileType t, int left, int top, int bottom_offset, int right_offset){
 		for(int x = 0; x < right_offset; x++){

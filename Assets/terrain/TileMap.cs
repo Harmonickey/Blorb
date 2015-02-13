@@ -16,9 +16,12 @@ public class TileMap : MonoBehaviour {
 	private int pixelsPerTile = 32;
 	private TileData tileData;
 
+	void Awake() {
+		tileData = new TileData(tiles_x, tiles_y);
+	}
+
 	// Use this for initialization
 	void Start () {
-		tileData = new TileData(tiles_x, tiles_y);
 		Regenerate();
 	}
 
@@ -53,6 +56,10 @@ public class TileMap : MonoBehaviour {
 
 	public Resource GetResource(Vector3 position){
 		return tileData.GetResource(position);
+	}
+
+	public TileData GetTileData(){
+		return tileData;
 	}
     
 	Color[][] ChopTiles(){
