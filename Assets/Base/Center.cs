@@ -181,6 +181,15 @@ public class Center : MonoBehaviour {
 
     void RemovePiece(int[] dir, Transform parent)
     {
+        foreach (Transform child in parent)
+        {
+            if (child.GetComponent<Attachments>() != null &&
+                child.GetComponent<Attachments>().spot == BuildDirection.ToSpotFromDir(dir))
+            {
+                Destroy(child.gameObject);
+                break;
+            }
+        }
         Attachments[] attachments = parent.GetComponentsInChildren<Attachments>();
 
         foreach (Attachments attachment in attachments)

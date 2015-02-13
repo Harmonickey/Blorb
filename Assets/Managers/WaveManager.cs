@@ -3,6 +3,7 @@ using System.Collections;
 
 public class WaveManager : MonoBehaviour {
 	public Transform enemy;
+    public Transform player;
 	public static float waveDelay = 3.0f;
 	public static float enemySpawnDelay = 2.0f;
 	public int enemiesPerWave = 10;
@@ -55,6 +56,7 @@ public class WaveManager : MonoBehaviour {
 		if (waveStarted && spawnNextEnemy < Time.time && enemiesSpawned < enemiesPerWave) {
 			Transform newEnemy = Instantiate (enemy) as Transform;
 			newEnemy.transform.position = new Vector2 (-10.0f, 10.0f);
+            newEnemy.GetComponent<SimpleAI2D>().Player = player; //set the target as the player
 
 			enemiesSpawned++;
 			spawnNextEnemy = Time.time + enemySpawnDelay;
