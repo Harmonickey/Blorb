@@ -49,7 +49,8 @@ public class Placement : MonoBehaviour {
         {
             Vector3 hit = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0));
             placementPiece.position = new Vector3(hit.x, hit.y, 0.0f); //drag the guy along
-
+            if (placementPiece.renderer.enabled == false)
+                placementPiece.renderer.enabled = true;
             if (Input.GetMouseButtonDown(0)) //for now, drop with mouse-button "0" which is left-click
             {
                 selected = false;
@@ -110,6 +111,7 @@ public class Placement : MonoBehaviour {
         }
 
         placementPiece.localScale = Vector2.one;
+        placementPiece.renderer.enabled = false; //don't show it yet, until the frame where the mouse is detected happens
         type = this.tag;
     }
 }
