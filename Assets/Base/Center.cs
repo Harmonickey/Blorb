@@ -3,8 +3,8 @@ using System.Collections;
 
 public class Center : MonoBehaviour {
 
-    private const float pixelOffset = 100.0F;
-    private const float placementOffset = -0.2f;
+    private const float pixelOffset = 750.0F;
+    private const float placementOffset = 0.725f;
 
 	private float health;
 
@@ -86,6 +86,8 @@ public class Center : MonoBehaviour {
 
     public void SetPlacement(int[] dir, Transform parent)
     {
+        PlacePiece("Placement", dir, parent, true);
+
         //check if there is a valid path to the center
         /*
         PlacePiece("TestPiece", dir, parent, true);
@@ -102,7 +104,7 @@ public class Center : MonoBehaviour {
         }
          * */
         //Debug.Log("Has Path: " + HasPathToCenter());
-        PlacePiece("Placement", dir, parent, true);
+        
     }
 
     void FixedUpdate()
@@ -158,6 +160,7 @@ public class Center : MonoBehaviour {
 
         if (tag != "Placement")
         {
+           
             if (selectedBasePiece == this.transform) //if we're actually the center
                 ReserveSpot(BuildDirection.ToSpotFromDir(direction), selectedBasePiece.GetComponent<Center>());
             else
@@ -177,6 +180,28 @@ public class Center : MonoBehaviour {
 
         childBottom.transform.position = new Vector3(selectedBasePiece.position.x + xOffset, selectedBasePiece.position.y + yOffset);
 
+        //now check if there is a path to the center still...
+        /*
+        if (tag != "Placement")
+        {
+            //Debug.Log("ATTACHMENTS: " + GameObject.FindObjectsOfType<Attachments>().Length);
+            if (GameObject.FindObjectsOfType<Attachments>().Length > 3)
+            {
+                if (HasPathToCenter())
+                {
+                    Debug.Log("HAS PATH");
+                    //RemovePiece(dir, parent);
+                    //PlacePiece("Placement", dir, parent, true);
+                }
+                else
+                {
+                    Debug.Log("HAS NO PATH");
+                    //RemovePiece(dir, parent);
+                    //PlacePiece("Placement", dir, parent, false);
+                }
+            }
+        }
+        */
     }
 
     void RemovePiece(int[] dir, Transform parent)
@@ -187,17 +212,6 @@ public class Center : MonoBehaviour {
                 child.GetComponent<Attachments>().spot == BuildDirection.ToSpotFromDir(dir))
             {
                 Destroy(child.gameObject);
-                break;
-            }
-        }
-        Attachments[] attachments = parent.GetComponentsInChildren<Attachments>();
-
-        foreach (Attachments attachment in attachments)
-        {
-            if (attachment.spot == BuildDirection.ToSpotFromDir(dir) &&
-                attachment.gameObject.GetInstanceID() != parent.gameObject.GetInstanceID())
-            {
-                Destroy(attachment);
                 break;
             }
         }
@@ -233,6 +247,8 @@ public class Center : MonoBehaviour {
     {
         Pathfinding2D finder = this.gameObject.GetComponent<Pathfinding2D>();
         finder.FindPath(new Vector3(20.0f + this.transform.position.x, 20.0f + this.transform.position.y, 0.0f), this.transform.position);
+        Debug.DrawLine(new Vector3(20.0f + this.transform.position.x, 20.0f + this.transform.position.y, 0.0f),
+                       this.transform.position, Color.red, 100.0f, false);
 
         if (finder.Path.Count > 0)
             return true;

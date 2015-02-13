@@ -65,6 +65,12 @@ public class Placement : MonoBehaviour {
                     parent = null;
                     type = null;
 
+                    GameObject[] placements = GameObject.FindGameObjectsWithTag("Placement");
+                    foreach (GameObject placement in placements)
+                    {
+                        placement.GetComponent<PlacementBottom>().checkDistance = false;
+                    }
+                    
                     Destroy(placementPiece.gameObject);
 
                     //reinit building process
@@ -103,7 +109,7 @@ public class Placement : MonoBehaviour {
                 break;
         }
 
-        placementPiece.localScale = new Vector3(0.25f, 0.25f, 0.25f);
+        placementPiece.localScale = Vector2.one;
         type = this.tag;
     }
 }

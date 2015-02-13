@@ -55,7 +55,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 1
-  m_Size: {x: 7, y: 7}
+  m_Size: {x: .899999976, y: .899999976}
   m_Center: {x: 0, y: 0}
 --- !u!114 &11499750
 MonoBehaviour:
@@ -68,9 +68,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7c9006c348a70b4ea723814b808f3aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  detectCollision: 0
   spot: 0
-  type: 
+  checkDistance: 0
 --- !u!212 &21276196
 SpriteRenderer:
   m_ObjectHideFlags: 1

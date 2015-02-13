@@ -7,7 +7,7 @@ public class PlacementBottom : MonoBehaviour {
     private const float pixelOffset = 100.0F;
 
     private Transform placementPiece;
-    private bool checkDistance = false;
+    public bool checkDistance = false;
     private Color oldColor;
 
     void Update()
@@ -28,6 +28,8 @@ public class PlacementBottom : MonoBehaviour {
                     Placement.positionToSnap = this.transform.position;
                     Placement.spot = spot;
                     Placement.parent = this.transform.parent;
+
+                    Debug.Log("YOU HAVE: " + spot + " : " + this.transform.parent.name);
                 }
             }
         }
@@ -35,9 +37,9 @@ public class PlacementBottom : MonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D collider)
     {
-        if (collider.tag == "Turret" || 
-            collider.tag == "Wall" ||
-            collider.tag == "Collector")
+        if (collider.tag == "Turret Placement" || 
+            collider.tag == "Wall Placement" ||
+            collider.tag == "Collector Placement")
         {
             placementPiece = collider.transform.parent;
             checkDistance = true;

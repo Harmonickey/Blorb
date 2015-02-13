@@ -25,13 +25,11 @@ public class Attachments : MonoBehaviour {
             {
                 //check to make sure it's not going to place on another branch of the structure that
                 //  isn't necessarily a parent or child
-                Debug.Log("Start Dir: " + BuildDirection.ToDirFromSpot(i)[0] + ":" + BuildDirection.ToDirFromSpot(i)[1]);
                 if (!DetectOtherObjects(BuildDirection.ToDirFromSpot(i)))
                     centralController.SetPlacement(BuildDirection.ToDirFromSpot(i), this.transform);
                 
             }
         }
-        Debug.Log("End Placement---------------");
 
         foreach (Transform child in this.transform)
         {
@@ -47,8 +45,11 @@ public class Attachments : MonoBehaviour {
         //raycast to find objects
         RaycastHit2D[] hits;
         hits = Physics2D.LinecastAll(new Vector2(this.transform.position.x + dir[0], this.transform.position.y + dir[1]),
-                                     new Vector2(this.transform.position.x + (dir[0] * 1.5f), this.transform.position.y + (dir[1] * 1.5f)));
-        
+                                     new Vector2(this.transform.position.x + (dir[0] * 1.3f), this.transform.position.y + (dir[1] * 1.3f)));
+
+        //Debug.DrawLine(new Vector3(this.transform.position.x + dir[0], this.transform.position.y + dir[1], 1.0f),
+        //               new Vector3(this.transform.position.x + (dir[0] * 1.3f), this.transform.position.y + (dir[1] * 1.3f), 1.0f), Color.red, 100.0f, false);
+
         //blacklist children, self, and placement pieces
         ArrayList blackList = new ArrayList();
         foreach (Transform child in this.transform) //iterate only immediate children
