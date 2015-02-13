@@ -43,7 +43,8 @@ public class Attachments : MonoBehaviour {
     {
         //raycast to find objects
         RaycastHit2D[] hits;
-        hits = Physics2D.RaycastAll(new Vector2(this.transform.position.x, this.transform.position.y), new Vector2(dir[0], dir[1]), 1.0f);
+        hits = Physics2D.LinecastAll(new Vector2(this.transform.position.x, this.transform.position.y),
+                                     new Vector2(this.transform.position.x + (dir[0] * 7), this.transform.position.y + (dir[1] * 7)));
 
         //blacklist children and self
         ArrayList blackList = new ArrayList();
@@ -63,6 +64,8 @@ public class Attachments : MonoBehaviour {
         {
             if (blackList.Contains(j)) continue; //skip children
 
+            Debug.Log("HIT: " + hits[j].collider.name);
+            Debug.Log("DIR: " + dir[0] + ":" + dir[1]);
             return true;
         }
 

@@ -68,6 +68,7 @@ public class Placement : MonoBehaviour {
                     Destroy(placementPiece.gameObject);
 
                     //reinit building process
+                    Pathfinder2D.Instance.Create2DMap();
                     player.GetComponent<Center>().RecalculateAllPossiblePlacements();
                     
                 }

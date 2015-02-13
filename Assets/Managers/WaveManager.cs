@@ -47,7 +47,7 @@ public class WaveManager : MonoBehaviour {
 
             if (!mapCreated)
             {
-                Pathfinder2D.Instance.Create2DMap(); //create the map for the enemies to run on
+                //Pathfinder2D.Instance.Create2DMap(); //create the map for the enemies to run on
                 mapCreated = true;
             }
 		}

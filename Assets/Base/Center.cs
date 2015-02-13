@@ -101,6 +101,7 @@ public class Center : MonoBehaviour {
             PlacePiece("Placement", dir, parent, false);
         }
          * */
+        //Debug.Log("Has Path: " + HasPathToCenter());
         PlacePiece("Placement", dir, parent, true);
     }
 
@@ -222,7 +223,7 @@ public class Center : MonoBehaviour {
     private bool HasPathToCenter()
     {
         Pathfinding2D finder = this.gameObject.GetComponent<Pathfinding2D>();
-        finder.FindPath(transform.position, new Vector3(100.0f + this.transform.position.x, 100.0f + this.transform.position.y, 0.0f));
+        finder.FindPath(new Vector3(20.0f + this.transform.position.x, 20.0f + this.transform.position.y, 0.0f), this.transform.position);
 
         if (finder.Path.Count > 0)
             return true;

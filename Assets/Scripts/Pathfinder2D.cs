@@ -53,7 +53,7 @@ public class Pathfinder2D : MonoBehaviour
             Tilesize = 1;
         }
 
-        //Pathfinder2D.Instance.Create2DMap();
+        Pathfinder2D.Instance.Create2DMap();
     }
 
 
