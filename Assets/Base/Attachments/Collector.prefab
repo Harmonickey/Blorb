@@ -14,7 +14,7 @@ GameObject:
   - 61: {fileID: 6100826}
   m_Layer: 0
   m_Name: Collector
-  m_TagString: Untagged
+  m_TagString: Collector
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

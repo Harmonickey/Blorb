@@ -72,11 +72,18 @@ public class Placement : MonoBehaviour {
                     
                 }
 
-                if (placementPiece.gameObject != null)
+                if (placementPiece != null)
                     Destroy(placementPiece.gameObject);
-
-                
             }
+        }
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (placementPiece != null)
+                Destroy(placementPiece.gameObject);
+
+            if (GameObject.FindGameObjectsWithTag("Placement").Length > 0)
+                center.RemoveAllPossiblePlacements();
         }
     }
 

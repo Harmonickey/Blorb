@@ -47,13 +47,11 @@ MonoBehaviour:
   MapEndPosition: {x: 100, y: 100}
   DisallowedTags:
   - Mountain
-  - Enemy
-  - 
-  IgnoreTags:
-  - Player
-  - Base
   - Turret
   - Wall
+  - Collector
+  IgnoreTags:
+  - Enemy
   MoveDiagonal: 1
   DrawMapInEditor: 0
 --- !u!1001 &100100000

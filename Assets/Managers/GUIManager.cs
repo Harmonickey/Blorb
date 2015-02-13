@@ -6,17 +6,31 @@ public class GUIManager : MonoBehaviour {
 	public SpriteRenderer background;
 	public TextMesh health;
 	public Camera minimap;
+    public Transform turretPlacement, wallPlacement, collectorPlacement;
 
 	void enableHUD () {
 		background.enabled = true;
 		minimap.enabled = true;
 		health.renderer.enabled = true;
+        turretPlacement.renderer.enabled = true;
+        turretPlacement.FindChild("Turret").renderer.enabled = true;
+        wallPlacement.renderer.enabled = true;
+        wallPlacement.FindChild("Wall").renderer.enabled = true;
+        collectorPlacement.renderer.enabled = true;
+        collectorPlacement.FindChild("Collector").renderer.enabled = true;
 	}
 
 	void disableHUD () {
 		background.enabled = false;
 		minimap.enabled = false;
 		health.renderer.enabled = false;
+        turretPlacement.renderer.enabled = false;
+        turretPlacement.FindChild("Turret").renderer.enabled = false;
+        wallPlacement.renderer.enabled = false;
+        wallPlacement.FindChild("Wall").renderer.enabled = false;
+        collectorPlacement.renderer.enabled = false;
+        collectorPlacement.FindChild("Collector").renderer.enabled = false;
+
 	}
 
 	void Start () {

@@ -11,12 +11,15 @@ public class WaveManager : MonoBehaviour {
 	private float spawnNextEnemy;
 	private int enemiesSpawned;
 	private bool waveStarted = false;
+    private bool mapCreated = false;
 
 	void GameStart() {
 		enabled = true;
+
 		startNextWave = Time.time + waveDelay;
 
 		enemiesSpawned = 0;
+
 	}
 
 	void GameOver() {
@@ -41,6 +44,12 @@ public class WaveManager : MonoBehaviour {
 	void Update () {
 		if (!waveStarted && startNextWave < Time.time) {
 			waveStarted = true;
+
+            if (!mapCreated)
+            {
+                Pathfinder2D.Instance.Create2DMap(); //create the map for the enemies to run on
+                mapCreated = true;
+            }
 		}
 
 		if (waveStarted && spawnNextEnemy < Time.time && enemiesSpawned < enemiesPerWave) {

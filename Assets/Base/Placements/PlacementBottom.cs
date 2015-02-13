@@ -26,7 +26,9 @@ public class PlacementBottom : MonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D collider)
     {
-        if (collider.tag != "TestPiece")
+        if (collider.tag == "Turret" || 
+            collider.tag == "Wall" ||
+            collider.tag == "Collector")
         {
             placementPiece = collider.transform.parent;
             checkDistance = true;

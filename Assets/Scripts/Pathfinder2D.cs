@@ -53,7 +53,7 @@ public class Pathfinder2D : MonoBehaviour
             Tilesize = 1;
         }
 
-        Pathfinder2D.Instance.Create2DMap();
+        //Pathfinder2D.Instance.Create2DMap();
     }
 
 
@@ -97,7 +97,11 @@ public class Pathfinder2D : MonoBehaviour
     #region map
     //-------------------------------------------------INSTANIATE MAP-----------------------------------------------//
 
-    private void Create2DMap()
+    /// <summary>
+    /// Modified by Alex Ayerdi 2/12/2015 to adapt to 2D
+    /// Note: Must use Collider and RigidBody (not the 2D versions) for best effect
+    /// </summary>
+    public void Create2DMap()
     {
         //Find positions for start and end of map
         int startX = (int)MapStartPosition.x;
@@ -124,22 +128,22 @@ public class Pathfinder2D : MonoBehaviour
                 int ID = (i * width) + j; //ID we give to our Node!
 
                 float dist = 20;
-
+                //RaycastHit2D[] hit = Physics2D.BoxCastAll(new Vector2(x, y), new Vector2(Tilesize / 4, Tilesize / 4), 0.0f, Vector2.up, dist);
                 RaycastHit[] hit = Physics.SphereCastAll(new Vector3(x, y, zStart), Tilesize / 4, Vector3.forward, dist);
                 bool free = true;
-                float maxZ = Mathf.Infinity;
+                //float maxZ = Mathf.Infinity;
 
                 foreach (RaycastHit h in hit)
                 {
                     if (DisallowedTags.Contains(h.transform.tag))
                     {
-                        if (h.point.z < maxZ)
-                        {
+                        //if (h.point.z < maxZ)
+                        //{
                             //It is a disallowed walking tile, make it false
-                            Map[j, i] = new Node(j, i, y, ID, x, 0, false); //Non walkable tile!
-                            free = false;
-                            maxZ = h.point.z;
-                        }
+                        Map[j, i] = new Node(j, i, y, ID, x, 0, false); //Non walkable tile!
+                        free = false;
+                            //maxZ = h.point.z;
+                       // }
                     }
                     else if (IgnoreTags.Contains(h.transform.tag))
                     {
@@ -147,13 +151,14 @@ public class Pathfinder2D : MonoBehaviour
                     }
                     else
                     {
-                        if (h.point.z < maxZ)
-                        {
+                        //if (h.point.z < maxZ)
+                       // {
                             //It is allowed to walk on this tile, make it walkable!
-                            Map[j, i] = new Node(j, i, y, ID, x, h.point.z, true); //walkable tile!
-                            free = false;
-                            maxZ = h.point.z;
-                        }
+                            //Map[j, i] = new Node(j, i, y, ID, x, h.point.z, true); //walkable tile!
+                        Map[j, i] = new Node(j, i, y, ID, x, 0.0f, true); //walkable tile!
+                        free = false;
+                            //maxZ = h.point.z;
+                        //}
                     }
                 }
                 //We hit nothing set tile to false
@@ -813,6 +818,62 @@ public class Pathfinder2D : MonoBehaviour
         }
 
         return returnList;
+    }
+
+    public void DynamicRaycastUpdate(Bounds b)
+    {
+        Vector3 startPos = new Vector3(b.min.x, 0, b.min.z);
+        UnityEngine.Debug.Log("Startpos dyn: " + startPos);
+        Node startNode = FindClosestNode(startPos);
+
+        if (startNode == null)
+            return;
+
+        int xIterations = Mathf.CeilToInt(Mathf.Abs((b.max.x - b.min.x) / Tilesize)) + 2;
+        int zIterations = Mathf.CeilToInt(Mathf.Abs((b.max.z - b.min.z) / Tilesize)) + 2;
+
+        for (int i = startNode.x - 2; i < startNode.x + xIterations; i++)
+        {
+            for (int j = startNode.y - 2; j < startNode.y + zIterations; j++)
+            {
+                if (i >= 0 && j >= 0 && i < Map.GetLength(0) && j < Map.GetLength(1))
+                {
+
+                    float dist = Mathf.Abs(10) + Mathf.Abs(-10);
+                    RaycastHit[] hit = Physics.SphereCastAll(new Vector3(Map[i, j].xCoord, 10, Map[i, j].zCoord), Tilesize / 16, Vector3.down, dist);
+                    
+                    float maxY = -Mathf.Infinity;
+
+                    foreach (RaycastHit h in hit)
+                    {
+                        if (DisallowedTags.Contains(h.transform.tag))
+                        {
+                            if (h.point.y > maxY)
+                            {
+                                //It is a disallowed walking tile, make it false
+                                Map[i, j].walkable = false;
+                                Map[i, j].yCoord = h.point.y;
+                                maxY = h.point.y;
+                            }
+                        }
+                        else if (IgnoreTags.Contains(h.transform.tag))
+                        {
+                            //Do nothing we ignore these tags
+                        }
+                        else
+                        {
+                            if (h.point.y > maxY)
+                            {
+                                //It is allowed to walk on this tile, make it walkable!
+                                Map[i, j].walkable = true;
+                                Map[i, j].yCoord = h.point.y;
+                                maxY = h.point.y;
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
     #endregion
