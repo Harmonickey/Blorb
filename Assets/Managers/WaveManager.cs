@@ -2,25 +2,46 @@
 using System.Collections;
 
 public class WaveManager : MonoBehaviour {
+	private static WaveManager instance;
 	public Transform enemy;
     public Transform player;
-	public static float waveDelay = 3.0f;
+	public Transform dayNightDial;
+	public float phaseDuration = 45f;
 	public static float enemySpawnDelay = 2.0f;
 	public int enemiesPerWave = 10;
 
-	private float startNextWave;
+	private float startNextPhase;
+	private bool isDay = true;
 	private float spawnNextEnemy;
 	private int enemiesSpawned;
 	private bool waveStarted = false;
     private bool mapCreated = false;
 
+	void Start() {
+		instance = this;
+
+		enabled = false;
+		GameEventManager.GameStart += GameStart;
+		GameEventManager.GameOver += GameOver;
+		GameEventManager.DayStart += DayStart;
+		GameEventManager.NightStart += NightStart;
+	}
+
+	void DayStart() {
+		Debug.Log ("Day");
+	}
+	void NightStart() {
+		Debug.Log ("Night");
+	}
+
+
 	void GameStart() {
 		enabled = true;
 
-		startNextWave = Time.time + waveDelay;
+		startNextPhase = Time.time + phaseDuration;
+		isDay = true;
 
 		enemiesSpawned = 0;
-
 	}
 
 	void GameOver() {
@@ -34,16 +55,23 @@ public class WaveManager : MonoBehaviour {
 		waveStarted = false;
 	}
 
-	// Use this for initialization
-	void Start () {
-		enabled = false;
-		GameEventManager.GameStart += GameStart;
-		GameEventManager.GameOver += GameOver;
+	void FixedUpdate () {
+		dayNightDial.Rotate (0, 0, -180f * Time.deltaTime / phaseDuration);
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
-		if (!waveStarted && startNextWave < Time.time) {
+		if (startNextPhase < Time.time) {
+			if (isDay) {
+				GameEventManager.TriggerNightStart();
+			} else {
+				GameEventManager.TriggerDayStart();
+			}
+
+			isDay = !isDay;
+			startNextPhase = Time.time + phaseDuration;
+		}
+		if (!waveStarted && startNextPhase < Time.time) {
 			waveStarted = true;
 
             if (!mapCreated)

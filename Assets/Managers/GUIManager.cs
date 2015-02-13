@@ -4,8 +4,7 @@ public class GUIManager : MonoBehaviour {
 	private static GUIManager instance;
 	public GUIText gameOverText, instructionsText, titleText;
 	public Camera minimap;
-    public Transform turretPlacement, wallPlacement, collectorPlacement;
-	public GameObject HUD;
+		public GameObject HUD;
 
 	void setHUD (bool enabled) {
 		SpriteRenderer[] renderers = HUD.GetComponentsInChildren<SpriteRenderer>();
@@ -20,12 +19,6 @@ public class GUIManager : MonoBehaviour {
 		}
 
 		minimap.enabled = enabled;
-		turretPlacement.renderer.enabled = enabled;
-		turretPlacement.FindChild("Turret").renderer.enabled = enabled;
-		wallPlacement.renderer.enabled = enabled;
-		wallPlacement.FindChild("Wall").renderer.enabled = enabled;
-		collectorPlacement.renderer.enabled = enabled;
-		collectorPlacement.FindChild("Collector").renderer.enabled = enabled;
 	}
 
 	void Start () {
