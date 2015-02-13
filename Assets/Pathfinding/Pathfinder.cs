@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 public class Pathfinder : MonoBehaviour {
 
-	private TileData map;
+	private static TileData map;
 
 	// Use this for initialization
 	void Start () {
@@ -18,7 +18,7 @@ public class Pathfinder : MonoBehaviour {
 
 	}
 
-	private List<Vector2> GetNeighbors(Vector2 node){
+	private static List<Vector2> GetNeighbors(Vector2 node){
 		List<Vector2> neighbors = new List<Vector2>();
 		if (map.isPassable(node + Vector2.up)){
 			neighbors.Add(node + Vector2.up);
@@ -36,7 +36,7 @@ public class Pathfinder : MonoBehaviour {
 		return neighbors;
 	}
 
-	public List<Vector2> GetPath(Vector2 start, Vector2 end){
+	public static List<Vector2> GetPath(Vector2 start, Vector2 end){
 		//A* based pathfinder
 
 		//First, verify that it is actually possible to be on the end:
@@ -45,7 +45,7 @@ public class Pathfinder : MonoBehaviour {
 			return null;
 		}
 
-		Queue<Vector2> frontier = new List<Vector2>();
+		Queue<Vector2> frontier = new Queue<Vector2>();
 		Dictionary<Vector2, Vector2> came_from = new Dictionary<Vector2, Vector2>();
 		Dictionary<Vector2, float> cost_so_far = new Dictionary<Vector2, float>();
 		came_from[start] = start;
@@ -56,9 +56,18 @@ public class Pathfinder : MonoBehaviour {
 			Vector2 current = frontier.Dequeue();
 
 			if (current == end){
-				break;
+				//we found a path so return it
+				List<Vector2> path = new List<Vector2>();
+				Vector2 next = end;
+				while (next != start){
+					path.Add(next);
+					next = came_from[next];
+				}
+				path.Reverse();
+				return path;
 			}
 
+			//else keep expanding neighbors
 			foreach (Vector2 neighbor in GetNeighbors(current)){
 				float new_cost = cost_so_far[current] + map.GetDistance(current, end);
 				if(!cost_so_far.ContainsKey(neighbor) || new_cost < cost_so_far[neighbor]){
@@ -69,14 +78,10 @@ public class Pathfinder : MonoBehaviour {
 				}
 			}
 		}
+		//if there are no nodes in the frontier and we haven't returned something's wrong
+		Debug.LogError("Pathfinder: PATH NOT FOUND!");
+		return null;
 
-		List<Vector2> path = new List<Vector2>();
-		Vector2 next = end;
-		while (next != start){
-			path.Add(next);
-			next = came_from[next];
-		}
-		path.Reverse();
-		return path;
+
 	}
 }

@@ -12,7 +12,7 @@ public class TileMap : MonoBehaviour {
 	public int tiles_y;
 	public Texture2D tileSet;
 
-	private float tileSize = 1f;
+	public float tileSize = 1f;
 	private int pixelsPerTile = 32;
 	private TileData tileData;
 

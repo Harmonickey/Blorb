@@ -12,16 +12,15 @@ public class Pathfinder2D : MonoBehaviour
 
     //Variables
     private Node[,] Map = null;
-    public float Tilesize = 1;
+	public TileMap tileMap;
+    private float Tilesize = 1;
     public int HeuristicAggression;
     public float zStart = -10F;
     public float zEnd = 10F;
 
-    public Vector2 MapStartPosition;
-    public Vector2 MapEndPosition;
+    private Vector2 MapStartPosition;
+    private Vector2 MapEndPosition;
 
-    public List<string> DisallowedTags;
-    public List<string> IgnoreTags;
     public bool MoveDiagonal = true;
 
     public bool DrawMapInEditor = false;
@@ -99,15 +98,20 @@ public class Pathfinder2D : MonoBehaviour
 
     private void Create2DMap()
     {
+		TileData mapData = tileMap.GetTileData();
+
         //Find positions for start and end of map
-        int startX = (int)MapStartPosition.x;
-        int startY = (int)MapStartPosition.y;
-        int endX = (int)MapEndPosition.x;
-        int endY = (int)MapEndPosition.y;
+		MapStartPosition = tileMap.TileToPosition(0,0);
+		MapEndPosition = tileMap.TileToPosition(mapData.width,mapData.height);
+		Tilesize = tileMap.tileSize;
+		int startX = (int)MapStartPosition.x;
+		int startY = (int)MapStartPosition.y;
+		int endX = (int)MapEndPosition.x;
+		int endY = (int)MapEndPosition.y;
 
         //Find tile width and height
-        int width = (int)((endX - startX) / Tilesize);
-        int height = (int)((endY - startY) / Tilesize);
+		int width = mapData.width;
+        int height = mapData.height;
 
         //Set map up
         Map = new Node[width, height];
@@ -119,49 +123,23 @@ public class Pathfinder2D : MonoBehaviour
         {
             for (int j = 0; j < width; j++)
             {
-                float x = startX + (j * Tilesize) + (Tilesize / 2); //Position from where we raycast - X
-                float y = startY + (i * Tilesize) + (Tilesize / 2); //Position from where we raycast - Z
+				//Map[j, i] = new Node(j, i, y, ID, x, 0, false);//Non walkable tile!
+				//Map[j, i] = new Node(j, i, y, ID, x, h.point.z, true); //walkable tile!
+				Vector3 pos = tileMap.TileToPosition(j, i);
+				float x = pos.x;
+				float y = pos.y;
                 int ID = (i * width) + j; //ID we give to our Node!
 
                 float dist = 20;
 
-                RaycastHit[] hit = Physics.SphereCastAll(new Vector3(x, y, zStart), Tilesize / 4, Vector3.forward, dist);
-                bool free = true;
-                float maxZ = Mathf.Infinity;
-
-                foreach (RaycastHit h in hit)
-                {
-                    if (DisallowedTags.Contains(h.transform.tag))
-                    {
-                        if (h.point.z < maxZ)
-                        {
-                            //It is a disallowed walking tile, make it false
-                            Map[j, i] = new Node(j, i, y, ID, x, 0, false); //Non walkable tile!
-                            free = false;
-                            maxZ = h.point.z;
-                        }
-                    }
-                    else if (IgnoreTags.Contains(h.transform.tag))
-                    {
-                        //Do nothing we ignore these tags
-                    }
-                    else
-                    {
-                        if (h.point.z < maxZ)
-                        {
-                            //It is allowed to walk on this tile, make it walkable!
-                            Map[j, i] = new Node(j, i, y, ID, x, h.point.z, true); //walkable tile!
-                            free = false;
-                            maxZ = h.point.z;
-                        }
-                    }
-                }
-                //We hit nothing set tile to false
-                if (free == true)
-                {
-                    Map[j, i] = new Node(j, i, y, ID, x, 0, false);//Non walkable tile! 
-                }
-            }
+				if (mapData.isPassable(i, j)){
+					Map[j, i] = new Node(j, i, 0, ID, x, y, true); //walkable tile!
+				}
+				else {
+					Map[j, i] = new Node(j, i, 0, ID, x, y, false);
+				}
+			}
+                
         }
     }
 
@@ -321,8 +299,12 @@ public class Pathfinder2D : MonoBehaviour
 
     private Node FindClosestNode(Vector3 pos)
     {
-        int x = (MapStartPosition.x < 0F) ? Mathf.FloorToInt(((pos.x + Mathf.Abs(MapStartPosition.x)) / Tilesize)) : Mathf.FloorToInt((pos.x - MapStartPosition.x) / Tilesize);
-        int y = (MapStartPosition.y < 0F) ? Mathf.FloorToInt(((pos.y + Mathf.Abs(MapStartPosition.y)) / Tilesize)) : Mathf.FloorToInt((pos.y - MapStartPosition.y) / Tilesize);
+        //int x = (MapStartPosition.x < 0F) ? Mathf.FloorToInt(((pos.x + Mathf.Abs(MapStartPosition.x)) / Tilesize)) : Mathf.FloorToInt((pos.x - MapStartPosition.x) / Tilesize);
+        //int y = (MapStartPosition.y < 0F) ? Mathf.FloorToInt(((pos.y + Mathf.Abs(MapStartPosition.y)) / Tilesize)) : Mathf.FloorToInt((pos.y - MapStartPosition.y) / Tilesize);
+
+		Vector2 t = tileMap.PositionToTile(pos);
+		int x = (int)t.x;
+		int y = (int)t.y;
 
         Node n = Map[x, y];
 
@@ -353,8 +335,12 @@ public class Pathfinder2D : MonoBehaviour
 
     private void FindEndNode(Vector3 pos)
     {
-        int x = (MapStartPosition.x < 0F) ? Mathf.FloorToInt(((pos.x + Mathf.Abs(MapStartPosition.x)) / Tilesize)) : Mathf.FloorToInt((pos.x - MapStartPosition.x) / Tilesize);
-        int y = (MapStartPosition.y < 0F) ? Mathf.FloorToInt(((pos.y + Mathf.Abs(MapStartPosition.y)) / Tilesize)) : Mathf.FloorToInt((pos.y - MapStartPosition.y) / Tilesize);
+        //int x = (MapStartPosition.x < 0F) ? Mathf.FloorToInt(((pos.x + Mathf.Abs(MapStartPosition.x)) / Tilesize)) : Mathf.FloorToInt((pos.x - MapStartPosition.x) / Tilesize);
+        //int y = (MapStartPosition.y < 0F) ? Mathf.FloorToInt(((pos.y + Mathf.Abs(MapStartPosition.y)) / Tilesize)) : Mathf.FloorToInt((pos.y - MapStartPosition.y) / Tilesize);
+
+		Vector2 t = tileMap.PositionToTile(pos);
+		int x = (int)t.x;
+		int y = (int)t.y;
 
         Node closestNode = Map[x, y];
         List<Node> walkableNodes = new List<Node>();

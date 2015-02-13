@@ -28,7 +28,7 @@ public class TileData {
 		tiles[x,y] = t;
 	}
 
-	public static bool isPassable(TileType t){
+	public static bool isPassableType(TileType t){
 		if (t == TileType.Stone || t == TileType.Water || t == TileType.None){
 			return false;
 		}
@@ -38,11 +38,15 @@ public class TileData {
 	}
 
 	public bool isPassable(int x, int y){
-		return isPassable(tiles[x,y]);
+		return (isPassableType(tiles[x,y]) && !existsEntityOnTile(x, y));
 	}
 
 	public bool isPassable(Vector2 t){
-		return isPassable(t.x, t.y);
+		return isPassable((int)t.x, (int)t.y);
+	}
+
+	public bool existsEntityOnTile(int x, int y){
+
 	}
 
 	public static bool isResource(TileType t){
@@ -80,16 +84,11 @@ public class TileData {
 	}
 
 	public float GetDistance(Vector2 start, Vector2 end){
-		if (0 < start.x && start.x < width && 
-		    0 < start.y && start.y < height && 
-		    0 < end.x && end.x < width && 
-		    0 < end.y && end.y < height){
+		float x_squared = (end.x - start.x) * (end.x-start.x);
+		float y_squared = (end.y - start.y) * (end.y-start.y);
 
-			float x_squared = (end.x - start.x) * (end.x-start.x);
-			float y_squared = (end.y - start.y) * (end.y-start.y);
-
-			return Mathf.Sqrt(x_squared + y_squared);
-		}
+		return Mathf.Sqrt(x_squared + y_squared);
+		
 	}
 
 	//Map generation and filling algorithms after here
