@@ -3,34 +3,29 @@
 public class GUIManager : MonoBehaviour {
 	private static GUIManager instance;
 	public GUIText gameOverText, instructionsText, titleText;
-	public SpriteRenderer background;
-	public TextMesh health;
 	public Camera minimap;
     public Transform turretPlacement, wallPlacement, collectorPlacement;
+	public GameObject HUD;
 
-	void enableHUD () {
-		background.enabled = true;
-		minimap.enabled = true;
-		health.renderer.enabled = true;
-        turretPlacement.renderer.enabled = true;
-        turretPlacement.FindChild("Turret").renderer.enabled = true;
-        wallPlacement.renderer.enabled = true;
-        wallPlacement.FindChild("Wall").renderer.enabled = true;
-        collectorPlacement.renderer.enabled = true;
-        collectorPlacement.FindChild("Collector").renderer.enabled = true;
-	}
+	void setHUD (bool enabled) {
+		SpriteRenderer[] renderers = HUD.GetComponentsInChildren<SpriteRenderer>();
+		TextMesh[] texts = HUD.GetComponentsInChildren<TextMesh> ();
 
-	void disableHUD () {
-		background.enabled = false;
-		minimap.enabled = false;
-		health.renderer.enabled = false;
-        turretPlacement.renderer.enabled = false;
-        turretPlacement.FindChild("Turret").renderer.enabled = false;
-        wallPlacement.renderer.enabled = false;
-        wallPlacement.FindChild("Wall").renderer.enabled = false;
-        collectorPlacement.renderer.enabled = false;
-        collectorPlacement.FindChild("Collector").renderer.enabled = false;
+		foreach (SpriteRenderer renderer in renderers) {
+			renderer.enabled = enabled;
+		}
 
+		foreach (TextMesh text in texts) {
+			text.renderer.enabled = enabled;
+		}
+
+		minimap.enabled = enabled;
+		turretPlacement.renderer.enabled = enabled;
+		turretPlacement.FindChild("Turret").renderer.enabled = enabled;
+		wallPlacement.renderer.enabled = enabled;
+		wallPlacement.FindChild("Wall").renderer.enabled = enabled;
+		collectorPlacement.renderer.enabled = enabled;
+		collectorPlacement.FindChild("Collector").renderer.enabled = enabled;
 	}
 
 	void Start () {
@@ -38,13 +33,13 @@ public class GUIManager : MonoBehaviour {
 		GameEventManager.GameStart += GameStart;
 		GameEventManager.GameOver += GameOver;
 		gameOverText.enabled = false;
-		instance.disableHUD ();
+		instance.setHUD (false);
 	}
 
 	private void GameOver () {
 		gameOverText.enabled = true;
 		instructionsText.enabled = true;
-		instance.disableHUD ();
+		instance.setHUD (false);
 		enabled = true;
 	}
 	
@@ -58,7 +53,7 @@ public class GUIManager : MonoBehaviour {
 		gameOverText.enabled = false;
 		instructionsText.enabled = false;
 		titleText.enabled = false;
-		enableHUD ();
+		instance.setHUD (true);
 		enabled = false;
 	}
 
