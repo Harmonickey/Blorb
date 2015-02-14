@@ -5,17 +5,11 @@ public class WaveManager : MonoBehaviour {
 	private static WaveManager instance;
 	public Transform enemy;
     public Transform player;
-	public Transform dayNightDial;
-	public float phaseDuration = 45f;
-	public static float enemySpawnDelay = 2.0f;
-	public int enemiesPerWave = 10;
-
-	private float startNextPhase;
-	private bool isDay = true;
+	private float enemySpawnDelay = 2.0f;
+	private int enemiesPerWave = 10;
+	
 	private float spawnNextEnemy;
 	private int enemiesSpawned;
-	private bool waveStarted = false;
-    private bool mapCreated = false;
 
 	void Start() {
 		instance = this;
@@ -31,15 +25,13 @@ public class WaveManager : MonoBehaviour {
 		Debug.Log ("Day");
 	}
 	void NightStart() {
+		spawnNextEnemy = Time.time + enemySpawnDelay;
 		Debug.Log ("Night");
 	}
 
 
 	void GameStart() {
 		enabled = true;
-
-		startNextPhase = Time.time + phaseDuration;
-		isDay = true;
 
 		enemiesSpawned = 0;
 	}
@@ -52,46 +44,16 @@ public class WaveManager : MonoBehaviour {
 		}
 
 		enabled = false;
-		waveStarted = false;
 	}
 
-	void FixedUpdate () {
-		dayNightDial.Rotate (0, 0, -180f * Time.deltaTime / phaseDuration);
-	}
-
-	// Update is called once per frame
 	void Update () {
-		if (startNextPhase < Time.time) {
-			if (isDay) {
-				GameEventManager.TriggerNightStart();
-			} else {
-				GameEventManager.TriggerDayStart();
-			}
-
-			isDay = !isDay;
-			startNextPhase = Time.time + phaseDuration;
-		}
-		if (!waveStarted && startNextPhase < Time.time) {
-			waveStarted = true;
-
-            if (!mapCreated)
-            {
-                //Pathfinder2D.Instance.Create2DMap(); //create the map for the enemies to run on
-                mapCreated = true;
-            }
-		}
-
-		if (waveStarted && spawnNextEnemy < Time.time && enemiesSpawned < enemiesPerWave) {
+		if (spawnNextEnemy < Time.time && enemiesSpawned < enemiesPerWave) {
 			Transform newEnemy = Instantiate (enemy) as Transform;
-			newEnemy.transform.position = new Vector2 (-10.0f, 10.0f);
+			newEnemy.transform.position = 3 * Random.insideUnitCircle;
             newEnemy.GetComponent<SimpleAI2D>().Player = player; //set the target as the player
 
 			enemiesSpawned++;
 			spawnNextEnemy = Time.time + enemySpawnDelay;
-		} else if (waveStarted && enemiesSpawned >= enemiesPerWave) {
-			waveStarted = false;
-
-			//TODO multiple waves
 		}
 	}
 }
