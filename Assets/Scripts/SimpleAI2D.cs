@@ -25,7 +25,7 @@ public class SimpleAI2D : Pathfinding2D
 	void Update () 
     {
         //Make sure we set a player in the inspector!
-        if (Player != null)
+        if (Player != null && !this.GetComponent<Enemy>().isHitting)
         {
             //save distance so we do not have to call it multiple times
             tempDistance = Vector3.Distance(transform.position, Player.position);
@@ -48,10 +48,6 @@ public class SimpleAI2D : Pathfinding2D
             {
                 MoveAI();
             }
-        }
-        else
-        {
-            Debug.Log("No player set in the inspector!");
         }
 	}
 

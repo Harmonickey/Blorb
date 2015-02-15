@@ -9,10 +9,10 @@ GameObject:
   m_Component:
   - 4: {fileID: 442294}
   - 212: {fileID: 21242294}
-  - 50: {fileID: 5005258}
   - 114: {fileID: 11414160}
   - 114: {fileID: 11463868}
-  - 61: {fileID: 6106122}
+  - 65: {fileID: 6526416}
+  - 54: {fileID: 5448222}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Enemy
@@ -82,32 +82,33 @@ Renderer:
   m_ScaleInLightmap: 1
   m_SortingLayerID: 0
   m_SortingOrder: 0
---- !u!50 &5005258
-Rigidbody2D:
+--- !u!54 &5448222
+Rigidbody:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 142294}
-  m_Mass: 1
-  m_LinearDrag: 0
+  serializedVersion: 2
+  m_Mass: 1.00000001e-07
+  m_Drag: 0
   m_AngularDrag: 0
-  m_GravityScale: 0
-  m_FixedAngle: 0
+  m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_SleepingMode: 1
+  m_Constraints: 0
   m_CollisionDetection: 0
---- !u!61 &6106122
-BoxCollider2D:
+--- !u!65 &6526416
+BoxCollider:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 142294}
-  m_Enabled: 1
-  m_Material: {fileID: 6200000, guid: eac5c5544cdc19d4b936edaa324e4f1f, type: 2}
+  m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Size: {x: .200000003, y: .200000003}
-  m_Center: {x: 0, y: 0}
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: .129999995, y: .129999995, z: 0}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!102 &10279112
 TextMesh:
   serializedVersion: 3
@@ -144,7 +145,7 @@ MonoBehaviour:
   JS: 0
   Player: {fileID: 0}
   SearchDistance: 100
-  Speed: 2
+  Speed: 1
 --- !u!114 &11463868
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -157,6 +158,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isHitting: 0
+  instantDamage: 1
   healthText: {fileID: 10279112}
 --- !u!212 &21242294
 SpriteRenderer:

@@ -47,13 +47,16 @@ public class WaveManager : MonoBehaviour {
 	}
 
 	void Update () {
-		if (spawnNextEnemy < Time.time && enemiesSpawned < enemiesPerWave) {
-			Transform newEnemy = Instantiate (enemy) as Transform;
-			newEnemy.transform.position = 3 * Random.insideUnitCircle;
+        
+        if (spawnNextEnemy < Time.time && enemiesSpawned < enemiesPerWave)
+        {
+            Transform newEnemy = Instantiate(enemy) as Transform;
+            newEnemy.transform.position = 5 * Random.insideUnitCircle;
             newEnemy.GetComponent<SimpleAI2D>().Player = player; //set the target as the player
 
-			enemiesSpawned++;
-			spawnNextEnemy = Time.time + enemySpawnDelay;
-		}
+            enemiesSpawned++;
+            spawnNextEnemy = Time.time + enemySpawnDelay;
+        }
+        
 	}
 }
