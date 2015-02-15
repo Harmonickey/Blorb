@@ -34,6 +34,7 @@ public class WaveManager : MonoBehaviour {
 		enabled = true;
 
 		enemiesSpawned = 0;
+		spawnNextEnemy = 0f;
 	}
 
 	void GameOver() {
@@ -47,16 +48,13 @@ public class WaveManager : MonoBehaviour {
 	}
 
 	void Update () {
-        
-        if (spawnNextEnemy < Time.time && enemiesSpawned < enemiesPerWave)
-        {
-            Transform newEnemy = Instantiate(enemy) as Transform;
-            newEnemy.transform.position = 5 * Random.insideUnitCircle;
+		if (spawnNextEnemy != 0f && spawnNextEnemy < Time.time && enemiesSpawned < enemiesPerWave) {
+			Transform newEnemy = Instantiate (enemy) as Transform;
+			newEnemy.transform.position = 3 * Random.insideUnitCircle;
             newEnemy.GetComponent<SimpleAI2D>().Player = player; //set the target as the player
 
             enemiesSpawned++;
             spawnNextEnemy = Time.time + enemySpawnDelay;
-        }
-        
+        } 
 	}
 }

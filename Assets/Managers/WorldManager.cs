@@ -13,10 +13,11 @@ public class WorldManager : MonoBehaviour {
 
 		startNextPhase = Time.time + phaseDuration;
 		isDay = true;
+		dayNightDial.rotation = Quaternion.Euler (0f, 0f, 90f);
 	}
 
 	void GameOver () {
-		dayNightDial.rotation.Set (0, 0, 90, 0);
+		enabled = false;
 	}
 
 	void FixedUpdate () {

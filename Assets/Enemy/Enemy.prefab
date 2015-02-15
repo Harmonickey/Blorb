@@ -158,7 +158,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isHitting: 0
-  instantDamage: 1
+  instantDamage: 0
   healthText: {fileID: 10279112}
 --- !u!212 &21242294
 SpriteRenderer:
@@ -181,7 +181,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  m_Color: {r: .0106490748, g: .308823526, b: 0, a: 1}
+  m_Color: {r: .874509811, g: .913725495, b: .525490224, a: 1}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

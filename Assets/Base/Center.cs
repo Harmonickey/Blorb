@@ -11,13 +11,14 @@ public class Center : MonoBehaviour {
     public float speed;
 	public int resourcePool;
 	public bool collectingFromResource = false;
+	public TextMesh resourcePoolText;
 
     public Transform turret;
     public Transform wall;
 	public Transform collector;
     public Transform bottom;
     public Transform placement;
-	public TextMesh healthText;
+	public Transform healthbar;
 
     public bool[] takenSpots = new bool[4] {false, false, false, false};
 
@@ -25,10 +26,15 @@ public class Center : MonoBehaviour {
     public bool canBuild = true; //TODO Change this to false when GameStart is fixed
 
 	void GameStart () {
-		health = 100f;
-		resourcePool = 0;
-		collectingFromResource = false;
 		enabled = true;
+
+		health = 100f;
+		healthbar.localScale = new Vector2 (health * 1.5f, 1f);
+
+		resourcePool = 0;
+		resourcePoolText.text = resourcePool.ToString ();
+		collectingFromResource = false;
+
 		this.renderer.enabled = true;
         this.transform.FindChild("Player").renderer.enabled = true;
         canMove = true;
@@ -45,6 +51,7 @@ public class Center : MonoBehaviour {
 		enabled = false;
 		this.renderer.enabled = false;
         this.transform.FindChild("Player").renderer.enabled = false;
+		healthbar = this.transform.Find ("GUI/HUD/Health");
 	}
 
     public void FindAllPossiblePlacements()
@@ -236,7 +243,7 @@ public class Center : MonoBehaviour {
     public void takeDamage(float damage)
     {
         health -= damage;
-		healthText.text = health.ToString();
+		healthbar.localScale = new Vector2 (health * 1.5f, 1f);
 
 		if (health <= 0f) {
 			GameEventManager.TriggerGameOver();

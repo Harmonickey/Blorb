@@ -5,6 +5,7 @@ TextureImporter:
     21300000: hud_0
     21300002: hud_1
     21300004: hud_2
+    21300006: hud_3
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -27,7 +28,7 @@ TextureImporter:
   textureFormat: -1
   maxTextureSize: 1024
   textureSettings:
-    filterMode: -1
+    filterMode: 1
     aniso: 16
     mipBias: -1
     wrapMode: 1
@@ -75,6 +76,16 @@ TextureImporter:
         height: 236
       alignment: 0
       pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: hud_3
+      rect:
+        serializedVersion: 2
+        x: 1006
+        y: 124
+        width: 2
+        height: 22
+      alignment: 4
+      pivot: {x: 0, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
   spritePackingTag: 
   userData: 
