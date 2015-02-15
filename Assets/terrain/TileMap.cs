@@ -41,10 +41,10 @@ public class TileMap : MonoBehaviour {
 	
 	public Vector3 TileToPosition(int x, int y){
 		Vector3 trueTileSize = tileSize * transform.localScale; //maybe lossyScale?
-		//int x_offset = ?;
-		//int y_offset = ?;
+		float centering_offset_x = 0.5f * trueTileSize.x;
+		float centering_offset_y = 0.5f * trueTileSize.y;
 		
-		return new Vector3 (x * trueTileSize.x + 0.5f * trueTileSize.x, -y*trueTileSize.y - 0.5f * trueTileSize.y, 0);
+		return new Vector3 (x * trueTileSize.x + centering_offset_x + transform.position.x, -y*trueTileSize.y - centering_offset_y + transform.position.y, 0);
     }
 
 	public bool IsResource(int x, int y){
