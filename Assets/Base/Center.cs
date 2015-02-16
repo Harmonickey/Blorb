@@ -30,7 +30,7 @@ public class Center : MonoBehaviour {
 		health = 100f;
 		healthbar.localScale = new Vector2 (health * 1.5f, 1f);
 
-		resourcePool = 0;
+		resourcePool = 100;
 		resourcePoolText.text = resourcePool.ToString ();
 		collectingFromResource = false;
 
@@ -217,6 +217,7 @@ public class Center : MonoBehaviour {
         */
 
         resourcePool -= cost;
+		resourcePoolText.text = resourcePool.ToString ();
     }
 
     void RemovePiece(int[] dir, Transform parent)
@@ -258,6 +259,12 @@ public class Center : MonoBehaviour {
 		}
     }
 
+	public void receiveBlorb(int blorb)
+	{
+		resourcePool += blorb;
+		resourcePoolText.text = resourcePool.ToString ();
+	}
+
     private bool HasPathToCenter()
     {
         Pathfinding2D finder = this.gameObject.GetComponent<Pathfinding2D>();
@@ -273,7 +280,7 @@ public class Center : MonoBehaviour {
 
     public bool HasEnoughResources(int cost)
     {
-        return resourcePool <= cost;
+        return resourcePool >= cost;
     }
 }
 

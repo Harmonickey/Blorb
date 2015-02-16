@@ -39,6 +39,7 @@ public class Enemy : MonoBehaviour {
 
 		if (health <= 0f) {
 			Destroy(this.gameObject);
+			//tmp.SendMessage("receiveBlorb", 10);
 		}
 	}
 
