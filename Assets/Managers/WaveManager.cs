@@ -23,10 +23,16 @@ public class WaveManager : MonoBehaviour {
 
 	void DayStart() {
 		Debug.Log ("Day");
+        player.GetComponent<Center>().isActive = true;
+        WorldManager.LiftTowers();
 	}
+
 	void NightStart() {
 		spawnNextEnemy = Time.time + enemySpawnDelay;
 		Debug.Log ("Night");
+        player.GetComponent<Center>().isActive = false;
+        GameObject.FindObjectOfType<Placement>().StopPlacement();
+        WorldManager.LowerTowers();
 	}
 
 

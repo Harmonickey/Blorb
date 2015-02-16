@@ -28,8 +28,6 @@ public class PlacementBottom : MonoBehaviour {
                     Placement.positionToSnap = this.transform.position;
                     Placement.spot = spot;
                     Placement.parent = this.transform.parent;
-
-                    Debug.Log("YOU HAVE: " + spot + " : " + this.transform.parent.name);
                 }
             }
         }

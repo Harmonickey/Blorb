@@ -4,7 +4,9 @@ public class GUIManager : MonoBehaviour {
 	private static GUIManager instance;
 	public GUIText gameOverText, instructionsText, titleText;
 	public Camera minimap;
-		public GameObject HUD;
+	public GameObject HUD;
+    private static bool towersLowering, towersLifting;
+
 
 	void setHUD (bool enabled) {
 		SpriteRenderer[] renderers = HUD.GetComponentsInChildren<SpriteRenderer>();
@@ -27,6 +29,8 @@ public class GUIManager : MonoBehaviour {
 		GameEventManager.GameOver += GameOver;
 		gameOverText.enabled = false;
 		instance.setHUD (false);
+        towersLowering = false;
+        towersLifting = false;
 	}
 
 	private void GameOver () {

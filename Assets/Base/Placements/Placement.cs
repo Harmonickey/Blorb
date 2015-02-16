@@ -87,12 +87,17 @@ public class Placement : MonoBehaviour {
 
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            if (placementPiece != null)
-                Destroy(placementPiece.gameObject);
-
-            if (GameObject.FindGameObjectsWithTag("Placement").Length > 0)
-                center.RemoveAllPossiblePlacements();
+            StopPlacement();
         }
+    }
+
+    public void StopPlacement()
+    {
+        if (placementPiece != null)
+            Destroy(placementPiece.gameObject);
+
+        if (GameObject.FindGameObjectsWithTag("Placement").Length > 0)
+            center.RemoveAllPossiblePlacements();
     }
 
     void CreatePlacement()

@@ -7,6 +7,8 @@ public class WorldManager : MonoBehaviour {
 	private float phaseDuration = 45f;
 	private float startNextPhase;
 	private bool isDay = true;
+    private static bool towersLowering, towersLifting;
+    private static float target;
 
 	void GameStart () {
 		enabled = true;
@@ -43,5 +45,41 @@ public class WorldManager : MonoBehaviour {
 			isDay = !isDay;
 			startNextPhase = Time.time + phaseDuration;
 		}
+
+        if (towersLowering)
+        {
+            GameObject towers = GameObject.FindGameObjectWithTag("Towers");
+            towers.transform.position -= new Vector3(0.0f, 5.5f * Time.deltaTime, 0.0f);
+            if (towers.transform.position.y <= target)
+            {
+                towers.transform.position = new Vector3(0.0f, target, 0.0f);
+                towersLowering = false;
+            }
+        }
+
+        if (towersLifting)
+        {
+            GameObject towers = GameObject.FindGameObjectWithTag("Towers");
+            towers.transform.position += new Vector3(0.0f, 5.5f * Time.deltaTime, 0.0f);
+            if (towers.transform.position.y >= target)
+            {
+                towers.transform.position = new Vector3(0.0f, target, 0.0f);
+                towersLifting = false;
+            }
+        }
 	}
+
+    public static void LowerTowers()
+    {
+
+        Debug.Log("Lower Towers called");
+        target = GameObject.FindGameObjectWithTag("Towers").transform.position.y - 10.9f;
+        towersLowering = true;
+    }
+
+    public static void LiftTowers()
+    {
+        target = GameObject.FindGameObjectWithTag("Towers").transform.position.y + 10.9f;
+        towersLifting = true;
+    }
 }

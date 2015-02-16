@@ -22,8 +22,7 @@ public class Center : MonoBehaviour {
 
     public bool[] takenSpots = new bool[4] {false, false, false, false};
 
-    public bool canMove = false;
-    public bool canBuild = true; //TODO Change this to false when GameStart is fixed
+    public bool isActive;
 
 	void GameStart () {
 		enabled = true;
@@ -37,8 +36,7 @@ public class Center : MonoBehaviour {
 
 		this.renderer.enabled = true;
         this.transform.FindChild("Player").renderer.enabled = true;
-        canMove = true;
-        canBuild = true;
+        isActive = true;
 	}
 
 	void OnTriggerEnter (Collider collision) {
@@ -118,6 +116,8 @@ public class Center : MonoBehaviour {
 
     void FixedUpdate()
     {
+        if (!isActive) return;
+        
         float inputHorizontal = Input.GetAxis("Horizontal");
         float inputVertical = Input.GetAxis("Vertical");
 
@@ -129,6 +129,8 @@ public class Center : MonoBehaviour {
 
     public void PlacePiece(string tag, int[] direction, Transform selectedBasePiece, bool isOkay = true)
     {
+        if (!isActive) return;
+
         float xDirection = (float)direction[0];
         float yDirection = (float)direction[1];
 
