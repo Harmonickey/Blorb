@@ -93,7 +93,8 @@ public class Center : MonoBehaviour {
 
     public void SetPlacement(int[] dir, Transform parent)
     {
-        PlacePiece("Placement", dir, parent, true);
+        //placement pieces cost 0
+        PlacePiece("Placement", dir, parent, 0, true);
 
         //check if there is a valid path to the center
         /*
@@ -127,7 +128,7 @@ public class Center : MonoBehaviour {
         
     }
 
-    public void PlacePiece(string tag, int[] direction, Transform selectedBasePiece, bool isOkay = true)
+    public void PlacePiece(string tag, int[] direction, Transform selectedBasePiece, int cost, bool isOkay = true)
     {
         if (!isActive) return;
 
@@ -214,6 +215,8 @@ public class Center : MonoBehaviour {
             }
         }
         */
+
+        resourcePool -= cost;
     }
 
     void RemovePiece(int[] dir, Transform parent)
@@ -266,6 +269,11 @@ public class Center : MonoBehaviour {
             return true;
 
         return false;
+    }
+
+    public bool HasEnoughResources(int cost)
+    {
+        return resourcePool <= cost;
     }
 }
 

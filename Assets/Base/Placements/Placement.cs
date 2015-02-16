@@ -11,6 +11,7 @@ public class Placement : MonoBehaviour {
     public Transform turretPlacement;
     public Transform collectorPlacement;
     public Transform wallPlacement;
+    public int cost;
 
     public static Vector3 positionToSnap = Vector3.zero;
     private string type = null;
@@ -21,6 +22,19 @@ public class Placement : MonoBehaviour {
     {
         selected = false;
         center = player.GetComponent<Center>();
+
+        switch (this.tag)
+        {
+            case "Turret":
+                cost = 25;
+                break;
+            case "Collector":
+                cost = 150;
+                break;
+            case "Wall":
+                cost = 150;
+                break;
+        }
     }
 	// Use this for initialization
 	void OnMouseDown()
@@ -31,7 +45,9 @@ public class Placement : MonoBehaviour {
         if (GameObject.FindGameObjectsWithTag("Placement").Length == 0) 
             center.FindAllPossiblePlacements();
 
-        CreatePlacement();
+
+        if (center.HasEnoughResources(this.cost))
+            CreatePlacement();
     }
 
     void OnMouseUp()
@@ -60,7 +76,7 @@ public class Placement : MonoBehaviour {
                 if (positionToSnap != Vector3.zero && parent != null && spot != -1)
                 {
                     placementPiece.position = positionToSnap;
-                    center.PlacePiece(type, BuildDirection.ToDirFromSpot(spot), parent);
+                    center.PlacePiece(type, BuildDirection.ToDirFromSpot(spot), parent, this.cost);
 
                     //reset all placement tile variables
                     positionToSnap = Vector3.zero;
