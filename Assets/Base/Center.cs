@@ -52,6 +52,8 @@ public class Center : MonoBehaviour {
 		this.renderer.enabled = false;
         this.transform.FindChild("Player").renderer.enabled = false;
 		healthbar = this.transform.Find ("GUI/HUD/Health");
+		resourcePoolText.renderer.sortingLayerName = "UI";
+		resourcePoolText.renderer.sortingOrder = 1;
 	}
 
     public void FindAllPossiblePlacements()

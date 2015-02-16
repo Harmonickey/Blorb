@@ -6,7 +6,7 @@ public class Enemy : MonoBehaviour {
     public static float hitSpeed = 1.0f;  //default to every second
     public static float hitDamage = 1.0f; //default to 1 hit
     public bool isHitting;
-    public bool instantDamage;
+    public bool instantDamage; // true if the enemy deals one-time damage and disappears, false if damages until killed
 	public TextMesh healthText;
 	private float health = 100.0f;
 	private float nextHit;
@@ -25,22 +25,11 @@ public class Enemy : MonoBehaviour {
 	// Update is called once per frame
 	void FixedUpdate () {
 
-        if (target && isHitting && nextHit < Time.time)
+        if (!instantDamage && target && isHitting && nextHit < Time.time)
         {
-            Debug.Log(instantDamage);
-            if (instantDamage) //hit every hitSpeed<second>
-            {
-                target.SendMessage("takeDamage", hitDamage);
-                nextHit = Time.time + hitSpeed;
-                totalDamage += hitDamage;
-            }
-            else //hit every frame to eventually amount to the hitDamage every hitSpeed<second>
-            {
-                target.SendMessage("takeDamage", (hitDamage / approxFrameRate));
-                nextHit = Time.time + (hitSpeed / approxFrameRate);
-                totalDamage += (hitDamage / approxFrameRate);
-            }
-            //Debug.Log(totalDamage);
+	        target.SendMessage("takeDamage", hitDamage);
+	        nextHit = Time.time + hitSpeed;
+	        totalDamage += hitDamage;
         }
 	}
 
@@ -56,10 +45,13 @@ public class Enemy : MonoBehaviour {
     void OnCollisionEnter(Collision other)
     {
 		if (other.gameObject.tag == "Player") { //only hit the player
-
-			target = other.gameObject;
-			isHitting = true; //stop jittery movement
-
+			if (!instantDamage) {
+				target = other.gameObject;
+				isHitting = true; //stop jittery movement
+			} else {
+				other.gameObject.SendMessage("takeDamage", 10 * hitDamage);
+				Destroy (this.gameObject);
+			}
 		}
     }
 
