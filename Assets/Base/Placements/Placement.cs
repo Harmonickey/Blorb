@@ -48,9 +48,11 @@ public class Placement : MonoBehaviour {
         if (selected && placementPiece != null)
         {
             Vector3 hit = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0));
-            placementPiece.position = new Vector3(hit.x, hit.y, 0.0f); //drag the guy along
+            placementPiece.position = new Vector3(hit.x, hit.y, 0.0f); //drag the placment piece with the mouse
+            
             if (placementPiece.renderer.enabled == false)
                 placementPiece.renderer.enabled = true;
+
             if (Input.GetMouseButtonDown(0)) //for now, drop with mouse-button "0" which is left-click
             {
                 selected = false;
@@ -60,18 +62,20 @@ public class Placement : MonoBehaviour {
                     placementPiece.position = positionToSnap;
                     center.PlacePiece(type, BuildDirection.ToDirFromSpot(spot), parent);
 
-                    //reset all variables, just in case
+                    //reset all placement tile variables
                     positionToSnap = Vector3.zero;
                     spot = -1;
                     parent = null;
                     type = null;
 
+                    //make sure there aren't any hanging Update processes
                     GameObject[] placements = GameObject.FindGameObjectsWithTag("Placement");
                     foreach (GameObject placement in placements)
                     {
                         placement.GetComponent<PlacementBottom>().checkDistance = false;
                     }
                     
+                    //remove the placment piece after it's set because now it was replaced by a real tower
                     Destroy(placementPiece.gameObject);
 
                     //reinit building process

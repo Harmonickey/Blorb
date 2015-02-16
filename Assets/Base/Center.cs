@@ -144,7 +144,8 @@ public class Center : MonoBehaviour {
         {
             case "Placement":
                 tempBottom = placement;
-                color = (isOkay ? new Color(0.0f, 255.0f, 0.0f, 200.0f) : new Color(255.0f, 0.0f, 0.0f, 200.0f));
+                
+                color = (isOkay ? new Color(0.516f, 0.886f, 0.882f, 0.5f) : new Color(1f, 0.0f, 0.0f, 0.0f));
                 break;
             case "Turret":
             case "TestPiece":

@@ -52,7 +52,7 @@ public class WorldManager : MonoBehaviour {
             towers.transform.position -= new Vector3(0.0f, 5.5f * Time.deltaTime, 0.0f);
             if (towers.transform.position.y <= target)
             {
-                towers.transform.position = new Vector3(0.0f, target, 0.0f);
+                towers.transform.position = new Vector3(towers.transform.position.x, target, 0.0f);
                 towersLowering = false;
             }
         }
@@ -63,7 +63,7 @@ public class WorldManager : MonoBehaviour {
             towers.transform.position += new Vector3(0.0f, 5.5f * Time.deltaTime, 0.0f);
             if (towers.transform.position.y >= target)
             {
-                towers.transform.position = new Vector3(0.0f, target, 0.0f);
+                towers.transform.position = new Vector3(towers.transform.position.x, target, 0.0f);
                 towersLifting = false;
             }
         }
@@ -71,15 +71,13 @@ public class WorldManager : MonoBehaviour {
 
     public static void LowerTowers()
     {
-
-        Debug.Log("Lower Towers called");
-        target = GameObject.FindGameObjectWithTag("Towers").transform.position.y - 10.9f;
+        target = GameObject.FindGameObjectWithTag("Towers").transform.position.y - 11.9f;
         towersLowering = true;
     }
 
     public static void LiftTowers()
     {
-        target = GameObject.FindGameObjectWithTag("Towers").transform.position.y + 10.9f;
+        target = GameObject.FindGameObjectWithTag("Towers").transform.position.y + 11.9f;
         towersLifting = true;
     }
 }

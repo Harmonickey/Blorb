@@ -23,14 +23,15 @@ public class WaveManager : MonoBehaviour {
 
 	void DayStart() {
 		Debug.Log ("Day");
-        player.GetComponent<Center>().isActive = true;
+        player.transform.parent.GetComponent<Center>().isActive = true;
         WorldManager.LiftTowers();
 	}
 
 	void NightStart() {
 		spawnNextEnemy = Time.time + enemySpawnDelay;
 		Debug.Log ("Night");
-        player.GetComponent<Center>().isActive = false;
+        player.transform.parent.GetComponent<Center>().isActive = false;
+        Pathfinder2D.Instance.Create2DMap();
         GameObject.FindObjectOfType<Placement>().StopPlacement();
         WorldManager.LowerTowers();
 	}

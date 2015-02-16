@@ -8,7 +8,7 @@ public class PlacementBottom : MonoBehaviour {
 
     private Transform placementPiece;
     public bool checkDistance = false;
-    private Color oldColor;
+    //private Color oldColor;
 
     void Update()
     {
@@ -21,6 +21,7 @@ public class PlacementBottom : MonoBehaviour {
             else
             {
                 float currDistance = Vector3.Distance(placementPiece.position, this.transform.position);
+                //Debug.DrawLine(placementPiece.position, this.transform.position, Color.red, 100.0f, false);
                 float halfWidth = (this.GetComponent<SpriteRenderer>().sprite.rect.width / pixelOffset) / 2;
                 if (currDistance < halfWidth)
                 {
@@ -28,6 +29,7 @@ public class PlacementBottom : MonoBehaviour {
                     Placement.positionToSnap = this.transform.position;
                     Placement.spot = spot;
                     Placement.parent = this.transform.parent;
+                    this.GetComponent<SpriteRenderer>().color = new Color(0.516f, 0.886f, 0.882f, 0.9f);
                 }
             }
         }
@@ -46,6 +48,7 @@ public class PlacementBottom : MonoBehaviour {
 
     void OnTriggerExit2D(Collider2D collider)
     {
-        checkDistance = false;   
+        checkDistance = false;
+        this.GetComponent<SpriteRenderer>().color = new Color(0.516f, 0.886f, 0.882f, 0.5f);
     }
 }
