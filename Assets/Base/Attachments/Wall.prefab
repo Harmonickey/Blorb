@@ -9,7 +9,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 455352}
   - 212: {fileID: 21255352}
-  - 50: {fileID: 5046550}
+  - 54: {fileID: 5490706}
   m_Layer: 0
   m_Name: Wall
   m_TagString: Wall
@@ -29,20 +29,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
---- !u!50 &5046550
-Rigidbody2D:
+--- !u!54 &5490706
+Rigidbody:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 155352}
-  m_Mass: 9.99999975e-05
-  m_LinearDrag: 0
+  serializedVersion: 2
+  m_Mass: 1.00000001e-07
+  m_Drag: 0
   m_AngularDrag: 0
-  m_GravityScale: 0
-  m_FixedAngle: 0
-  m_IsKinematic: 1
+  m_UseGravity: 0
+  m_IsKinematic: 0
   m_Interpolate: 0
-  m_SleepingMode: 1
+  m_Constraints: 126
   m_CollisionDetection: 0
 --- !u!212 &21255352
 SpriteRenderer:

@@ -93,9 +93,9 @@ Rigidbody:
   m_Drag: 0
   m_AngularDrag: 0
   m_UseGravity: 0
-  m_IsKinematic: 1
+  m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 126
   m_CollisionDetection: 0
 --- !u!65 &6526416
 BoxCollider:
@@ -107,7 +107,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: .129999995, y: .129999995, z: 1}
+  m_Size: {x: .129999995, y: .129999995, z: 0}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!102 &10279112
 TextMesh:
@@ -157,9 +157,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2037c55190120f5408b68b9930288c44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hitSpeed: 1
+  hitDamage: 1
   isHitting: 0
   instantDamage: 0
   healthText: {fileID: 10279112}
+  target: {fileID: 0}
 --- !u!212 &21242294
 SpriteRenderer:
   m_ObjectHideFlags: 1

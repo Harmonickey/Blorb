@@ -251,12 +251,10 @@ public class Center : MonoBehaviour {
 
     public void takeDamage(float damage)
     {
-        Debug.Log("health: " + health);
         health -= damage;
 		healthbar.localScale = new Vector2 (health * 1.5f, 1f);
 
 		if (health <= 0f) {
-            Debug.Log("Game Over");
 			GameEventManager.TriggerGameOver();
 		}
     }
@@ -283,6 +281,29 @@ public class Center : MonoBehaviour {
     public bool HasEnoughResources(int cost)
     {
         return resourcePool >= cost;
+    }
+
+    void OnCollisionEnter(Collision other)
+    {
+		if (other.gameObject.tag == "Enemy") { //only hit the player
+            Enemy enemy = other.gameObject.GetComponent<Enemy>();
+			if (!enemy.instantDamage) {
+                enemy.target = this;
+				enemy.isHitting = true; //stop jittery movement
+			} else {
+				takeDamage(10 * enemy.hitDamage);
+				Destroy (enemy.gameObject);
+			}
+		}
+    }
+
+    void OnCollisionExit(Collision other)
+    {
+        if (other.gameObject.tag == "Enemy")
+        {
+            Enemy enemy = other.gameObject.GetComponent<Enemy>();
+            enemy.isHitting = false;
+        }
     }
 }
 
