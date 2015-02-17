@@ -42,12 +42,13 @@ public class Placement : MonoBehaviour {
         preSelected = true;
 
         //only create new ones if we have none
-        if (GameObject.FindGameObjectsWithTag("Placement").Length == 0) 
-            center.FindAllPossiblePlacements();
-
-
         if (center.HasEnoughResources(this.cost))
+        {
+            if (GameObject.FindGameObjectsWithTag("Placement").Length == 0)
+                center.FindAllPossiblePlacements();
+
             CreatePlacement();
+        }
     }
 
     void OnMouseUp()
@@ -136,6 +137,7 @@ public class Placement : MonoBehaviour {
         }
 
         placementPiece.localScale = Vector2.one;
+        placementPiece.transform.position = this.transform.position; //fixes render bug
         placementPiece.renderer.enabled = false; //don't show it yet, until the frame where the mouse is detected happens
         type = this.tag;
     }
