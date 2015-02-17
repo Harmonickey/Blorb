@@ -12,7 +12,6 @@ public class WaveManager : MonoBehaviour {
 	private int enemiesSpawned;
 
 	void Start() {
-		instance = this;
 
 		enabled = false;
 		GameEventManager.GameStart += GameStart;

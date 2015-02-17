@@ -22,19 +22,6 @@ public class Placement : MonoBehaviour {
     {
         selected = false;
         center = player.GetComponent<Center>();
-
-        switch (this.tag)
-        {
-            case "Turret":
-                cost = 25;
-                break;
-            case "Collector":
-                cost = 150;
-                break;
-            case "Wall":
-                cost = 150;
-                break;
-        }
     }
 	// Use this for initialization
 	void OnMouseDown()
@@ -127,12 +114,15 @@ public class Placement : MonoBehaviour {
         {
             case "Turret":
                 placementPiece = Instantiate(turretPlacement) as Transform;
+                cost = 25;
                 break;
             case "Collector":
                 placementPiece = Instantiate(collectorPlacement) as Transform;
+                cost = 150;
                 break;
             case "Wall":
                 placementPiece = Instantiate(wallPlacement) as Transform;
+                cost = 150;
                 break;
         }
 

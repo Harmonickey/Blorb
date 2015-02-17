@@ -9,8 +9,6 @@ public class Attachments : MonoBehaviour {
 
     public int spot;
 
-    private Center center;
-
     public void takeDamage(float damage)
     {
         health -= damage;
@@ -18,7 +16,6 @@ public class Attachments : MonoBehaviour {
 
     public void FindAllPossiblePlacements(Center centralController)
     {
-        center = centralController;
         for (int i = 0; i < takenSpots.Length; i++)
         {
             if (!takenSpots[i])

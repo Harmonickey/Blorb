@@ -251,10 +251,12 @@ public class Center : MonoBehaviour {
 
     public void takeDamage(float damage)
     {
+        Debug.Log("health: " + health);
         health -= damage;
 		healthbar.localScale = new Vector2 (health * 1.5f, 1f);
 
 		if (health <= 0f) {
+            Debug.Log("Game Over");
 			GameEventManager.TriggerGameOver();
 		}
     }

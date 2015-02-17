@@ -10,7 +10,6 @@ GameObject:
   - 4: {fileID: 455352}
   - 212: {fileID: 21255352}
   - 50: {fileID: 5046550}
-  - 61: {fileID: 6147788}
   m_Layer: 0
   m_Name: Wall
   m_TagString: Wall
@@ -45,17 +44,6 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
---- !u!61 &6147788
-BoxCollider2D:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 155352}
-  m_Enabled: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Size: {x: 1, y: 1}
-  m_Center: {x: 0, y: 0}
 --- !u!212 &21255352
 SpriteRenderer:
   m_ObjectHideFlags: 1

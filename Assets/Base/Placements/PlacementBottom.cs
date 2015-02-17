@@ -55,5 +55,9 @@ public class PlacementBottom : MonoBehaviour {
     {
         checkDistance = false;
         this.GetComponent<SpriteRenderer>().color = new Color(0.516f, 0.886f, 0.882f, 0.5f);
+
+        Placement.positionToSnap = Vector3.zero;
+        Placement.spot = -1;
+        Placement.parent = null;
     }
 }
