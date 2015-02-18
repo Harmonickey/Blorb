@@ -5,8 +5,8 @@ public class Attachments : MonoBehaviour {
 
     private float health = 100F;
 
-    public bool[] takenSpots = new bool[4] { false, false, false, false };
-
+    public bool[] takenSpots = new bool[8] { false, false, false, false, false, false, false, false };
+    
     public int spot;
 
     public void takeDamage(float damage)

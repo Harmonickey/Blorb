@@ -27,7 +27,7 @@ public class Center : MonoBehaviour {
     public Transform placement;
 	public Transform healthbar;
 
-    public bool[] takenSpots = new bool[4] {false, false, false, false};
+    public bool[] takenSpots = new bool[8] {false, false, false, false, false, false, false, false};
 
     public bool isActive;
 
@@ -320,6 +320,10 @@ public abstract class BuildDirection
     public static int[] Right = new int[2] { 1, 0 };  //1
     public static int[] Down = new int[2] { 0, -1 };  //2
     public static int[] Left = new int[2] { -1, 0 };  //3
+    public static int[] UpRight = new int[2] { 1, 1 }; //4
+    public static int[] DownRight = new int[2] { 1, -1 }; //5
+    public static int[] DownLeft = new int[2] { -1, -1 }; //6
+    public static int[] UpLeft = new int[2] { -1, 1 }; //7
 
     public static bool IsSameDir(int[] l, int[] r)
     {
@@ -331,7 +335,7 @@ public abstract class BuildDirection
     
     public static int OppositeDirection(int dir)
     {
-        return (dir + 2) % 4;
+        return (dir + 10) % 8;
     }
 
     public static int ToSpotFromDir(int[] dir)
@@ -348,13 +352,33 @@ public abstract class BuildDirection
         {
             return 2;
         }
+        else if (IsSameDir(dir, Left))
+        {
+            return 3;
+        }
+        else if (IsSameDir(dir, UpRight))
+        {
+            return 4;
+        }
+        else if (IsSameDir(dir, DownRight))
+        {
+            return 5;
+        }
+        else if (IsSameDir(dir, DownLeft))
+        {
+            return 6;
+        }
 
-        return 3;
+        return 7;
     }
 
     public static int[] ToDirFromSpot(int spot)
     {
-        if (spot == 1)
+        if (spot == 0)
+        {
+            return BuildDirection.Up;
+        }
+        else if (spot == 1)
         {
             return BuildDirection.Right;
         }
@@ -366,7 +390,19 @@ public abstract class BuildDirection
         {
             return BuildDirection.Left;
         }
+        else if (spot == 4)
+        {
+            return BuildDirection.UpRight;
+        }
+        else if (spot == 5)
+        {
+            return BuildDirection.DownRight;
+        }
+        else if (spot == 6)
+        {
+            return BuildDirection.DownLeft;
+        }
         
-        return BuildDirection.Up;
+        return BuildDirection.UpLeft;
     }
 }
