@@ -704,7 +704,15 @@ Prefab:
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 11493772, guid: a3e87af9f93643946a5bd6c5c72f0c34, type: 2}
+      propertyPath: chunk
+      value: 
+      objectReference: {fileID: 461258, guid: aef79eb3945f5344e855e4f78e7d7427, type: 2}
+    m_RemovedComponents:
+    - {fileID: 11493772, guid: a3e87af9f93643946a5bd6c5c72f0c34, type: 2}
+    - {fileID: 3393772, guid: a3e87af9f93643946a5bd6c5c72f0c34, type: 2}
+    - {fileID: 2393772, guid: a3e87af9f93643946a5bd6c5c72f0c34, type: 2}
+    - {fileID: 6493772, guid: a3e87af9f93643946a5bd6c5c72f0c34, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: a3e87af9f93643946a5bd6c5c72f0c34, type: 2}
   m_RootGameObject: {fileID: 1472864433}
   m_IsPrefabParent: 0
@@ -853,7 +861,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 241d6d8df6309a446abcdbb017256636, type: 2}
       propertyPath: m_RootOrder
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 241d6d8df6309a446abcdbb017256636, type: 2}
       propertyPath: Tilesize
@@ -1722,9 +1730,6 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 1472864438}
-  - 64: {fileID: 1472864437}
-  - 23: {fileID: 1472864436}
-  - 33: {fileID: 1472864435}
   - 114: {fileID: 1472864434}
   m_Layer: 0
   m_Name: Map
@@ -1736,63 +1741,20 @@ GameObject:
 --- !u!114 &1472864434
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 11493772, guid: a3e87af9f93643946a5bd6c5c72f0c34,
-    type: 2}
-  m_PrefabInternal: {fileID: 644910205}
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1472864433}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b8d0d1a91155fc04abb92bfeaafc6525, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tiles_x: 25
-  tiles_y: 25
+  chunk_tiles_x: 5
+  chunk_tiles_y: 5
   tileSet: {fileID: 2800000, guid: 035168451bc9c4e4cb12048514fa70da, type: 3}
   mountain: {fileID: 418206, guid: cb6acb9c9e5e9c44eaae9e06be99ac48, type: 2}
   resource: {fileID: 418206, guid: d20c8ef166a21ae499a2799959f3d105, type: 2}
---- !u!33 &1472864435
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 3393772, guid: a3e87af9f93643946a5bd6c5c72f0c34,
-    type: 2}
-  m_PrefabInternal: {fileID: 644910205}
-  m_GameObject: {fileID: 1472864433}
-  m_Mesh: {fileID: 1429887888}
---- !u!23 &1472864436
-Renderer:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 2393772, guid: a3e87af9f93643946a5bd6c5c72f0c34,
-    type: 2}
-  m_PrefabInternal: {fileID: 644910205}
-  m_GameObject: {fileID: 1472864433}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_LightmapIndex: 255
-  m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
-  m_Materials:
-  - {fileID: 2100000, guid: 6c2984b594be84df79c9953e83530a07, type: 2}
-  m_SubsetIndices: 
-  m_StaticBatchRoot: {fileID: 0}
-  m_UseLightProbes: 0
-  m_LightProbeAnchor: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_SortingLayerID: 0
-  m_SortingOrder: 0
---- !u!64 &1472864437
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 6493772, guid: a3e87af9f93643946a5bd6c5c72f0c34,
-    type: 2}
-  m_PrefabInternal: {fileID: 644910205}
-  m_GameObject: {fileID: 1472864433}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_SmoothSphereCollisions: 0
-  m_Convex: 0
-  m_Mesh: {fileID: 1429887888}
+  chunk: {fileID: 461258, guid: aef79eb3945f5344e855e4f78e7d7427, type: 2}
 --- !u!4 &1472864438
 Transform:
   m_ObjectHideFlags: 0
@@ -1800,7 +1762,7 @@ Transform:
   m_PrefabInternal: {fileID: 644910205}
   m_GameObject: {fileID: 1472864433}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -12.5, y: 12.5, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
