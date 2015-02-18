@@ -10,8 +10,8 @@ public class TileMapInspector : Editor {
 		base.OnInspectorGUI();
 
 		TileMap map = (TileMap) target;
-		if (GUILayout.Button("Regenerate")){
+		/*if (GUILayout.Button("Regenerate")){
 			map.Regenerate();
-		}
+		}*/
 	}
 }

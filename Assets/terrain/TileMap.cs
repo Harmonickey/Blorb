@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
-[ExecuteInEditMode]
+//[ExecuteInEditMode]
 [RequireComponent(typeof(MeshFilter))]
 [RequireComponent(typeof(MeshRenderer))]
 [RequireComponent(typeof(MeshCollider))]
@@ -12,21 +13,27 @@ public class TileMap : MonoBehaviour {
 	public int tiles_y;
 	public Texture2D tileSet;
 	public Transform mountain;
+	public Transform resource;
 
 	private float tileSize = 1f;
 	private int pixelsPerTile = 32;
 	private TileData tileData;
+	private bool objectsCreated;
+	private Dictionary<Vector2, Resource> resources;
+	//private Queue<Transform> mountains;
 
 	// Use this for initialization
 	void Start () {
 		tileData = new TileData(tiles_x, tiles_y);
+		resources = new Dictionary<Vector2, Resource>();
+		//mountains = new Queue<Transform>();
 		Regenerate();
 	}
 
 	public void Regenerate () {
 		GenerateMesh();
 		GenerateTexture();
-		CreateImpassibleObjects();
+		CreateObjects();
 		Debug.Log ("Tilemap complete!");
 	}
 
@@ -56,7 +63,11 @@ public class TileMap : MonoBehaviour {
 	}
 
 	public Resource GetResource(Vector3 position){
-		return tileData.GetResource(position);
+		return GetResource(new Vector2(position.x, position.y));
+	}
+
+	public Resource GetResource(Vector2 position){
+		return resources[position];
 	}
     
 	Color[][] ChopTiles(){
@@ -170,18 +181,27 @@ public class TileMap : MonoBehaviour {
 		meshCollider.sharedMesh = mesh;
 	}
 
-	void CreateImpassibleObjects(){
+	void CreateObjects(){
 		for (int y = 0; y < tiles_y; y++){
 			for (int x = 0; x < tiles_x; x++){
 				if (!tileData.isPassable(x, y)){
 					Transform newMountain = Instantiate(mountain) as Transform;
 					newMountain.transform.position = TileToPosition(x, y);
 					newMountain.tag = "Mountain";
+					newMountain.transform.parent = this.gameObject.transform;
+					//mountains.Enqueue(newMountain);
 				}
-			}
+
+				if(tileData.isResource(x, y)){
+					Transform newResource = Instantiate(resource) as Transform;
+					newResource.transform.position = TileToPosition(x,y);
+					newResource.tag = "Resource";
+					newResource.parent = this.gameObject.transform;
+					resources[new Vector2(x, y)] = newResource.GetComponent<Resource>();
+				}
+	        }
 		}
 	}
-
 
 
 }

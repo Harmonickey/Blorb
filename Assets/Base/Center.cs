@@ -7,9 +7,16 @@ public class Center : MonoBehaviour {
     private const float placementOffset = 0.725f;
 
 	private float health;
+	private float resourcesInternal;
 
     public float speed;
-	public int resourcePool;
+
+	public float blorbAmount
+	{ 
+		//made property so updates text dynamically
+		get {return resourcesInternal;}
+		set {resourcesInternal = value; resourcePoolText.text = ((int)resourcesInternal).ToString();}
+	}
 	public bool collectingFromResource = false;
 	public TextMesh resourcePoolText;
 
@@ -30,8 +37,8 @@ public class Center : MonoBehaviour {
 		health = 100f;
 		healthbar.localScale = new Vector2 (health * 1.5f, 1f);
 
-		resourcePool = 100;
-		resourcePoolText.text = resourcePool.ToString ();
+		blorbAmount = 100;
+		//resourcePoolText.text = resourcePool.ToString ();
 		collectingFromResource = false;
 
 		this.renderer.enabled = true;
@@ -216,8 +223,8 @@ public class Center : MonoBehaviour {
         }
         */
 
-        resourcePool -= cost;
-		resourcePoolText.text = resourcePool.ToString ();
+		blorbAmount -= cost;
+		//resourcePoolText.text = resourcePool.ToString ();
     }
 
     void RemovePiece(int[] dir, Transform parent)
@@ -261,8 +268,8 @@ public class Center : MonoBehaviour {
 
 	public void receiveBlorb(int blorb)
 	{
-		resourcePool += blorb;
-		resourcePoolText.text = resourcePool.ToString ();
+		blorbAmount += blorb;
+		//resourcePoolText.text = resourcePool.ToString ();
 	}
 
     private bool HasPathToCenter()
@@ -280,7 +287,7 @@ public class Center : MonoBehaviour {
 
     public bool HasEnoughResources(int cost)
     {
-        return resourcePool >= cost;
+		return blorbAmount >= cost;
     }
 
     void OnCollisionEnter(Collision other)

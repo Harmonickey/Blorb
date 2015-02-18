@@ -9,14 +9,12 @@ public class TileData {
 	public enum TileType {None, Grass, Stone, Water, Resource, Orange, Purple, Teal};
 
 	private TileType[,] tiles; //Change to Tile sometime?
-	private List<Resource> resources = new List<Resource>();
 
 	public TileData(int width, int height){
 		tiles = new TileType[width, height]; //change to Tile sometime?
 		this.width = width;
 		this.height = height;
 		GenerateMap();
-		GenerateResources();
 		//FillMap (TileType.Grass);
 	}
 
@@ -61,18 +59,6 @@ public class TileData {
 
 	public bool isResource(Vector3 position){
 		return isResource((int)position.x, (int)position.y);
-	}
-
-	public Resource GetResource(Vector3 position){
-		if (isResource(position)){
-			foreach (Resource r in resources){
-				if (position.Equals(r.getPosition())){
-					return r;
-				}
-			}
-		}
-
-		return null;
 	}
 
 	public void FillRange(TileType t, int left, int top, int bottom_offset, int right_offset){
@@ -122,16 +108,6 @@ public class TileData {
 			}
 		}
 
-	}
-
-	public void GenerateResources(){
-		for(int x = 0; x < width; x++){
-			for(int y = 0; y < height; y++){
-				if (isResource(x, y)){
-					resources.Add(new Resource(x, y));
-				}
-			}
-		}
 	}
 
 	//probably want to move this to a utilities class at some point

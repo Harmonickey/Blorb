@@ -1,1 +1,38 @@
-using UnityEngine;using System.Collections;public class Resource {        private int value = 1000;    private int depletionRate = 1;        private Vector3 position;        public Resource(int x, int y, int value, int depletionRate){        this.value = value;        this.depletionRate = depletionRate;        position = new Vector3(x, y, 0);    }        public Resource(int x, int y){        position = new Vector3(x, y, 0);    }        public Vector3 getPosition(){        return position;    }    	public int collectResources(){        value -= depletionRate;        return depletionRate;    }        public void Empty(){        value = 0;    }    }
+using UnityEngine;
+using System.Collections;
+
+public class Resource : MonoBehaviour {
+    
+	public float value = 1000f;
+    public float depletionRate = 0f;
+    
+	void Start(){
+
+	}
+    
+	public float collectBlorb(){
+		if (value > depletionRate){ //if can remove depletionRate amount 
+	        value -= depletionRate;
+	        return depletionRate;
+		}
+		else if (value > 0){
+			Debug.Log ("Case B");
+			float remainder = value;
+			value = 0;
+			return remainder;
+		}
+		else{
+			Debug.Log ("Case C");
+			return 0f;
+		}
+    }
+    
+    public void EmptyResource(){
+        value = 0;
+    }
+
+	public void SetResource(int x){
+		value = x;
+	}
+    
+}
