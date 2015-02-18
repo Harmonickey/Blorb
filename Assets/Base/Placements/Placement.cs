@@ -114,15 +114,12 @@ public class Placement : MonoBehaviour {
         {
             case "Turret":
                 placementPiece = Instantiate(turretPlacement) as Transform;
-                cost = 25;
                 break;
             case "Collector":
                 placementPiece = Instantiate(collectorPlacement) as Transform;
-                cost = 150;
                 break;
             case "Wall":
                 placementPiece = Instantiate(wallPlacement) as Transform;
-                cost = 150;
                 break;
         }
 

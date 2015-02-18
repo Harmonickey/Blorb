@@ -80,4 +80,22 @@ public class WorldManager : MonoBehaviour {
         target = GameObject.FindGameObjectWithTag("Towers").transform.position.y + 11.9f;
         towersLifting = true;
     }
+
+    public static void UpdateTowerGUI(float blorbAmount)
+    {
+        Placement[] placements = GameObject.FindGameObjectWithTag("Towers").GetComponentsInChildren<Placement>();
+        foreach (Placement placement in placements)
+        {
+            if (placement.cost > blorbAmount)
+            {
+                placement.GetComponent<SpriteRenderer>().color = new Color(0.3f, 0f, 0f);
+                placement.transform.parent.GetComponent<SpriteRenderer>().color = new Color(0.3f, 0f, 0f);
+            }
+            else
+            {
+                placement.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f);
+                placement.transform.parent.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f);
+            }
+        }
+    }
 }

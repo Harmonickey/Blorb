@@ -12,8 +12,6 @@ public class Enemy : MonoBehaviour {
 	private float nextHit;
     public Center target;
 
-    private float approxFrameRate = 1.0f / Time.deltaTime;
-
     private float totalDamage;
 
 	// Use this for initialization
