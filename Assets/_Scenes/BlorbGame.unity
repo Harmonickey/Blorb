@@ -2284,7 +2284,7 @@ MonoBehaviour:
   bottom: {fileID: 476196, guid: 411f3e7092d3268459e804b05cae941f, type: 2}
   placement: {fileID: 476196, guid: d1826f45ce6a68e449bdd09a08bf7b56, type: 2}
   healthbar: {fileID: 239317691}
-  takenSpots: 00000000
+  takenSpots: 0000000000000000
   isActive: 0
 --- !u!54 &1728475029
 Rigidbody:
