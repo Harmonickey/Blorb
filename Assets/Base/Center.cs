@@ -191,12 +191,33 @@ public class Center : MonoBehaviour {
         if (tag != "Placement")
         {
            
+            //reserve spot taken for self
             if (selectedBasePiece == this.transform) //if we're actually the center
+            {
                 ReserveSpot(BuildDirection.ToSpotFromDir(direction), selectedBasePiece.GetComponent<Center>());
-            else
-                ReserveSpot(BuildDirection.ToSpotFromDir(direction), selectedBasePiece.GetComponent<Attachments>());
+                ReserveSpot((BuildDirection.ToSpotFromDir(direction) + 1) % takenSpots.Length, selectedBasePiece.GetComponent<Center>());
+                ReserveSpot((BuildDirection.ToSpotFromDir(direction) - 1) % takenSpots.Length, selectedBasePiece.GetComponent<Center>());
 
+                if (BuildDirection.IsMid(direction)) //we may need to reserve the neighbors
+                    ReserveSpot(BuildDirection.GetDiagonal(BuildDirection.ToSpotFromDir(direction)), selectedBasePiece.GetComponent<Center>());
+            }
+            else
+            {
+                ReserveSpot(BuildDirection.ToSpotFromDir(direction), selectedBasePiece.GetComponent<Attachments>());
+                ReserveSpot((BuildDirection.ToSpotFromDir(direction) + 1) % takenSpots.Length, selectedBasePiece.GetComponent<Attachments>());
+                ReserveSpot((BuildDirection.ToSpotFromDir(direction) - 1) % takenSpots.Length, selectedBasePiece.GetComponent<Attachments>());
+
+                if (BuildDirection.IsMid(direction))
+                    ReserveSpot(BuildDirection.GetDiagonal(BuildDirection.ToSpotFromDir(direction)), selectedBasePiece.GetComponent<Attachments>());
+            }
+
+            //reserve spot taken for the just placed piece (cannot build back on parent)
             ReserveSpot(BuildDirection.OppositeSpot(BuildDirection.ToSpotFromDir(direction)), childBottom.GetComponentInChildren<Attachments>());
+            ReserveSpot(BuildDirection.OppositeSpot((BuildDirection.ToSpotFromDir(direction) + 1) % takenSpots.Length), childBottom.GetComponentInChildren<Attachments>());
+            ReserveSpot(BuildDirection.OppositeSpot((BuildDirection.ToSpotFromDir(direction) - 1) % takenSpots.Length), childBottom.GetComponentInChildren<Attachments>());
+
+            if (BuildDirection.IsMid(direction))
+                ReserveSpot(BuildDirection.OppositeSpot(BuildDirection.GetDiagonal(BuildDirection.ToSpotFromDir(direction))), childBottom.GetComponentInChildren<Attachments>());
 
             //here we need a switch for different towers
             Transform childTower = Instantiate(piece) as Transform;
@@ -209,29 +230,6 @@ public class Center : MonoBehaviour {
         float yOffset = (offset + placementOffset) * (float)yDirection;
 
         childBottom.transform.position = new Vector3(selectedBasePiece.position.x + xOffset, selectedBasePiece.position.y + yOffset);
-
-        //now check if there is a path to the center still...
-        /*
-        if (tag != "Placement")
-        {
-            //Debug.Log("ATTACHMENTS: " + GameObject.FindObjectsOfType<Attachments>().Length);
-            if (GameObject.FindObjectsOfType<Attachments>().Length > 3)
-            {
-                if (HasPathToCenter())
-                {
-                    Debug.Log("HAS PATH");
-                    //RemovePiece(dir, parent);
-                    //PlacePiece("Placement", dir, parent, true);
-                }
-                else
-                {
-                    Debug.Log("HAS NO PATH");
-                    //RemovePiece(dir, parent);
-                    //PlacePiece("Placement", dir, parent, false);
-                }
-            }
-        }
-        */
 
 		blorbAmount -= cost;
 		//resourcePoolText.text = resourcePool.ToString ();
@@ -327,31 +325,33 @@ public class Center : MonoBehaviour {
 public abstract class BuildDirection
 {
     public static float[] Up = new float[3] { 0, 1f, 0 };  //0
-    public static float[] Right = new float[3] { 1f, 0, 1f };  //1
-    public static float[] Down = new float[3] { 0, -1f, 2f };  //2
-    public static float[] Left = new float[3] { -1f, 0, 3f };  //3
-    public static float[] UpRight = new float[3] { 1f, 1f, 4f }; //4
-    public static float[] DownRight = new float[3] { 1f, -1f, 5f }; //5
-    public static float[] DownLeft = new float[3] { -1f, -1f, 6f }; //6
-    public static float[] UpLeft = new float[3] { -1f, 1f, 7f }; //7
-    public static float[] UpMid = new float[3] { 0.5f, 1f, 8f }; //8
+    public static float[] UpMid = new float[3] { 0.5f, 1f, 1f }; //1
+    public static float[] UpRight = new float[3] { 1f, 1f, 2f }; //2
+    public static float[] UpRightMid = new float[3] { 1f, 0.5f, 3f }; //3
+    public static float[] Right = new float[3] { 1f, 0, 4f };  //4
+    public static float[] RightMid = new float[3] { 1f, -0.5f, 5f }; //5
+    public static float[] RightDown = new float[3] { 1f, -1f, 6f }; //6
+    public static float[] RightDownMid = new float[3] { 0.5f, -1f, 7f }; //7
+    public static float[] Down = new float[3] { 0, -1f, 8f };  //8
     public static float[] DownMid = new float[3] { -0.5f, -1f, 9f }; //9
-    public static float[] UpRightMid = new float[3] { 1f, 0.5f, 10f }; //10
+    public static float[] DownLeft = new float[3] { -1f, -1f, 10f }; //10
     public static float[] DownLeftMid = new float[3] { -1f, -0.5f, 11f }; //11
-    public static float[] RightMid = new float[3] { 1f, -0.5f, 12f }; //12
-    public static float[] DownRightMid = new float[3] { 0.5f, -1f, 13f }; //13
-    public static float[] LeftMid = new float[3] { -1f, 0.5f, 14f }; //14
-    public static float[] UpLeftMid = new float[3] { -0.5f, 1f, 15f }; //15
+    public static float[] Left = new float[3] { -1f, 0, 12f };  //12
+    public static float[] LeftMid = new float[3] { -1f, 0.5f, 13f }; //13
+    public static float[] LeftUp = new float[3] { -1f, 1f, 14f }; //14
+    public static float[] LeftUpMid = new float[3] { -0.5f, 1f, 15f }; //15
 
     private static ArrayList directions = 
-        new ArrayList() { Up, Right, Down, Left, 
-                          UpRight, DownRight, DownLeft, UpLeft, 
-                          UpMid, DownMid, UpRightMid, DownLeftMid,
-                          RightMid, DownRightMid, LeftMid, UpLeftMid };
+        new ArrayList() { Up, UpMid, UpRight, UpRightMid,
+                          Right, RightMid, RightDown, RightDownMid,
+                          Down, DownMid, DownLeft, DownLeftMid, 
+                          Left, LeftMid, LeftUp, LeftUpMid };
+
+    public enum Neighbor { Left, Right };
     
     public static int OppositeSpot(int spot)
     {
-        return (spot + 18) % 16;
+        return (spot + 8) % 16;
     }
 
     public static int ToSpotFromDir(float[] dir)
@@ -362,5 +362,21 @@ public abstract class BuildDirection
     public static float[] ToDirFromSpot(int spot)
     {
         return (float [])directions[spot];
+    }
+
+    public static bool IsMid(float[] dir)
+    {
+        return (ToSpotFromDir(dir) % 2 != 0);
+    }
+
+    public static int GetDiagonal(int spot)
+    {
+        if (spot == 1 || spot == 5 || spot == 9 || spot == 13)
+            return (spot + 2) % 16;
+
+        if (spot == 3 || spot == 7 || spot == 11 || spot == 15)
+            return (spot - 2) % 16;
+
+        return spot; //not needed
     }
 }
