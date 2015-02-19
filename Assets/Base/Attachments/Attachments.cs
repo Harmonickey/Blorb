@@ -5,9 +5,20 @@ public class Attachments : MonoBehaviour {
 
     private float health = 100F;
 
-    public bool[] takenSpots = new bool[8] { false, false, false, false, false, false, false, false };
-    
+    public bool[] TakenSpot
+    {
+        get { return takenSpots; }
+        set { takenSpots = value; }
+    }
+
+    private bool[] takenSpots = new bool[16];
+
     public int spot;
+
+    void Start()
+    {
+        for (int i = 0; i < takenSpots.Length; i++) takenSpots[i] = false;
+    }
 
     public void takeDamage(float damage)
     {
@@ -37,7 +48,7 @@ public class Attachments : MonoBehaviour {
         }
     }
 
-    private bool DetectOtherObjects(int[] dir)
+    private bool DetectOtherObjects(float[] dir)
     {
         //raycast to find objects
         RaycastHit2D[] hits;

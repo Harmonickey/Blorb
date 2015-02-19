@@ -30,7 +30,13 @@ public class Center : MonoBehaviour {
     public Transform placement;
 	public Transform healthbar;
 
-    public bool[] takenSpots = new bool[8] {false, false, false, false, false, false, false, false};
+    public bool[] TakenSpot
+    {
+        get { return takenSpots; }
+        set { takenSpots = value;  }
+    }
+
+    private bool[] takenSpots = new bool[16];
 
     public bool isActive;
 
@@ -62,6 +68,8 @@ public class Center : MonoBehaviour {
 		healthbar = this.transform.Find ("GUI/HUD/Health");
 		resourcePoolText.renderer.sortingLayerName = "UI";
 		resourcePoolText.renderer.sortingOrder = 1;
+
+        for (int i = 0; i < takenSpots.Length; i++) takenSpots[i] = false;
 	}
 
     public void FindAllPossiblePlacements()
@@ -101,7 +109,7 @@ public class Center : MonoBehaviour {
         FindAllPossiblePlacements();
     }
 
-    public void SetPlacement(int[] dir, Transform parent)
+    public void SetPlacement(float[] dir, Transform parent)
     {
         //placement pieces cost 0
         PlacePiece("Placement", dir, parent, 0, true);
@@ -138,7 +146,7 @@ public class Center : MonoBehaviour {
         
     }
 
-    public void PlacePiece(string tag, int[] direction, Transform selectedBasePiece, int cost, bool isOkay = true)
+    public void PlacePiece(string tag, float[] direction, Transform selectedBasePiece, int cost, bool isOkay = true)
     {
         if (!isActive) return;
 
@@ -155,8 +163,7 @@ public class Center : MonoBehaviour {
         {
             case "Placement":
                 tempBottom = placement;
-                
-                color = (isOkay ? new Color(0.516f, 0.886f, 0.882f, 0.5f) : new Color(1f, 0.0f, 0.0f, 0.0f));
+                color = (isOkay ? new Color(0.516f, 0.886f, 0.882f, 0) : new Color(1f, 0.0f, 0.0f, 1.0f));
                 break;
             case "Turret":
             case "TestPiece":
@@ -189,7 +196,7 @@ public class Center : MonoBehaviour {
             else
                 ReserveSpot(BuildDirection.ToSpotFromDir(direction), selectedBasePiece.GetComponent<Attachments>());
 
-            ReserveSpot(BuildDirection.OppositeDirection(BuildDirection.ToSpotFromDir(direction)), childBottom.GetComponentInChildren<Attachments>());
+            ReserveSpot(BuildDirection.OppositeSpot(BuildDirection.ToSpotFromDir(direction)), childBottom.GetComponentInChildren<Attachments>());
 
             //here we need a switch for different towers
             Transform childTower = Instantiate(piece) as Transform;
@@ -230,7 +237,7 @@ public class Center : MonoBehaviour {
 		//resourcePoolText.text = resourcePool.ToString ();
     }
 
-    void RemovePiece(int[] dir, Transform parent)
+    void RemovePiece(float[] dir, Transform parent)
     {
         foreach (Transform child in parent)
         {
@@ -245,12 +252,12 @@ public class Center : MonoBehaviour {
 
     private void ReserveSpot(int dir, Attachments obj)
     {
-        obj.takenSpots[dir] = true;
+        obj.TakenSpot[dir] = true;
     }
 
     private void ReserveSpot(int dir, Center obj)
     {
-        obj.takenSpots[dir] = true;
+        obj.TakenSpot[dir] = true;
     }
 
     private float GetOffset(Transform selectedBasePiece)
@@ -319,93 +326,41 @@ public class Center : MonoBehaviour {
 
 public abstract class BuildDirection
 {
-    public static int[] Up = new int[2] { 0, 1 };  //0
-    public static int[] Right = new int[2] { 1, 0 };  //1
-    public static int[] Down = new int[2] { 0, -1 };  //2
-    public static int[] Left = new int[2] { -1, 0 };  //3
-    public static int[] UpRight = new int[2] { 1, 1 }; //4
-    public static int[] DownRight = new int[2] { 1, -1 }; //5
-    public static int[] DownLeft = new int[2] { -1, -1 }; //6
-    public static int[] UpLeft = new int[2] { -1, 1 }; //7
+    public static float[] Up = new float[3] { 0, 1f, 0 };  //0
+    public static float[] Right = new float[3] { 1f, 0, 1f };  //1
+    public static float[] Down = new float[3] { 0, -1f, 2f };  //2
+    public static float[] Left = new float[3] { -1f, 0, 3f };  //3
+    public static float[] UpRight = new float[3] { 1f, 1f, 4f }; //4
+    public static float[] DownRight = new float[3] { 1f, -1f, 5f }; //5
+    public static float[] DownLeft = new float[3] { -1f, -1f, 6f }; //6
+    public static float[] UpLeft = new float[3] { -1f, 1f, 7f }; //7
+    public static float[] UpMid = new float[3] { 0.5f, 1f, 8f }; //8
+    public static float[] DownMid = new float[3] { -0.5f, -1f, 9f }; //9
+    public static float[] UpRightMid = new float[3] { 1f, 0.5f, 10f }; //10
+    public static float[] DownLeftMid = new float[3] { -1f, -0.5f, 11f }; //11
+    public static float[] RightMid = new float[3] { 1f, -0.5f, 12f }; //12
+    public static float[] DownRightMid = new float[3] { 0.5f, -1f, 13f }; //13
+    public static float[] LeftMid = new float[3] { -1f, 0.5f, 14f }; //14
+    public static float[] UpLeftMid = new float[3] { -0.5f, 1f, 15f }; //15
 
-    public static bool IsSameDir(int[] l, int[] r)
-    {
-        if (l[0] == r[0] && l[1] == r[1]) 
-           return true;
-
-        return false;
-    }
+    private static ArrayList directions = 
+        new ArrayList() { Up, Right, Down, Left, 
+                          UpRight, DownRight, DownLeft, UpLeft, 
+                          UpMid, DownMid, UpRightMid, DownLeftMid,
+                          RightMid, DownRightMid, LeftMid, UpLeftMid };
     
-    public static int OppositeDirection(int dir)
+    public static int OppositeSpot(int spot)
     {
-        return (dir + 10) % 8;
+        return (spot + 18) % 16;
     }
 
-    public static int ToSpotFromDir(int[] dir)
+    public static int ToSpotFromDir(float[] dir)
     {
-        if (IsSameDir(dir, Up))
-        {
-            return 0;
-        }
-        else if (IsSameDir(dir, Right))
-        {
-            return 1;
-        }
-        else if (IsSameDir(dir, Down))
-        {
-            return 2;
-        }
-        else if (IsSameDir(dir, Left))
-        {
-            return 3;
-        }
-        else if (IsSameDir(dir, UpRight))
-        {
-            return 4;
-        }
-        else if (IsSameDir(dir, DownRight))
-        {
-            return 5;
-        }
-        else if (IsSameDir(dir, DownLeft))
-        {
-            return 6;
-        }
-
-        return 7;
+        return (int)dir[2];
     }
 
-    public static int[] ToDirFromSpot(int spot)
+    public static float[] ToDirFromSpot(int spot)
     {
-        if (spot == 0)
-        {
-            return BuildDirection.Up;
-        }
-        else if (spot == 1)
-        {
-            return BuildDirection.Right;
-        }
-        else if (spot == 2)
-        {
-            return BuildDirection.Down;
-        }
-        else if (spot == 3)
-        {
-            return BuildDirection.Left;
-        }
-        else if (spot == 4)
-        {
-            return BuildDirection.UpRight;
-        }
-        else if (spot == 5)
-        {
-            return BuildDirection.DownRight;
-        }
-        else if (spot == 6)
-        {
-            return BuildDirection.DownLeft;
-        }
-        
-        return BuildDirection.UpLeft;
+        return (float [])directions[spot];
     }
 }
