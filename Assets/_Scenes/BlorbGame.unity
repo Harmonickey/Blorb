@@ -831,6 +831,14 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 11400000, guid: 241d6d8df6309a446abcdbb017256636, type: 2}
+      propertyPath: IgnoreTags.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 241d6d8df6309a446abcdbb017256636, type: 2}
+      propertyPath: DisallowedTags.Array.size
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 241d6d8df6309a446abcdbb017256636, type: 2}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -869,11 +877,35 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 241d6d8df6309a446abcdbb017256636, type: 2}
       propertyPath: DrawMapInEditor
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 241d6d8df6309a446abcdbb017256636, type: 2}
       propertyPath: MoveDiagonal
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 241d6d8df6309a446abcdbb017256636, type: 2}
+      propertyPath: IgnoreTags.Array.data[1]
+      value: Untagged
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 241d6d8df6309a446abcdbb017256636, type: 2}
+      propertyPath: DisallowedTags.Array.data[0]
+      value: Turret
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 241d6d8df6309a446abcdbb017256636, type: 2}
+      propertyPath: DisallowedTags.Array.data[1]
+      value: Wall
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 241d6d8df6309a446abcdbb017256636, type: 2}
+      propertyPath: DisallowedTags.Array.data[2]
+      value: Collector
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 241d6d8df6309a446abcdbb017256636, type: 2}
+      propertyPath: DisallowedTags.Array.data[3]
+      value: Mountain
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 241d6d8df6309a446abcdbb017256636, type: 2}
+      propertyPath: DisallowedTags.Array.data[4]
+      value: Resource
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 241d6d8df6309a446abcdbb017256636, type: 2}
@@ -2254,13 +2286,13 @@ Rigidbody:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1728475024}
   serializedVersion: 2
-  m_Mass: 1.00000001e-07
-  m_Drag: 0
+  m_Mass: 1
+  m_Drag: Infinity
   m_AngularDrag: 0
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 126
+  m_Constraints: 120
   m_CollisionDetection: 0
 --- !u!212 &1728475030
 SpriteRenderer:
@@ -2319,14 +2351,15 @@ MonoBehaviour:
   MapStartPosition: {x: -25, y: -25}
   MapEndPosition: {x: 25, y: 25}
   DisallowedTags:
-  - Mountain
   - Turret
   - Wall
   - Collector
+  - Mountain
+  - Resource
   IgnoreTags:
   - Enemy
   MoveDiagonal: 1
-  DrawMapInEditor: 0
+  DrawMapInEditor: 1
 --- !u!4 &1825071988
 Transform:
   m_ObjectHideFlags: 0

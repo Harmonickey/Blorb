@@ -137,6 +137,7 @@ public class Pathfinder2D : MonoBehaviour
                 {
                     if (DisallowedTags.Contains(h.transform.tag))
                     {
+						//UnityEngine.Debug.Log("Pathfinder raycast disallowing hit object with tag " + h.transform.tag);
                         //if (h.point.z < maxZ)
                         //{
                             //It is a disallowed walking tile, make it false
@@ -151,12 +152,16 @@ public class Pathfinder2D : MonoBehaviour
                     }
                     else
                     {
+						//UnityEngine.Debug.Log("Pathfinder raycast allowing hit object with tag " + h.transform.tag);
                         //if (h.point.z < maxZ)
                        // {
                             //It is allowed to walk on this tile, make it walkable!
                             //Map[j, i] = new Node(j, i, y, ID, x, h.point.z, true); //walkable tile!
-                        Map[j, i] = new Node(j, i, y, ID, x, 0.0f, true); //walkable tile!
-                        free = false;
+
+						if (Map[j,i] == null){ //don't change tiles we've already set
+							Map[j, i] = new Node(j, i, y, ID, x, 0.0f, true); //walkable tile!
+							free = false;
+						}
                             //maxZ = h.point.z;
                         //}
                     }
