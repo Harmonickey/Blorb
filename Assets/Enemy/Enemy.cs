@@ -7,7 +7,7 @@ public class Enemy : MonoBehaviour {
     public float hitDamage = 1.0f; //default to 1 hit
     public bool isHitting;
     public bool instantDamage; // true if the enemy deals one-time damage and disappears, false if damages until killed
-	public TextMesh healthText;
+	public Transform healthbar;
 	private float health = 100.0f;
 	private float nextHit;
     public Center target;
@@ -33,7 +33,7 @@ public class Enemy : MonoBehaviour {
 
 	public void takeDamage (float amount) {
 		health -= amount;
-		healthText.text = health.ToString();
+		healthbar.localScale = new Vector2 (health * 0.0015f, 0.15f);
 
 		if (health <= 0f) {
 			Destroy(this.gameObject);

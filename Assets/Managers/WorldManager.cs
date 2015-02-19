@@ -7,6 +7,7 @@ public class WorldManager : MonoBehaviour {
 	private float phaseDuration = 45f;
 	private float startNextPhase;
 	private bool isDay = true;
+	private bool paused = false;
     private static bool towersLowering, towersLifting;
     private static float target;
 
@@ -26,6 +27,16 @@ public class WorldManager : MonoBehaviour {
 		dayNightDial.Rotate (0, 0, -180f * Time.deltaTime / phaseDuration);
 	}
 
+	public void PauseGame () {
+		paused = true;
+		Time.timeScale = 0f;
+	}
+
+	public void UnpauseGame () {
+		paused = false;
+		Time.timeScale = 1f;
+	}
+
 	void Start () {
 		enabled = false;
 
@@ -35,7 +46,7 @@ public class WorldManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (startNextPhase < Time.time) {
+		if (!paused && startNextPhase < Time.time) {
 			if (isDay) {
 				GameEventManager.TriggerNightStart();
 			} else {
