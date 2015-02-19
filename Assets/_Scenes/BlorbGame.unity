@@ -1749,8 +1749,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8d0d1a91155fc04abb92bfeaafc6525, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  chunk_tiles_x: 5
-  chunk_tiles_y: 5
+  chunk_tiles_x: 25
+  chunk_tiles_y: 25
   tileSet: {fileID: 2800000, guid: 035168451bc9c4e4cb12048514fa70da, type: 3}
   mountain: {fileID: 418206, guid: cb6acb9c9e5e9c44eaae9e06be99ac48, type: 2}
   resource: {fileID: 418206, guid: d20c8ef166a21ae499a2799959f3d105, type: 2}

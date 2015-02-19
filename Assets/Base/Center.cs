@@ -15,7 +15,10 @@ public class Center : MonoBehaviour {
 	{ 
 		//made property so updates text dynamically
 		get {return resourcesInternal;}
-		set {resourcesInternal = value; resourcePoolText.text = ((int)resourcesInternal).ToString();}
+		set {resourcesInternal = value; 
+			resourcePoolText.text = ((int)resourcesInternal).ToString();
+			WorldManager.UpdateTowerGUI(blorbAmount);
+		}
 	}
 	public bool collectingFromResource = false;
 	public TextMesh resourcePoolText;
@@ -38,7 +41,6 @@ public class Center : MonoBehaviour {
 		healthbar.localScale = new Vector2 (health * 1.5f, 1f);
 
 		blorbAmount = 100;
-        WorldManager.UpdateTowerGUI(blorbAmount);
 		//resourcePoolText.text = resourcePool.ToString ();
 		collectingFromResource = false;
 
@@ -226,7 +228,6 @@ public class Center : MonoBehaviour {
 
 		blorbAmount -= cost;
 		//resourcePoolText.text = resourcePool.ToString ();
-        WorldManager.UpdateTowerGUI(blorbAmount);
     }
 
     void RemovePiece(int[] dir, Transform parent)

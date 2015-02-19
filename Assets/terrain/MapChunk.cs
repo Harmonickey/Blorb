@@ -28,6 +28,7 @@ public class MapChunk : MonoBehaviour {
 	public void GenerateChunk () {
 		GenerateMesh();
 		GenerateTexture();
+		CreateObjects();
 		//Debug.Log ("Chunk complete!");
 	}
 
@@ -125,6 +126,7 @@ public class MapChunk : MonoBehaviour {
 	}
 	
 	void CreateObjects(){
+		Debug.Log ("Creating Objects");
 		for (int y = 0; y < tiles_y; y++){
 			for (int x = 0; x < tiles_x; x++){
 				Vector2 absolutePosition = ChunkTileToMapTile(x, y);
@@ -148,9 +150,9 @@ public class MapChunk : MonoBehaviour {
 	}
 
 	public Vector2 ChunkTileToMapTile(int x, int y){
-		float tile_x = chunkIndex.x * tiles_x + x;
-		float tile_y = chunkIndex.y * tiles_y + y;
+		int tile_x = (int)chunkIndex.x * tiles_x + x - ((int) tiles_x / 2);
+		int tile_y = (int)chunkIndex.y * tiles_y + y - ((int) tiles_y / 2);
 
-		return new Vector2(tile_x, tile_y);
+		return new Vector2((float)tile_x, (float)tile_y);
 	}
 }

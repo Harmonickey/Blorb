@@ -84,8 +84,8 @@ public class TileMap : MonoBehaviour {
 	
 	public Vector3 TileToPosition(int x, int y){
 		Vector3 trueTileSize = tileSize * transform.localScale; //maybe lossyScale?
-		float centering_offset_x = 0.5f * trueTileSize.x;
-		float centering_offset_y = 0.5f * trueTileSize.y;
+		float centering_offset_x = 0f;//0.5f * trueTileSize.x;
+		float centering_offset_y = 0f;//0.5f * trueTileSize.y;
 		
 		return new Vector3 (x * trueTileSize.x + centering_offset_x + transform.position.x, -y*trueTileSize.y - centering_offset_y + transform.position.y, 0);
     }
@@ -112,6 +112,7 @@ public class TileMap : MonoBehaviour {
 
 	public Resource GetResource(Vector2 position){
 		Vector2 chunkLocation = PositionToChunk(position);
+		Debug.Log("Current Chunk:" + chunkLocation.ToString() + "\n");
 		return chunks[chunkLocation].resources[position];
 	}
 
