@@ -5,13 +5,19 @@ public class GUIManager : MonoBehaviour {
 	public GUIText gameOverText, instructionsText, titleText;
 	public Camera minimap;
 	public GameObject HUD;
+	public SpriteRenderer HUDTutorial;
+
+	private int viewStage = 0; // 0- title screen, 1- tutorial screen, 2- main game, 3- game over screen
+	private bool shownTutorial = false; // skip stage 1 after seeing it once
 
 	void setHUD (bool enabled) {
 		SpriteRenderer[] renderers = HUD.GetComponentsInChildren<SpriteRenderer>();
 		TextMesh[] texts = HUD.GetComponentsInChildren<TextMesh> ();
 
 		foreach (SpriteRenderer renderer in renderers) {
-			renderer.enabled = enabled;
+			if (renderer.sprite.name != "hud_4") {
+				renderer.enabled = enabled;
+			}
 		}
 
 		foreach (TextMesh text in texts) {
@@ -33,12 +39,18 @@ public class GUIManager : MonoBehaviour {
 		gameOverText.enabled = true;
 		instructionsText.enabled = true;
 		instance.setHUD (false);
-		enabled = true;
+		viewStage = 3;
 	}
 	
 	void Update () {
-		if(Input.GetButtonDown("Jump")){
-			GameEventManager.TriggerGameStart();
+		if (Input.GetButtonDown("Jump")) {
+			if (viewStage == 0 || viewStage == 3) {
+				GameEventManager.TriggerGameStart();
+			} else if (viewStage == 1) {
+				HUDTutorial.enabled = false;
+				Time.timeScale = 1;
+				viewStage = 2;
+			}
 		}
 	}
 	
@@ -47,10 +59,13 @@ public class GUIManager : MonoBehaviour {
 		instructionsText.enabled = false;
 		titleText.enabled = false;
 		instance.setHUD (true);
-		enabled = false;
-	}
+		viewStage = 2;
 
-//	void OnGUI () {
-//		GUI.Label (new Rect (0, 0, Screen.width, Screen.height), "", bgStyle);
-//	}
+		if (!shownTutorial) {
+			HUDTutorial.enabled = true;
+			Time.timeScale = 0; // pause time
+			shownTutorial = true;
+			viewStage = 1;
+		}
+	}
 }

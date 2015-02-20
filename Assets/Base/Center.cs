@@ -2,7 +2,6 @@
 using System.Collections;
 
 public class Center : MonoBehaviour {
-
     public Transform turret;
     public Transform wall;
     public Transform collector;
@@ -10,7 +9,23 @@ public class Center : MonoBehaviour {
     public Transform placement;
     public Transform healthbar;
     public TextMesh resourcePoolText;
+
+    private const float pixelOffset = 750.0F;
+    private const float placementOffset = 0.725f;
+
+	private float healthInternal;
+	private float resourcesInternal;
+
     public float speed;
+
+	public float health
+	{
+		get { return healthInternal;}
+		set {
+			healthInternal = value;
+			healthbar.localScale = new Vector2 (health, 1f);
+		}
+	}
 
 	public float blorbAmount
 	{ 
@@ -45,15 +60,10 @@ public class Center : MonoBehaviour {
 
     private bool isActive;
 
-    private const float placementOffset = 0.725f;
-    private float health;
-    private float resourcesInternal;
-
 	void GameStart () {
 		enabled = true;
 
 		health = 100f;
-		healthbar.localScale = new Vector2 (health * 1.5f, 1f);
 
 		blorbAmount = 100;
 		//resourcePoolText.text = resourcePool.ToString ();
@@ -264,7 +274,6 @@ public class Center : MonoBehaviour {
     public void takeDamage(float damage)
     {
         health -= damage;
-		healthbar.localScale = new Vector2 (health * 1.5f, 1f);
 
 		if (health <= 0f) {
 			GameEventManager.TriggerGameOver();
