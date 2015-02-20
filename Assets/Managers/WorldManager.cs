@@ -3,6 +3,7 @@ using System.Collections;
 
 public class WorldManager : MonoBehaviour {
 	public Transform dayNightDial;
+    public static float PixelOffset = 750.0f;
 
 	private float phaseDuration = 45f;
 	private float startNextPhase;

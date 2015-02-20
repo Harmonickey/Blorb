@@ -3,20 +3,23 @@ using System.Collections;
 
 public class Placement : MonoBehaviour {
 
-    private bool selected;
-    private bool preSelected;
     public Transform player;
-    private Transform placementPiece;
-    private Center center;
     public Transform turretPlacement;
     public Transform collectorPlacement;
     public Transform wallPlacement;
+
     public int cost;
 
-    public static Vector3 positionToSnap = Vector3.zero;
+    private bool selected;
+    private bool preSelected;
+    private Transform placementPiece;
+    private Center center;
     private string type = null;
+
+    // TODO: these three items could be created into an abstraction object
     public static int spot = -1;
     public static Transform parent = null;
+    public static Vector3 positionToSnap = Vector3.zero;
 
     void Start()
     {
@@ -76,7 +79,7 @@ public class Placement : MonoBehaviour {
                     GameObject[] placements = GameObject.FindGameObjectsWithTag("Placement");
                     foreach (GameObject placement in placements)
                     {
-                        placement.GetComponent<PlacementBottom>().checkDistance = false;
+                        placement.GetComponent<PlacementBottom>().CheckDistance = false;
                     }
                     
                     //remove the placment piece after it's set because now it was replaced by a real tower

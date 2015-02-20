@@ -461,7 +461,7 @@ MonoBehaviour:
   turretPlacement: {fileID: 478034, guid: 0b1ecb900dcf24d489bcb68c6e75423e, type: 2}
   collectorPlacement: {fileID: 0}
   wallPlacement: {fileID: 0}
-  cost: 0
+  cost: 25
 --- !u!50 &479597926
 Rigidbody2D:
   m_ObjectHideFlags: 0
@@ -1861,7 +1861,7 @@ MonoBehaviour:
   turretPlacement: {fileID: 0}
   collectorPlacement: {fileID: 470528, guid: 9bdec2204d8975e489ed17603b3ec6d2, type: 2}
   wallPlacement: {fileID: 0}
-  cost: 0
+  cost: 150
 --- !u!61 &1495883329
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1955,7 +1955,7 @@ MonoBehaviour:
   turretPlacement: {fileID: 0}
   collectorPlacement: {fileID: 0}
   wallPlacement: {fileID: 489946, guid: f7440c1c7a5f8904594cf7d4075c173f, type: 2}
-  cost: 0
+  cost: 150
 --- !u!212 &1529438642
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2269,16 +2269,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6775662968db4060b278de54d6a5fdf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 6
-  collectingFromResource: 0
-  resourcePoolText: {fileID: 1173905448}
   turret: {fileID: 455352, guid: 64564c4152f28c24aaa12f4cf8828a4f, type: 2}
   wall: {fileID: 455352, guid: f775f8976dc532d4db68942beabb654c, type: 2}
   collector: {fileID: 400826, guid: 14bd421bca1624cd0bdfb6765dbfb852, type: 2}
   bottom: {fileID: 476196, guid: 411f3e7092d3268459e804b05cae941f, type: 2}
   placement: {fileID: 476196, guid: d1826f45ce6a68e449bdd09a08bf7b56, type: 2}
   healthbar: {fileID: 239317691}
-  isActive: 0
+  speed: 6
+  collectingFromResource: 0
+  resourcePoolText: {fileID: 1173905448}
 --- !u!54 &1728475029
 Rigidbody:
   m_ObjectHideFlags: 0

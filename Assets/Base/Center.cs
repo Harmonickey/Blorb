@@ -3,12 +3,13 @@ using System.Collections;
 
 public class Center : MonoBehaviour {
 
-    private const float pixelOffset = 750.0F;
-    private const float placementOffset = 0.725f;
-
-	private float health;
-	private float resourcesInternal;
-
+    public Transform turret;
+    public Transform wall;
+    public Transform collector;
+    public Transform bottom;
+    public Transform placement;
+    public Transform healthbar;
+    public TextMesh resourcePoolText;
     public float speed;
 
 	public float blorbAmount
@@ -20,15 +21,13 @@ public class Center : MonoBehaviour {
 			WorldManager.UpdateTowerGUI(blorbAmount);
 		}
 	}
-	public bool collectingFromResource = false;
-	public TextMesh resourcePoolText;
 
-    public Transform turret;
-    public Transform wall;
-	public Transform collector;
-    public Transform bottom;
-    public Transform placement;
-	public Transform healthbar;
+    public bool CollectingFromResource
+    {
+        get { return collectingFromResource; }
+    }
+
+	private bool collectingFromResource = false;
 
     public bool[] TakenSpot
     {
@@ -38,7 +37,17 @@ public class Center : MonoBehaviour {
 
     private bool[] takenSpots = new bool[16];
 
-    public bool isActive;
+    public bool IsActive
+    {
+        get { return isActive; }
+        set { isActive = value; }
+    }
+
+    private bool isActive;
+
+    private const float placementOffset = 0.725f;
+    private float health;
+    private float resourcesInternal;
 
 	void GameStart () {
 		enabled = true;
@@ -68,8 +77,6 @@ public class Center : MonoBehaviour {
 		healthbar = this.transform.Find ("GUI/HUD/Health");
 		resourcePoolText.renderer.sortingLayerName = "UI";
 		resourcePoolText.renderer.sortingOrder = 1;
-
-        for (int i = 0; i < takenSpots.Length; i++) takenSpots[i] = false;
 	}
 
     public void FindAllPossiblePlacements()
@@ -184,42 +191,22 @@ public class Center : MonoBehaviour {
         childBottom.tag = tag;
 
         if (tag != "Placement")
-            childBottom.GetComponent<Attachments>().spot = BuildDirection.ToSpotFromDir(direction);
+            childBottom.GetComponent<Attachments>().Spot = BuildDirection.ToSpotFromDir(direction);
         if (tag == "Placement")
-            childBottom.GetComponent<PlacementBottom>().spot = BuildDirection.ToSpotFromDir(direction);
+            childBottom.GetComponent<PlacementBottom>().Spot = BuildDirection.ToSpotFromDir(direction);
 
         if (tag != "Placement")
         {
-           
-            //reserve spot taken for self
-            if (selectedBasePiece == this.transform) //if we're actually the center
-            {
+            //reserve spot for parent
+            if (selectedBasePiece == this.transform) //if we're actually the center...
                 ReserveSpot(BuildDirection.ToSpotFromDir(direction), selectedBasePiece.GetComponent<Center>());
-                ReserveSpot((BuildDirection.ToSpotFromDir(direction) + 1) % takenSpots.Length, selectedBasePiece.GetComponent<Center>());
-                ReserveSpot((BuildDirection.ToSpotFromDir(direction) - 1) % takenSpots.Length, selectedBasePiece.GetComponent<Center>());
-
-                if (BuildDirection.IsMid(direction)) //we may need to reserve the neighbors
-                    ReserveSpot(BuildDirection.GetDiagonal(BuildDirection.ToSpotFromDir(direction)), selectedBasePiece.GetComponent<Center>());
-            }
             else
-            {
                 ReserveSpot(BuildDirection.ToSpotFromDir(direction), selectedBasePiece.GetComponent<Attachments>());
-                ReserveSpot((BuildDirection.ToSpotFromDir(direction) + 1) % takenSpots.Length, selectedBasePiece.GetComponent<Attachments>());
-                ReserveSpot((BuildDirection.ToSpotFromDir(direction) - 1) % takenSpots.Length, selectedBasePiece.GetComponent<Attachments>());
 
-                if (BuildDirection.IsMid(direction))
-                    ReserveSpot(BuildDirection.GetDiagonal(BuildDirection.ToSpotFromDir(direction)), selectedBasePiece.GetComponent<Attachments>());
-            }
-
-            //reserve spot taken for the just placed piece (cannot build back on parent)
+            //reserve spot for child just placed (cannot build back on parent)
             ReserveSpot(BuildDirection.OppositeSpot(BuildDirection.ToSpotFromDir(direction)), childBottom.GetComponentInChildren<Attachments>());
-            ReserveSpot(BuildDirection.OppositeSpot((BuildDirection.ToSpotFromDir(direction) + 1) % takenSpots.Length), childBottom.GetComponentInChildren<Attachments>());
-            ReserveSpot(BuildDirection.OppositeSpot((BuildDirection.ToSpotFromDir(direction) - 1) % takenSpots.Length), childBottom.GetComponentInChildren<Attachments>());
 
-            if (BuildDirection.IsMid(direction))
-                ReserveSpot(BuildDirection.OppositeSpot(BuildDirection.GetDiagonal(BuildDirection.ToSpotFromDir(direction))), childBottom.GetComponentInChildren<Attachments>());
-
-            //here we need a switch for different towers
+            //create the tower
             Transform childTower = Instantiate(piece) as Transform;
             childTower.transform.parent = childBottom;
             childTower.transform.localScale = Vector3.one;
@@ -240,7 +227,7 @@ public class Center : MonoBehaviour {
         foreach (Transform child in parent)
         {
             if (child.GetComponent<Attachments>() != null &&
-                child.GetComponent<Attachments>().spot == BuildDirection.ToSpotFromDir(dir))
+                child.GetComponent<Attachments>().Spot == BuildDirection.ToSpotFromDir(dir))
             {
                 Destroy(child.gameObject);
                 break;
@@ -248,20 +235,30 @@ public class Center : MonoBehaviour {
         }
     }
 
-    private void ReserveSpot(int dir, Attachments obj)
+    private void ReserveSpot(int spot, Attachments obj)
     {
-        obj.TakenSpot[dir] = true;
+        obj.TakenSpot[spot] = true;
+        obj.TakenSpot[(spot + 1) % takenSpots.Length] = true;
+        obj.TakenSpot[(spot - 1) % takenSpots.Length] = true;
+
+        if (BuildDirection.IsMid(BuildDirection.ToDirFromSpot(spot))) //we may need to reserve the neighbors
+            obj.TakenSpot[BuildDirection.GetDiagonal(spot)] = true;
     }
 
-    private void ReserveSpot(int dir, Center obj)
+    private void ReserveSpot(int spot, Center obj)
     {
-        obj.TakenSpot[dir] = true;
+        obj.TakenSpot[spot] = true;
+        obj.TakenSpot[(spot + 1) % takenSpots.Length] = true;
+        obj.TakenSpot[(spot - 1) % takenSpots.Length] = true;
+
+        if (BuildDirection.IsMid(BuildDirection.ToDirFromSpot(spot))) //we may need to reserve the neighbors
+            obj.TakenSpot[BuildDirection.GetDiagonal(spot)] = true;
     }
 
     private float GetOffset(Transform selectedBasePiece)
     {
         SpriteRenderer bottomRenderer = selectedBasePiece.GetComponentInChildren<SpriteRenderer>();;
-        return (bottomRenderer.sprite.rect.height / pixelOffset); //height or width works because they're equivalent
+        return (bottomRenderer.sprite.rect.height / WorldManager.PixelOffset); //height or width works because they're equivalent
     }
 
     public void takeDamage(float damage)
@@ -302,11 +299,11 @@ public class Center : MonoBehaviour {
     {
 		if (other.gameObject.tag == "Enemy") { //only hit the player
             Enemy enemy = other.gameObject.GetComponent<Enemy>();
-			if (!enemy.instantDamage) {
+			if (!enemy.InstantDamage) {
                 enemy.target = this;
-				enemy.isHitting = true; //stop jittery movement
+				enemy.IsHitting = true; //stop jittery movement
 			} else {
-				takeDamage(10 * enemy.hitDamage);
+				takeDamage(10 * enemy.HitDamage);
 				Destroy (enemy.gameObject);
 			}
 		}
@@ -317,7 +314,7 @@ public class Center : MonoBehaviour {
         if (other.gameObject.tag == "Enemy")
         {
             Enemy enemy = other.gameObject.GetComponent<Enemy>();
-            enemy.isHitting = false;
+            enemy.IsHitting = false;
         }
     }
 }

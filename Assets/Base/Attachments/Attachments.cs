@@ -13,12 +13,13 @@ public class Attachments : MonoBehaviour {
 
     private bool[] takenSpots = new bool[16];
 
-    public int spot;
-
-    void Start()
+    public int Spot
     {
-        for (int i = 0; i < takenSpots.Length; i++) takenSpots[i] = false;
+        get { return spot; }
+        set { spot = value; }
     }
+
+    private int spot;
 
     public void takeDamage(float damage)
     {
@@ -54,9 +55,6 @@ public class Attachments : MonoBehaviour {
         RaycastHit2D[] hits;
         hits = Physics2D.LinecastAll(new Vector2(this.transform.position.x + dir[0], this.transform.position.y + dir[1]),
                                      new Vector2(this.transform.position.x + (dir[0] * 1.3f), this.transform.position.y + (dir[1] * 1.3f)));
-
-        //Debug.DrawLine(new Vector3(this.transform.position.x + dir[0], this.transform.position.y + dir[1], 1.0f),
-        //               new Vector3(this.transform.position.x + (dir[0] * 1.3f), this.transform.position.y + (dir[1] * 1.3f), 1.0f), Color.red, 100.0f, false);
 
         //blacklist children, self, and placement pieces
         ArrayList blackList = new ArrayList();

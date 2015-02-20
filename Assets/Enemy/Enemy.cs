@@ -3,15 +3,40 @@ using System.Collections;
 
 public class Enemy : MonoBehaviour {
 
-    public float hitSpeed = 1.0f;  //default to every second
-    public float hitDamage = 1.0f; //default to 1 hit
-    public bool isHitting;
-    public bool instantDamage; // true if the enemy deals one-time damage and disappears, false if damages until killed
 	public Transform healthbar;
-	private float health = 100.0f;
-	private float nextHit;
     public Center target;
 
+    public float HitSpeed
+    {
+        get { return hitSpeed; }
+    }
+
+    private const float hitSpeed = 1.0f;  //default to every second
+
+    public float HitDamage
+    {
+        get { return hitDamage; }
+    }
+
+    private const float hitDamage = 1.0f; //default to 1 hit
+
+    public bool IsHitting
+    {
+        get { return isHitting; }
+        set { isHitting = value; }
+    }
+
+    private bool isHitting;
+
+    public bool InstantDamage
+    {
+        get { return instantDamage; }
+    }
+
+    private bool instantDamage; // true if the enemy deals one-time damage and disappears, false if damages until killed
+
+    private float health = 100.0f;
+    private float nextHit;
     private float totalDamage;
 
 	// Use this for initialization
