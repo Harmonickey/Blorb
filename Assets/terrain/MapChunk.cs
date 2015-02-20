@@ -20,7 +20,7 @@ public class MapChunk : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		tileData = new TileData(tiles_x, tiles_y);
+		tileData = new TileData(tiles_x, tiles_y, chunkIndex);
 		resources = new Dictionary<Vector2, Resource>();
 		GenerateChunk();
 	}

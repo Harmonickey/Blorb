@@ -30,10 +30,6 @@ public class TileMap : MonoBehaviour {
 		tileSet = (Texture2D) Resources.Load("TileTextures", typeof(Texture2D));
 
 		CreateNewChunk(0, 0);
-		//CreateNewChunk(0, 1);
-		//CreateNewChunk(1,0);
-		//CreateNewChunk(-1, 0);
-		//CreateNewChunk(0, -1);
 	}
 	
 	void CreateNewChunk(int x, int y){
