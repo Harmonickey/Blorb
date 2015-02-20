@@ -33,7 +33,7 @@ public class Center : MonoBehaviour {
 		get {return resourcesInternal;}
 		set {resourcesInternal = value; 
 			resourcePoolText.text = ((int)resourcesInternal).ToString();
-			WorldManager.UpdateTowerGUI(blorbAmount);
+			GUIManager.UpdateTowerGUI(blorbAmount);
 		}
 	}
 

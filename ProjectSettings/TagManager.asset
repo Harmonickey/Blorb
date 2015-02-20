@@ -23,6 +23,8 @@ TagManager:
   - Turret Placement
   - Resource
   - Center
+  - Skip
+  - Movement Indicator
   - 
   Builtin Layer 0: Default
   Builtin Layer 1: TransparentFX

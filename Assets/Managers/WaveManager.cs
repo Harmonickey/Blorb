@@ -2,7 +2,7 @@
 using System.Collections;
 
 public class WaveManager : MonoBehaviour {
-	private static WaveManager instance;
+	public static WaveManager instance;
 	public Transform enemy;
     public Transform player;
 	private float enemySpawnDelay = 2.0f;
@@ -10,8 +10,10 @@ public class WaveManager : MonoBehaviour {
 	
 	private float spawnNextEnemy;
 	private int enemiesSpawned;
+	public bool waveEnded = true;
 
 	void Start() {
+		instance = this;
 
 		enabled = false;
 		GameEventManager.GameStart += GameStart;
@@ -23,22 +25,22 @@ public class WaveManager : MonoBehaviour {
 	void DayStart() {
 		Debug.Log ("Day");
         player.transform.parent.GetComponent<Center>().IsActive = true;
-        WorldManager.LiftTowers();
 	}
 
 	void NightStart() {
+		waveEnded = false;
 		spawnNextEnemy = Time.time + enemySpawnDelay;
 		Debug.Log ("Night");
         player.transform.parent.GetComponent<Center>().IsActive = false;
         Pathfinder2D.Instance.Create2DMap();
         GameObject.FindObjectOfType<Placement>().StopPlacement();
-        WorldManager.LowerTowers();
 	}
 
 
 	void GameStart() {
 		enabled = true;
 
+		waveEnded = true;
 		enemiesSpawned = 0;
 		spawnNextEnemy = 0f;
 	}
@@ -61,6 +63,10 @@ public class WaveManager : MonoBehaviour {
 
             enemiesSpawned++;
             spawnNextEnemy = Time.time + enemySpawnDelay;
-        } 
+        }
+
+		if (enemiesSpawned == enemiesPerWave) {
+			waveEnded = true;
+		}
 	}
 }
