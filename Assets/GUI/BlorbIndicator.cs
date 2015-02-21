@@ -15,7 +15,7 @@ public class BlorbIndicator : MonoBehaviour {
 			textMesh.text = "+" + d.ToString();
 			color = new Color(0f, 1f, 0f, 1f);
 		} else {
-			textMesh.text = "-" + d.ToString();
+			textMesh.text = d.ToString();
 			color = new Color(1f, 0f, 0f, 1f);
 		}
 
