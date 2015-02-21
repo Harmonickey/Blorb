@@ -308,23 +308,9 @@ public class Center : MonoBehaviour {
     {
 		if (other.gameObject.tag == "Enemy") { //only hit the player
             Enemy enemy = other.gameObject.GetComponent<Enemy>();
-			if (!enemy.InstantDamage) {
-                enemy.target = this;
-				enemy.IsHitting = true; //stop jittery movement
-			} else {
-				takeDamage(10 * enemy.HitDamage);
-				Destroy (enemy.gameObject);
-			}
+			takeDamage(enemy.hitDamage);
+			Destroy (enemy.gameObject);
 		}
-    }
-
-    void OnCollisionExit(Collision other)
-    {
-        if (other.gameObject.tag == "Enemy")
-        {
-            Enemy enemy = other.gameObject.GetComponent<Enemy>();
-            enemy.IsHitting = false;
-        }
     }
 }
 

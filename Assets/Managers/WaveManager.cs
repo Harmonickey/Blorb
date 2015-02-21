@@ -7,6 +7,8 @@ public class WaveManager : MonoBehaviour {
     public Transform player;
 	private float enemySpawnDelay = 2.0f;
 	private int enemiesPerWave = 10;
+
+	private int waveCount = 0;
 	
 	private float spawnNextEnemy;
 	private int enemiesSpawned;
@@ -23,17 +25,18 @@ public class WaveManager : MonoBehaviour {
 	}
 
 	void DayStart() {
-		Debug.Log ("Day");
         player.transform.parent.GetComponent<Center>().IsActive = true;
 	}
 
 	void NightStart() {
 		waveEnded = false;
-		spawnNextEnemy = Time.time + enemySpawnDelay;
-		Debug.Log ("Night");
+		enemiesSpawned = 0;
+		spawnNextEnemy = enemySpawnDelay;
         player.transform.parent.GetComponent<Center>().IsActive = false;
         Pathfinder2D.Instance.Create2DMap();
         GameObject.FindObjectOfType<Placement>().StopPlacement();
+
+		waveCount++;
 	}
 
 
@@ -56,16 +59,18 @@ public class WaveManager : MonoBehaviour {
 	}
 
 	void Update () {
-		if (spawnNextEnemy != 0f && spawnNextEnemy < Time.time && enemiesSpawned < enemiesPerWave) {
+		spawnNextEnemy -= Time.deltaTime;
+
+		if (!WorldManager.instance.isDay && spawnNextEnemy < 0f && enemiesSpawned < enemiesPerWave) {
 			Transform newEnemy = Instantiate (enemy) as Transform;
 			newEnemy.transform.position = 10 * Random.insideUnitCircle;
             newEnemy.GetComponent<SimpleAI2D>().Player = player; //set the target as the player
 
             enemiesSpawned++;
-            spawnNextEnemy = Time.time + enemySpawnDelay;
+            spawnNextEnemy = enemySpawnDelay;
         }
 
-		if (enemiesSpawned == enemiesPerWave) {
+		if (enemiesSpawned == enemiesPerWave && GameObject.FindGameObjectWithTag("Enemy") == null) {
 			waveEnded = true;
 		}
 	}
