@@ -7,15 +7,15 @@ public class BlorbIndicator : MonoBehaviour {
 
 	private TextMesh textMesh;
 
-	public void setDiff (int d) {
+	public void setDiff (float d) {
 		textMesh = this.GetComponent<TextMesh>();
 		pos = transform.position;
 
 		if (d > 0) {
-			textMesh.text = "+" + d.ToString();
+			textMesh.text = "+" + ((int)d).ToString();
 			color = new Color(0f, 1f, 0f, 1f);
 		} else {
-			textMesh.text = d.ToString();
+			textMesh.text = ((int)d).ToString();
 			color = new Color(1f, 0f, 0f, 1f);
 		}
 

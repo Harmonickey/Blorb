@@ -6,7 +6,7 @@ public class Enemy : MonoBehaviour {
 	public Transform healthbar;
 
     public float hitDamage = 10.0f;
-	private const int killValue = 10;
+	private const float killValue = 10f;
 	
     private float health = 100.0f;
 

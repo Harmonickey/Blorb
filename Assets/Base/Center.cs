@@ -15,7 +15,7 @@ public class Center : MonoBehaviour {
     private const float placementOffset = 0.725f;
 
 	private float healthInternal;
-	private int resourcesInternal;
+	private float resourcesInternal;
 
     public float speed;
 
@@ -28,17 +28,17 @@ public class Center : MonoBehaviour {
 		}
 	}
 
-	public int blorbAmount
+	public float blorbAmount
 	{ 
 		//made property so updates text dynamically
 		get {return resourcesInternal;}
 		set {
-			int diff = value - resourcesInternal;
+			float diff = value - resourcesInternal;
 			resourcesInternal = value; 
 			resourcePoolText.text = ((int)resourcesInternal).ToString();
 			GUIManager.UpdateTowerGUI(blorbAmount);
 
-			if (Mathf.Abs(diff) > 0) {
+			if (Mathf.Abs(diff) > 0f) {
 				// Add blorb indicator
 				GameObject g = (GameObject)Instantiate(blorbIndicator, resourcePoolText.transform.position, Quaternion.identity);
 				g.transform.parent = resourcePoolText.transform;
@@ -76,7 +76,7 @@ public class Center : MonoBehaviour {
 
 		health = 100f;
 
-		blorbAmount = 100;
+		blorbAmount = 100f;
 		//resourcePoolText.text = resourcePool.ToString ();
 		collectingFromResource = false;
 
@@ -296,7 +296,7 @@ public class Center : MonoBehaviour {
 		}
     }
 
-	public void receiveBlorb(int blorb)
+	public void receiveBlorb(float blorb)
 	{
 		blorbAmount += blorb;
 		//resourcePoolText.text = resourcePool.ToString ();

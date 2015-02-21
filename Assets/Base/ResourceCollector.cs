@@ -81,7 +81,7 @@ public class ResourceCollector : MonoBehaviour {
 
 	void CollectFromResource(){
 		if (currentResource != null){
-			int extraBlorb = currentResource.collectBlorb();
+			float extraBlorb = currentResource.collectBlorb();
 			Debug.Log ("extraBlorb = " + extraBlorb.ToString() + "\n");
 			center.blorbAmount += extraBlorb;
 		}
