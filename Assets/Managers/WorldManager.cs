@@ -9,12 +9,11 @@ public class WorldManager : MonoBehaviour {
 
 	private float phaseDuration = 45f;
 	private float startNextPhase;
-	private bool paused = false;
-	
+
 	void GameStart () {
 		enabled = true;
 
-		startNextPhase = Time.time + phaseDuration;
+		startNextPhase = phaseDuration;
 		isDay = true;
 		dayNightDial.rotation = Quaternion.Euler (0f, 0f, 90f);
 	}
@@ -28,21 +27,19 @@ public class WorldManager : MonoBehaviour {
 	}
 
 	public void PauseGame () {
-		paused = true;
 		Time.timeScale = 0f;
 	}
 
 	public void UnpauseGame () {
-		paused = false;
 		Time.timeScale = 1f;
 	}
 
 	public void SkipButton () {
 		if (isDay) {
-			startNextPhase = Time.time;
+			startNextPhase = 0f;
 			dayNightDial.localEulerAngles = new Vector3(0, 0, -90);
 		} else if (WaveManager.instance.waveEnded) {
-			startNextPhase = Time.time;
+			startNextPhase = 0f;
 			dayNightDial.localEulerAngles = new Vector3(0, 0, 90);
 		}
 	}
@@ -57,7 +54,9 @@ public class WorldManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (!paused && startNextPhase < Time.time) {
+		startNextPhase -= Time.deltaTime;
+
+		if (startNextPhase < 0f) {
 			if (isDay) {
 				GameEventManager.TriggerNightStart();
 			} else {
@@ -65,7 +64,7 @@ public class WorldManager : MonoBehaviour {
 			}
 			
 			isDay = !isDay;
-			startNextPhase = Time.time + phaseDuration;
+			startNextPhase = phaseDuration;
 		}
 	}
 }
