@@ -153,7 +153,7 @@ Transform:
   m_LocalScale: {x: 100, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 650051452}
-  m_RootOrder: 3
+  m_RootOrder: 2
 --- !u!212 &239317692
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -363,7 +363,7 @@ Transform:
   - {fileID: 818692803}
   - {fileID: 650051452}
   m_Father: {fileID: 1728475025}
-  m_RootOrder: 3
+  m_RootOrder: 4
 --- !u!1 &446972791
 GameObject:
   m_ObjectHideFlags: 0
@@ -532,8 +532,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 650051452}
-  m_RootOrder: 2
+  m_Father: {fileID: 1728475025}
+  m_RootOrder: 3
 --- !u!81 &630778796
 AudioListener:
   m_ObjectHideFlags: 0
@@ -747,7 +747,6 @@ Transform:
   m_Children:
   - {fileID: 850084180}
   - {fileID: 675487728}
-  - {fileID: 630778795}
   - {fileID: 239317691}
   - {fileID: 1173905447}
   - {fileID: 817132960}
@@ -772,7 +771,7 @@ SpriteRenderer:
   m_UseLightProbes: 0
   m_LightProbeAnchor: {fileID: 0}
   m_ScaleInLightmap: 1
-  m_SortingLayerID: 70031809
+  m_SortingLayerID: 0
   m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 59d3b66d55ed647738262e136efca103, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -1047,7 +1046,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 650051452}
-  m_RootOrder: 5
+  m_RootOrder: 4
 --- !u!212 &817132961
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1201,7 +1200,10 @@ MonoBehaviour:
   instructionsText: {fileID: 1609933700}
   titleText: {fileID: 1200285418}
   minimap: {fileID: 630778799}
+  maincamera: {fileID: 1140173638}
+  light: {fileID: 1196908571}
   HUD: {fileID: 650051451}
+  GUI: {fileID: 371103352}
   HUDTutorial: {fileID: 818692804}
 --- !u!4 &870855512
 Transform:
@@ -1245,7 +1247,7 @@ Transform:
   - {fileID: 132545669}
   - {fileID: 257783932}
   m_Father: {fileID: 650051452}
-  m_RootOrder: 6
+  m_RootOrder: 5
 --- !u!212 &1001461555
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1529,7 +1531,7 @@ Transform:
   m_LocalScale: {x: .300000012, y: .300000012, z: 1}
   m_Children: []
   m_Father: {fileID: 650051452}
-  m_RootOrder: 4
+  m_RootOrder: 3
 --- !u!102 &1173905448
 TextMesh:
   serializedVersion: 3
@@ -2411,6 +2413,7 @@ Transform:
   - {fileID: 1141378663}
   - {fileID: 1140173634}
   - {fileID: 1196908570}
+  - {fileID: 630778795}
   - {fileID: 371103352}
   m_Father: {fileID: 0}
   m_RootOrder: 3
