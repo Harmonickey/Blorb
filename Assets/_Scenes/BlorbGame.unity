@@ -327,7 +327,36 @@ Prefab:
       propertyPath: m_SortingOrder
       value: 2
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 21278034, guid: 0b1ecb900dcf24d489bcb68c6e75423e, type: 2}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 21278034, guid: 0b1ecb900dcf24d489bcb68c6e75423e, type: 2}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 21278034, guid: 0b1ecb900dcf24d489bcb68c6e75423e, type: 2}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 21278032, guid: 0b1ecb900dcf24d489bcb68c6e75423e, type: 2}
+      propertyPath: m_Color.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 21278034, guid: 0b1ecb900dcf24d489bcb68c6e75423e, type: 2}
+      propertyPath: m_Color.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6119756, guid: 0b1ecb900dcf24d489bcb68c6e75423e, type: 2}
+      propertyPath: m_Size.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6119756, guid: 0b1ecb900dcf24d489bcb68c6e75423e, type: 2}
+      propertyPath: m_Size.y
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 5068222, guid: 0b1ecb900dcf24d489bcb68c6e75423e, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 0b1ecb900dcf24d489bcb68c6e75423e, type: 2}
   m_RootGameObject: {fileID: 1005266760}
   m_IsPrefabParent: 0
@@ -415,7 +444,6 @@ GameObject:
   m_Component:
   - 4: {fileID: 479597923}
   - 212: {fileID: 479597928}
-  - 50: {fileID: 479597926}
   - 61: {fileID: 479597924}
   - 114: {fileID: 479597925}
   m_Layer: 5
@@ -447,7 +475,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Material: {fileID: 6200000, guid: fc536ab374a262346b0522537d5aaf5c, type: 2}
   m_IsTrigger: 0
-  m_Size: {x: .899999976, y: .899999976}
+  m_Size: {x: 1, y: 1}
   m_Center: {x: 0, y: 0}
 --- !u!114 &479597925
 MonoBehaviour:
@@ -465,22 +493,6 @@ MonoBehaviour:
   collectorPlacement: {fileID: 0}
   wallPlacement: {fileID: 0}
   cost: 25
---- !u!50 &479597926
-Rigidbody2D:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 5068222, guid: 0b1ecb900dcf24d489bcb68c6e75423e,
-    type: 2}
-  m_PrefabInternal: {fileID: 286517347}
-  m_GameObject: {fileID: 479597922}
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0
-  m_GravityScale: 0
-  m_FixedAngle: 0
-  m_IsKinematic: 1
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
 --- !u!212 &479597928
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -911,7 +923,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 11400000, guid: 241d6d8df6309a446abcdbb017256636, type: 2}
       propertyPath: IgnoreTags.Array.size
-      value: 1
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 241d6d8df6309a446abcdbb017256636, type: 2}
       propertyPath: DisallowedTags.Array.size
@@ -963,7 +975,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 241d6d8df6309a446abcdbb017256636, type: 2}
       propertyPath: IgnoreTags.Array.data[1]
-      value: Untagged
+      value: Turret GUI
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 241d6d8df6309a446abcdbb017256636, type: 2}
       propertyPath: DisallowedTags.Array.data[0]
@@ -984,6 +996,14 @@ Prefab:
     - target: {fileID: 11400000, guid: 241d6d8df6309a446abcdbb017256636, type: 2}
       propertyPath: DisallowedTags.Array.data[4]
       value: Resource
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 241d6d8df6309a446abcdbb017256636, type: 2}
+      propertyPath: IgnoreTags.Array.data[2]
+      value: Collector GUI
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 241d6d8df6309a446abcdbb017256636, type: 2}
+      propertyPath: IgnoreTags.Array.data[3]
+      value: Wall GUI
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 241d6d8df6309a446abcdbb017256636, type: 2}
@@ -1788,7 +1808,24 @@ Prefab:
       propertyPath: m_SortingOrder
       value: 2
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 21289948, guid: f7440c1c7a5f8904594cf7d4075c173f, type: 2}
+      propertyPath: m_Color.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 21289946, guid: f7440c1c7a5f8904594cf7d4075c173f, type: 2}
+      propertyPath: m_Color.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6190014, guid: f7440c1c7a5f8904594cf7d4075c173f, type: 2}
+      propertyPath: m_Size.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6190014, guid: f7440c1c7a5f8904594cf7d4075c173f, type: 2}
+      propertyPath: m_Size.y
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 5071292, guid: f7440c1c7a5f8904594cf7d4075c173f, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: f7440c1c7a5f8904594cf7d4075c173f, type: 2}
   m_RootGameObject: {fileID: 257783931}
   m_IsPrefabParent: 0
@@ -1991,7 +2028,6 @@ GameObject:
   - 4: {fileID: 1495883326}
   - 212: {fileID: 1495883331}
   - 61: {fileID: 1495883329}
-  - 50: {fileID: 1495883327}
   - 114: {fileID: 1495883328}
   m_Layer: 5
   m_Name: Collector
@@ -2012,22 +2048,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 132545669}
   m_RootOrder: 0
---- !u!50 &1495883327
-Rigidbody2D:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 5049334, guid: 9bdec2204d8975e489ed17603b3ec6d2,
-    type: 2}
-  m_PrefabInternal: {fileID: 1894408173}
-  m_GameObject: {fileID: 1495883325}
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0
-  m_GravityScale: 0
-  m_FixedAngle: 0
-  m_IsKinematic: 1
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
 --- !u!114 &1495883328
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2054,7 +2074,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Material: {fileID: 6200000, guid: fc536ab374a262346b0522537d5aaf5c, type: 2}
   m_IsTrigger: 0
-  m_Size: {x: .899999976, y: .899999976}
+  m_Size: {x: 1, y: 1}
   m_Center: {x: 0, y: 0}
 --- !u!212 &1495883331
 SpriteRenderer:
@@ -2088,7 +2108,6 @@ GameObject:
   m_Component:
   - 4: {fileID: 1529438639}
   - 212: {fileID: 1529438642}
-  - 50: {fileID: 1529438643}
   - 61: {fileID: 1529438640}
   - 114: {fileID: 1529438641}
   m_Layer: 5
@@ -2120,7 +2139,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Material: {fileID: 6200000, guid: fc536ab374a262346b0522537d5aaf5c, type: 2}
   m_IsTrigger: 0
-  m_Size: {x: .899999976, y: .899999976}
+  m_Size: {x: 1, y: 1}
   m_Center: {x: 0, y: 0}
 --- !u!114 &1529438641
 MonoBehaviour:
@@ -2161,22 +2180,6 @@ SpriteRenderer:
   m_SortingOrder: 2
   m_Sprite: {fileID: 21300014, guid: cac4650eae1214d7d92dd7b3fa9758b4, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
---- !u!50 &1529438643
-Rigidbody2D:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 5071292, guid: f7440c1c7a5f8904594cf7d4075c173f,
-    type: 2}
-  m_PrefabInternal: {fileID: 1335225686}
-  m_GameObject: {fileID: 1529438638}
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0
-  m_GravityScale: 0
-  m_FixedAngle: 0
-  m_IsKinematic: 1
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
 --- !u!1 &1609933698
 GameObject:
   m_ObjectHideFlags: 0
@@ -2541,6 +2544,9 @@ MonoBehaviour:
   - Resource
   IgnoreTags:
   - Enemy
+  - Turret GUI
+  - Collector GUI
+  - Wall GUI
   MoveDiagonal: 1
   DrawMapInEditor: 1
 --- !u!4 &1825071988
@@ -2642,7 +2648,24 @@ Prefab:
       propertyPath: m_SortingOrder
       value: 2
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 21270528, guid: 9bdec2204d8975e489ed17603b3ec6d2, type: 2}
+      propertyPath: m_Color.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 21270530, guid: 9bdec2204d8975e489ed17603b3ec6d2, type: 2}
+      propertyPath: m_Color.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6151964, guid: 9bdec2204d8975e489ed17603b3ec6d2, type: 2}
+      propertyPath: m_Size.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6151964, guid: 9bdec2204d8975e489ed17603b3ec6d2, type: 2}
+      propertyPath: m_Size.y
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 5049334, guid: 9bdec2204d8975e489ed17603b3ec6d2, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 9bdec2204d8975e489ed17603b3ec6d2, type: 2}
   m_RootGameObject: {fileID: 132545668}
   m_IsPrefabParent: 0

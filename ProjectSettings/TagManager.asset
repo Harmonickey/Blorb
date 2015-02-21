@@ -3,14 +3,9 @@
 --- !u!78 &1
 TagManager:
   tags:
-  - Base
-  - WPPathfinder
-  - Waypoint
-  - Obst
   - Enemy
   - Mountain
   - Pathfinder
-  - Towers
   - Bottom
   - Turret
   - Map

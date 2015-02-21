@@ -187,6 +187,11 @@ public class Center : MonoBehaviour {
         Transform tempBottom = bottom;
         Color color = new Color(255.0f, 255.0f, 255.0f); //normal color
 
+        if (tag != "Placement")
+        {
+            Debug.Log("Placing: " + tag);
+        }
+
         switch (tag)
         {
             case "Placement":
@@ -260,7 +265,7 @@ public class Center : MonoBehaviour {
     {
         obj.TakenSpot[spot] = true;
         obj.TakenSpot[(spot + 1) % takenSpots.Length] = true;
-        obj.TakenSpot[(spot - 1) % takenSpots.Length] = true;
+        obj.TakenSpot[(((spot - 1) % takenSpots.Length) + takenSpots.Length) % takenSpots.Length] = true;
 
         if (BuildDirection.IsMid(BuildDirection.ToDirFromSpot(spot))) //we may need to reserve the neighbors
             obj.TakenSpot[BuildDirection.GetDiagonal(spot)] = true;
@@ -270,7 +275,7 @@ public class Center : MonoBehaviour {
     {
         obj.TakenSpot[spot] = true;
         obj.TakenSpot[(spot + 1) % takenSpots.Length] = true;
-        obj.TakenSpot[(spot - 1) % takenSpots.Length] = true;
+        obj.TakenSpot[(((spot - 1) % takenSpots.Length) + takenSpots.Length) % takenSpots.Length] = true;
 
         if (BuildDirection.IsMid(BuildDirection.ToDirFromSpot(spot))) //we may need to reserve the neighbors
             obj.TakenSpot[BuildDirection.GetDiagonal(spot)] = true;
@@ -350,8 +355,6 @@ public abstract class BuildDirection
                           Down, DownMid, DownLeft, DownLeftMid, 
                           Left, LeftMid, LeftUp, LeftUpMid };
 
-    public enum Neighbor { Left, Right };
-    
     public static int OppositeSpot(int spot)
     {
         return (spot + 8) % 16;
@@ -364,7 +367,8 @@ public abstract class BuildDirection
 
     public static float[] ToDirFromSpot(int spot)
     {
-        return (float [])directions[spot];
+        //return (float [])directions[];
+        return (float[])directions[spot];
     }
 
     public static bool IsMid(float[] dir)

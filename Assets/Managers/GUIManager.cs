@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 public class GUIManager : MonoBehaviour {
-	private static GUIManager instance;
+	
 	public GUIText gameOverText, instructionsText, titleText;
 	public Camera minimap, maincamera;
 	public GameObject HUD;
@@ -12,6 +12,18 @@ public class GUIManager : MonoBehaviour {
 	private Transform towers, skipButton, moveIndicator;
 	private Vector3 towersDay, moveIndicatorDay, skipButtonDay,
 		towersNight, moveIndicatorNight, skipButtonNight;
+
+    public static GUIManager Instance
+    {
+        get { return instance; }
+    }
+
+    private static GUIManager instance;
+
+    public bool OnTutorialScreen
+    {
+        get { return (viewStage == 1); }
+    }
 
 	private int viewStage = 0; // 0- title screen, 1- tutorial screen, 2- main game, 3- game over screen
 	private bool shownTutorial = false; // skip stage 1 after seeing it once
@@ -45,8 +57,8 @@ public class GUIManager : MonoBehaviour {
 			}
 			else
 			{
-				placement.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f);
-				placement.transform.parent.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f);
+				//placement.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f);
+				//placement.transform.parent.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f);
 			}
 		}
 	}
