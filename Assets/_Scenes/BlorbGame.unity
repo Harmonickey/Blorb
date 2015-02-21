@@ -404,6 +404,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dayNightDial: {fileID: 817132960}
+  isDay: 1
 --- !u!1 &479597922
 GameObject:
   m_ObjectHideFlags: 0
@@ -1609,7 +1610,7 @@ Light:
   serializedVersion: 3
   m_Type: 1
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: .5
+  m_Intensity: 1
   m_Range: 10
   m_SpotAngle: 30
   m_CookieSize: 10
@@ -2040,7 +2041,7 @@ MonoBehaviour:
   turretPlacement: {fileID: 0}
   collectorPlacement: {fileID: 470528, guid: 9bdec2204d8975e489ed17603b3ec6d2, type: 2}
   wallPlacement: {fileID: 0}
-  cost: 150
+  cost: 50
 --- !u!61 &1495883329
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2197,7 +2198,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1609933698}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: .5, y: .409999996, z: 0}
+  m_LocalPosition: {x: .5, y: .300000012, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 371103352}
@@ -2211,11 +2212,12 @@ GUIText:
   m_GameObject: {fileID: 1609933698}
   m_Enabled: 1
   serializedVersion: 3
-  m_Text: 'Move and build towers during the day.
+  m_Text: 'During the day, build towers around
 
-    Defend your base (the hexagon).
+    your base. Enemies will attack at night.
 
-    Try to survive the night!
+
+    Gather Blorb and expand!
 
 
     Press space to start'
