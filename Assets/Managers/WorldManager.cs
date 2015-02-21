@@ -3,6 +3,7 @@ using System.Collections;
 
 public class WorldManager : MonoBehaviour {
 	public static WorldManager instance;
+	public Light light;
 	public Transform dayNightDial;
     public static float PixelOffset = 750.0f;
 	public bool isDay = true;
@@ -65,6 +66,12 @@ public class WorldManager : MonoBehaviour {
 			
 			isDay = !isDay;
 			startNextPhase = phaseDuration;
+		}
+
+		if (isDay) {
+			light.intensity += (1f - light.intensity) * 0.01f;
+		} else {
+			light.intensity += (0.4f - light.intensity) * 0.01f;
 		}
 	}
 }

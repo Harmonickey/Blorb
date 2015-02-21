@@ -403,6 +403,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de8a0f06b025a4f18a022cc5fde6d82b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  light: {fileID: 1196908571}
   dayNightDial: {fileID: 817132960}
   isDay: 1
 --- !u!1 &479597922
@@ -1201,7 +1202,6 @@ MonoBehaviour:
   titleText: {fileID: 1200285418}
   minimap: {fileID: 630778799}
   maincamera: {fileID: 1140173638}
-  light: {fileID: 1196908571}
   HUD: {fileID: 650051451}
   GUI: {fileID: 371103352}
   HUDTutorial: {fileID: 818692804}

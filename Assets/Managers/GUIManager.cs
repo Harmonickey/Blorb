@@ -4,7 +4,6 @@ public class GUIManager : MonoBehaviour {
 	private static GUIManager instance;
 	public GUIText gameOverText, instructionsText, titleText;
 	public Camera minimap, maincamera;
-	public Light light;
 	public GameObject HUD;
 	public Transform GUI;
 	public SpriteRenderer HUDTutorial;
@@ -105,12 +104,10 @@ public class GUIManager : MonoBehaviour {
 		}
 
 		if (WorldManager.instance.isDay) {
-			light.intensity += (1f - light.intensity) * easing / 5f;
 			towers.localPosition += (towersDay - towers.localPosition) * easing;
 			skipButton.localPosition += (skipButtonDay - skipButton.localPosition) * easing;
 			moveIndicator.localPosition += (moveIndicatorDay - moveIndicator.localPosition) * easing;
 		} else {
-			light.intensity += (0.5f - light.intensity) * easing / 5f;
 			towers.localPosition += (towersNight - towers.localPosition) * easing;
 			moveIndicator.localPosition += (moveIndicatorNight - moveIndicator.localPosition) * easing;
 
