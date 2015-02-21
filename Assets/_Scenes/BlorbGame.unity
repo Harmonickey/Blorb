@@ -771,7 +771,7 @@ SpriteRenderer:
   m_UseLightProbes: 0
   m_LightProbeAnchor: {fileID: 0}
   m_ScaleInLightmap: 1
-  m_SortingLayerID: 0
+  m_SortingLayerID: 70031809
   m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 59d3b66d55ed647738262e136efca103, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -946,7 +946,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 241d6d8df6309a446abcdbb017256636, type: 2}
       propertyPath: m_RootOrder
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 241d6d8df6309a446abcdbb017256636, type: 2}
       propertyPath: Tilesize
@@ -2460,6 +2460,7 @@ MonoBehaviour:
   placement: {fileID: 476196, guid: d1826f45ce6a68e449bdd09a08bf7b56, type: 2}
   healthbar: {fileID: 239317691}
   resourcePoolText: {fileID: 1173905448}
+  blorbIndicator: {fileID: 156226, guid: aa6072936ac8942baa27c40469f72d32, type: 2}
   speed: 6
 --- !u!54 &1728475029
 Rigidbody:

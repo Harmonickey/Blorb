@@ -9,12 +9,13 @@ public class Center : MonoBehaviour {
     public Transform placement;
     public Transform healthbar;
     public TextMesh resourcePoolText;
+	public GameObject blorbIndicator;
 
     private const float pixelOffset = 750.0F;
     private const float placementOffset = 0.725f;
 
 	private float healthInternal;
-	private float resourcesInternal;
+	private int resourcesInternal;
 
     public float speed;
 
@@ -27,13 +28,23 @@ public class Center : MonoBehaviour {
 		}
 	}
 
-	public float blorbAmount
+	public int blorbAmount
 	{ 
 		//made property so updates text dynamically
 		get {return resourcesInternal;}
-		set {resourcesInternal = value; 
+		set {
+			int diff = value - resourcesInternal;
+			resourcesInternal = value; 
 			resourcePoolText.text = ((int)resourcesInternal).ToString();
 			GUIManager.UpdateTowerGUI(blorbAmount);
+
+			if (Mathf.Abs(diff) > 0) {
+				// Add blorb indicator
+				GameObject g = (GameObject)Instantiate(blorbIndicator, resourcePoolText.transform.position, Quaternion.identity);
+				g.transform.parent = resourcePoolText.transform;
+				BlorbIndicator b = g.GetComponent<BlorbIndicator>();
+				b.setDiff(diff);
+			}
 		}
 	}
 
