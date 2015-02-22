@@ -1,18 +1,22 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+[RequireComponent(typeof(SpriteRenderer))]
 public class ResourceCollector : MonoBehaviour {
 
-	public SpriteRenderer collectorSprite;
-
+	private bool currentlyCollecting;
+	private SpriteRenderer collectorSprite;
 	private Resource currentResource;
 	private TileMap map;
 	private Center center;
 
 	// Use this for initialization
 	void Start () {
+		collectorSprite = GetComponent<SpriteRenderer>();
 		map = GameObject.FindWithTag("Map").GetComponent<TileMap>();
-		center = GameObject.FindWithTag("Player").GetComponent<Center>();
+		center = GameObject.FindWithTag("Center").GetComponent<Center>();
+
+		currentlyCollecting = false;
 	}
 	
 	// Update is called once per frame
@@ -40,13 +44,9 @@ public class ResourceCollector : MonoBehaviour {
 	}
 
 	Resource FindResource(){
-		Debug.Log ("Checking if next to resource");
+		//Debug.Log ("Checking if next to resource");
 		Vector3 currentTile = map.PositionToTile(transform.position);
 		Debug.Log ("currentTile = " + currentTile.ToString() + "\n");
-		/*Debug.Log ("left = " + (currentTile + Vector3.left).ToString() + "\n");
-		Debug.Log ("up = " + (currentTile + Vector3.up).ToString() + "\n");
-		Debug.Log ("right = " + (currentTile + Vector3.right).ToString() + "\n");
-		Debug.Log ("down = " + (currentTile + Vector3.left).ToString() + "\n");*/
 
 		if (map.IsResource(currentTile + Vector3.left)){
 			return map.GetResource(currentTile + Vector3.left);
@@ -67,24 +67,28 @@ public class ResourceCollector : MonoBehaviour {
 	}
 
 	void ToggleResourceAttachment(){
-		if (center.collectingFromResource) {
+		if (currentlyCollecting) {
 			currentResource = null;
-			center.collectingFromResource = false;
+			currentlyCollecting = false;
+			Debug.Log ("No longer attached to Resource");
 		}
 		else {
 			currentResource = FindResource();
-			center.collectingFromResource = true;
+			currentlyCollecting = true;
+			Debug.Log ("Attached to Resource");
 		}
 	}
 
 	void CollectFromResource(){
 		if (currentResource != null){
-			center.resourcePool += currentResource.collectResources();
+			float extraBlorb = currentResource.collectBlorb();
+			Debug.Log ("extraBlorb = " + extraBlorb.ToString() + "\n");
+			center.blorbAmount += extraBlorb;
 		}
 		else {
 			Debug.LogWarning("ResourceCollector: Attempt to collect from resource while currentResource is null!");
 		}
 
-		Debug.Log ("resourcePool = " + center.resourcePool.ToString() + "\n");
+		//Debug.Log ("resourcePool = " + center.blorbAmount.ToString() + "\n");
 	}
 }

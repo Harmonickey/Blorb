@@ -35,7 +35,7 @@ public class Pathfinding2D : MonoBehaviour
 
     protected virtual void SetList(List<Vector3> path)
     {
-        if (path == null)
+        if (path == null || path.Count == 0)
         {
             return;
         }

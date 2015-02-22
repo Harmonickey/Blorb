@@ -3,49 +3,21 @@ using System.Collections;
 
 public class Enemy : MonoBehaviour {
 
-    public static float hitSpeed = 1.0f;
-    public static float hitDamage = 1.0f;
-    public bool isHitting = false;
-	public TextMesh healthText;
-	private float health = 100.0f;
-	private float nextHit;
-	private GameObject target;
+	public Transform healthbar;
 
-	// Use this for initialization
-	void Start () {
+    public float hitDamage = 10.0f;
+	private const float killValue = 10f;
 	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		if (target && isHitting && nextHit < Time.time) {
-			target.SendMessage("takeDamage", hitDamage);
-			nextHit = Time.time + hitSpeed;
-		}
-	}
+    private float health = 100.0f;
 
 	public void takeDamage (float amount) {
 		health -= amount;
-		healthText.text = health.ToString();
+		healthbar.localScale = new Vector2 (health * 0.0015f, 0.15f);
 
 		if (health <= 0f) {
 			Destroy(this.gameObject);
+
+			GameObject.FindGameObjectWithTag("Center").SendMessage("receiveBlorb", killValue);
 		}
 	}
-
-    void OnCollisionEnter2D(Collision2D other)
-    {
-		if (other.gameObject.tag != "Enemy") {
-			target = other.gameObject;
-
-			isHitting = true; //stop jittery movement
-		}
-    }
-
-    void OnCollisionExit2D(Collision2D other)
-    {
-		if (other.gameObject == target) {
-			isHitting = false;
-		}
-    }
 }

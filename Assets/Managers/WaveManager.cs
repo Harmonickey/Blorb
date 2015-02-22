@@ -2,21 +2,50 @@
 using System.Collections;
 
 public class WaveManager : MonoBehaviour {
+	public static WaveManager instance;
 	public Transform enemy;
-	public static float waveDelay = 3.0f;
-	public static float enemySpawnDelay = 2.0f;
-	public int enemiesPerWave = 10;
+    public Transform player;
+	private float enemySpawnDelay = 2.0f;
+	private int enemiesPerWave = 10;
 
-	private float startNextWave;
+	private int waveCount = 0;
+	
 	private float spawnNextEnemy;
 	private int enemiesSpawned;
-	private bool waveStarted = false;
+	public bool waveEnded = true;
+
+	void Start() {
+		instance = this;
+
+		enabled = false;
+		GameEventManager.GameStart += GameStart;
+		GameEventManager.GameOver += GameOver;
+		GameEventManager.DayStart += DayStart;
+		GameEventManager.NightStart += NightStart;
+	}
+
+	void DayStart() {
+        player.transform.parent.GetComponent<Center>().IsActive = true;
+	}
+
+	void NightStart() {
+		waveEnded = false;
+		enemiesSpawned = 0;
+		spawnNextEnemy = enemySpawnDelay;
+        player.transform.parent.GetComponent<Center>().IsActive = false;
+        Pathfinder2D.Instance.Create2DMap();
+        GameObject.FindObjectOfType<Placement>().StopPlacement();
+
+		waveCount++;
+	}
+
 
 	void GameStart() {
 		enabled = true;
-		startNextWave = Time.time + waveDelay;
 
+		waveEnded = true;
 		enemiesSpawned = 0;
+		spawnNextEnemy = 0f;
 	}
 
 	void GameOver() {
@@ -27,32 +56,22 @@ public class WaveManager : MonoBehaviour {
 		}
 
 		enabled = false;
-		waveStarted = false;
 	}
 
-	// Use this for initialization
-	void Start () {
-		enabled = false;
-		GameEventManager.GameStart += GameStart;
-		GameEventManager.GameOver += GameOver;
-	}
-	
-	// Update is called once per frame
 	void Update () {
-		if (!waveStarted && startNextWave < Time.time) {
-			waveStarted = true;
-		}
+		spawnNextEnemy -= Time.deltaTime;
 
-		if (waveStarted && spawnNextEnemy < Time.time && enemiesSpawned < enemiesPerWave) {
+		if (!WorldManager.instance.isDay && spawnNextEnemy < 0f && enemiesSpawned < enemiesPerWave) {
 			Transform newEnemy = Instantiate (enemy) as Transform;
-			newEnemy.transform.position = new Vector2 (-10.0f, 10.0f);
+			newEnemy.transform.position = 10 * Random.insideUnitCircle;
+            newEnemy.GetComponent<SimpleAI2D>().Player = player; //set the target as the player
 
-			enemiesSpawned++;
-			spawnNextEnemy = Time.time + enemySpawnDelay;
-		} else if (waveStarted && enemiesSpawned >= enemiesPerWave) {
-			waveStarted = false;
+            enemiesSpawned++;
+            spawnNextEnemy = enemySpawnDelay;
+        }
 
-			//TODO multiple waves
+		if (enemiesSpawned == enemiesPerWave && GameObject.FindGameObjectWithTag("Enemy") == null) {
+			waveEnded = true;
 		}
 	}
 }

@@ -43,19 +43,17 @@ MonoBehaviour:
   HeuristicAggression: 0
   zStart: -10
   zEnd: 10
-  MapStartPosition: {x: -100, y: -100}
-  MapEndPosition: {x: 100, y: 100}
+  MapStartPosition: {x: -25, y: -25}
+  MapEndPosition: {x: 25, y: 25}
   DisallowedTags:
   - Mountain
-  - Enemy
-  - 
-  IgnoreTags:
-  - Player
-  - Base
   - Turret
   - Wall
+  - Collector
+  IgnoreTags:
+  - Enemy
   MoveDiagonal: 1
-  DrawMapInEditor: 0
+  DrawMapInEditor: 1
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

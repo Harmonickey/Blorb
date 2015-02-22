@@ -3,18 +3,23 @@
 --- !u!78 &1
 TagManager:
   tags:
-  - Base
-  - WPPathfinder
-  - Waypoint
-  - Obst
   - Enemy
   - Mountain
   - Pathfinder
-  - Tower
   - Bottom
   - Turret
   - Map
   - Wall
+  - Placement
+  - Collector
+  - TestPiece
+  - Collector Placement
+  - Wall Placement
+  - Turret Placement
+  - Resource
+  - Center
+  - Skip
+  - Movement Indicator
   - 
   Builtin Layer 0: Default
   Builtin Layer 1: TransparentFX
@@ -53,7 +58,7 @@ TagManager:
     userID: 0
     uniqueID: 0
     locked: 0
-  - name: 
+  - name: UI
     userID: 1
     uniqueID: 70031809
     locked: 0

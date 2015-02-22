@@ -2,10 +2,10 @@
 using System.Collections;
 
 public class Turret : MonoBehaviour {
+	public GameObject bullet;
 
-	public static float fireDelay = 1f;
+	public static float fireDelay = 0.25f;
 	public static float range = 100f;
-	public static float damage = 25f;
 	private Transform myTarget;
 	private float nextFireTime;
     private SpriteRenderer gun;
@@ -18,14 +18,22 @@ public class Turret : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		nextFireTime -= Time.deltaTime;
 		// decide if its time to fire
-		if (nextFireTime < Time.time) {
+		if (nextFireTime < 0f) {
 			if (myTarget) {
-				myTarget.gameObject.SendMessage("takeDamage", damage);
+				// spawn bullet
+				GameObject g = (GameObject)Instantiate(bullet, transform.position, Quaternion.identity);
+				
+				// get access to bullet component
+				Bullet b = g.GetComponent<Bullet>();
+				
+				// set destination        
+				b.setTarget(myTarget.transform);
 			}
 
 			myTarget = GetNearestTaggedObject();
-			nextFireTime = Time.time + fireDelay;
+			nextFireTime = fireDelay;
 		}
 
 		if (myTarget) {
