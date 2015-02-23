@@ -4,7 +4,7 @@ using System.Collections;
 public class Resource : MonoBehaviour {
     
 	public int value = 1000;
-    public int depletionRate = 0;
+    public int depletionRate = 1;
     
 	void Start(){
 

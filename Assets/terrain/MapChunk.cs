@@ -29,7 +29,35 @@ public class MapChunk : MonoBehaviour {
 		GenerateMesh();
 		GenerateTexture();
 		CreateObjects();
+		ResourceTest();
 		//Debug.Log ("Chunk complete!");
+	}
+
+	void ResourceTest(){
+		foreach (Resource r in resources.Values){
+			if (tileData.isResource(PositionToChunkTile(r.transform.position))){
+				Debug.Log("Resource at " + r.transform.position.ToString() + " is detecting as resource properly.");
+				Debug.DrawLine(Vector3.zero, r.transform.position, Color.green, 30f);
+			}
+			else {
+				Debug.LogError("Resource at " + r.transform.position.ToString() + " is not detecting as resource!");
+				Debug.DrawLine(Vector3.zero, r.transform.position, Color.red, 30f);
+			}
+
+			/*for (int y = 0; y < tiles_y; y++){
+				for (int x = 0; x < tiles_x; x++){
+					if (tileData.isResource(x,y)){
+						//Debug.DrawLine(Vector3.zero, ChunkTileToPosition(new Vector2(x,y)), Color.black, 30f);
+						//Debug.DrawLine(ChunkTileToPosition(new Vector2(x,y)), r.transform.position, Color.black, 30f);
+						//Debug.DrawLine(r.transform.position, Vector3.zero, Color.black, 30f);
+						//Debug.Log("x: " + x.ToString() + ", y: " + y.ToString() + ", pos: " + PositionToChunkTile(r.transform.position));
+						
+					}
+				}
+			}*/
+		}
+
+
 	}
 
 	void GenerateTexture() {
@@ -129,6 +157,7 @@ public class MapChunk : MonoBehaviour {
 		Debug.Log ("Creating Objects");
 		for (int y = 0; y < tiles_y; y++){
 			for (int x = 0; x < tiles_x; x++){
+				//Vector2 centeringOffset = new Vector2(0.5f * tileSize,  - 0.5f* tileSize);
 				Vector2 absolutePosition = ChunkTileToMapTile(x, y);
 				if (!tileData.isPassable(x, y)){
 					Transform newMountain = Instantiate(mountain) as Transform;
@@ -143,16 +172,56 @@ public class MapChunk : MonoBehaviour {
 					newResource.transform.position = tileMap.TileToPosition((int)absolutePosition.x,(int)absolutePosition.y);
 					newResource.tag = "Resource";
 					newResource.parent = this.gameObject.transform;
-					resources[absolutePosition] = newResource.GetComponent<Resource>();
+					resources[new Vector2(x,y)] = newResource.GetComponent<Resource>();
 				}
 			}
 		}
 	}
 
 	public Vector2 ChunkTileToMapTile(int x, int y){
-		int tile_x = (int)chunkIndex.x * tiles_x + x - ((int) tiles_x / 2);
-		int tile_y = (int)chunkIndex.y * tiles_y + y - ((int) tiles_y / 2);
+		int tile_x = (int)chunkIndex.x * tiles_x + x;// - ((int) tiles_x / 2);
+		int tile_y = (int)chunkIndex.y * tiles_y + y;// - ((int) tiles_y / 2);
 
 		return new Vector2((float)tile_x, (float)tile_y);
 	}
+
+	public Vector2 ChunkTileToMapTile(Vector2 chunkTile){
+		return ChunkTileToMapTile((int)chunkTile.x, (int)chunkTile.y);
+	}
+
+	/*public Vector2 MapTileToChunkTile(int x, int y){
+		int tile_x = x % tiles_x;
+		int tile_y = y % tiles_y;
+		if (chunkIndex.x * tiles_x + tile_x != x || chunkIndex.y * tiles_y + tile_y != y){
+			Debug.LogWarning("MapTileToChunkTile: Result not in current chunk!");
+			return new Vector2(float.NaN, float.NaN);
+		}
+		return new Vector2((float)tile_x, (float)tile_y);
+	}
+
+	public Vector2 MapTileToChunkTile(Vector2 mapTile){
+		return MapTileToChunkTile((int) mapTile.x, (int) mapTile.y);
+	}*/
+
+	public Vector2 ChunkTileToPosition(Vector2 chunkTile){
+		return tileMap.TileToPosition(ChunkTileToMapTile(chunkTile));
+	}
+
+	public Vector2 PositionToChunkTile(Vector2 pos){
+		return tileMap.MapTileToChunkTile(tileMap.PositionToTile(pos));
+	}
+
+	/*
+	public Vector2 ChunkTileToIndex (Vector2 chunkTile){
+		return new Vector2(chunkTile.x + ((int) tiles_x / 2), chunkTile.y + ((int) tiles_y / 2));
+	}
+
+	public Vector2 MapTileToIndex(int x, int y){
+		return ChunkTileToIndex(MapTileToChunkTile(new Vector2(x,y)));
+	}
+
+	Vector2 PositionToIndex(Vector2 pos){
+		return ChunkTileToIndex(MapTileToChunkTile(tileMap.PositionToTile(pos)));
+	}*/
+
 }

@@ -16,6 +16,7 @@ public class TileMap : MonoBehaviour {
 
 	private int map_tiles_x;
 	private int map_tiles_y;
+	private int left, right, top, bottom = 0;
 	private float tileSize = 1f;
 	private int pixelsPerTile = 32;
 	//private Queue<Transform> mountains;
@@ -29,12 +30,17 @@ public class TileMap : MonoBehaviour {
 		chunk = (Transform) Resources.Load("Chunk", typeof(Transform));
 		tileSet = (Texture2D) Resources.Load("TileTextures", typeof(Texture2D));
 
-		CreateNewChunk(0, 0);
+		for (int x = -2; x < 2; x++){
+			for (int y = -2; y < 2; y ++){
+				CreateNewChunk(x, y);
+			}
+		}
 	}
 	
 	void CreateNewChunk(int x, int y){
 		Transform newChunkTransform = Instantiate(this.chunk) as Transform;
-		newChunkTransform.position = ChunkToPosition(x, y);
+		Vector2 centeringOffset = new Vector2(0.5f * tileSize,  - 0.5f* tileSize);
+		newChunkTransform.position = ChunkToPosition(x, y) - centeringOffset;
 		newChunkTransform.parent = this.gameObject.transform;
 
 		MapChunk chunk = newChunkTransform.gameObject.GetComponent<MapChunk>();
@@ -44,7 +50,36 @@ public class TileMap : MonoBehaviour {
 		chunk.tileMap = this;
 		chunk.mountain = this.mountain;
 		chunk.resource = this.resource;
+
+		if (chunks.Count == 0){
+			//if there are no other chunks, need to add it no matter what
+			map_tiles_x += chunk_tiles_x;
+			map_tiles_y += chunk_tiles_y;
+			left = right = (int)chunk.chunkIndex.x;
+			top = bottom = (int)chunk.chunkIndex.y;
+		}
+
+		if (chunk.chunkIndex.x < left){
+			map_tiles_x += chunk_tiles_x;
+			left = (int)chunk.chunkIndex.x;
+		}
+		else if (chunk.chunkIndex.x > right){
+			map_tiles_x += chunk_tiles_x;
+			right = (int)chunk.chunkIndex.x;
+		}
+
+		if (chunk.chunkIndex.y < top){
+			map_tiles_y += chunk_tiles_y;
+			top = (int)chunk.chunkIndex.y;
+		}
+		else if (chunk.chunkIndex.y > bottom){
+			map_tiles_y += chunk_tiles_y;
+			bottom = (int)chunk.chunkIndex.y;
+		}
+
         chunks[chunk.chunkIndex] = chunk;
+
+
 		
     }
 
@@ -71,45 +106,80 @@ public class TileMap : MonoBehaviour {
 
     public Vector3 PositionToTile(Vector3 pos){
         Vector3 trueTileSize = tileSize * transform.localScale; //maybe lossyScale?
-		int tileOffsetWidth = map_tiles_x/2;
-		int tileOffsetHeight = map_tiles_y/2;
+		int tileOffsetWidth = 0;//map_tiles_x/2;
+		int tileOffsetHeight = 0;//map_tiles_y/2;
 
-
-		return new Vector3 (Mathf.FloorToInt(pos.x/trueTileSize.x) + tileOffsetWidth, -1*Mathf.FloorToInt(pos.y/trueTileSize.y) + tileOffsetHeight, 0);
+		return new Vector3 (Mathf.RoundToInt(pos.x/trueTileSize.x) + tileOffsetWidth, -1*Mathf.RoundToInt(pos.y/trueTileSize.y) + tileOffsetHeight, 0);
 	}
+
+	/*public Vector3 PositionToTileOffset(Vector3 pos){
+		Vector3 trueTileSize = tileSize * transform.localScale; //maybe lossyScale?
+		return new Vector3 (Mathf.RoundToInt(pos.x/trueTileSize.x), -1*Mathf.RoundToInt(pos.y/trueTileSize.y), 0);
+	}*/
 	
 	public Vector3 TileToPosition(int x, int y){
 		Vector3 trueTileSize = tileSize * transform.localScale; //maybe lossyScale?
-		float centering_offset_x = 0f;//0.5f * trueTileSize.x;
-		float centering_offset_y = 0f;//0.5f * trueTileSize.y;
+		float centering_offset_x = 0;//0.5f * trueTileSize.x;
+		float centering_offset_y = 0;//0.5f * trueTileSize.y;
 		
 		return new Vector3 (x * trueTileSize.x + centering_offset_x + transform.position.x, -y*trueTileSize.y - centering_offset_y + transform.position.y, 0);
     }
 
+	public Vector3 TileToPosition(Vector3 tile){
+		return TileToPosition((int)tile.x, (int)tile.y);
+	}
+
+	public Vector2 MapTileToChunkTile(int x, int y){
+		Vector2 cIndex = MapTileToChunk(x,y);
+
+		int stride_x = chunk_tiles_x * (int)cIndex.x;
+		int stride_y = chunk_tiles_y * (int)cIndex.y;
+
+		return new Vector2((float)(x - stride_x), (float)(y - stride_y));
+	}
+
+	public Vector2 MapTileToChunkTile(Vector2 mapTile){
+		return MapTileToChunkTile((int) mapTile.x, (int) mapTile.y);
+	}
+
+	public Vector2 MapTileToChunk(Vector2 mapTile){
+		return MapTileToChunk((int)mapTile.x, (int)mapTile.y);
+	}
+
+	public Vector2 MapTileToChunk(int x, int y){
+		return new Vector2(Mathf.Floor((float)x/(float)chunk_tiles_x), Mathf.Floor((float)y/(float)chunk_tiles_y));
+	}
+
 	public bool IsResource(int x, int y){
-		foreach (MapChunk chunk in chunks.Values){
-			return chunk.tileData.isResource(x, y);
+		return IsResource(new Vector2((float) x, (float) y));
+	}
+
+	public bool IsResource(Vector2 position){
+		Vector2 cIndex = MapTileToChunk(position);
+		//Debug.Log ("IsResource: cIndex = " + cIndex.ToString());
+		if (chunks[cIndex].resources.ContainsKey(MapTileToChunkTile(position))){
+			return true;
 		}
-
+		else {
+			Debug.Log("Chunk " + cIndex.ToString() + " did not contain resource at " + MapTileToChunkTile(position).ToString());
+			foreach (Vector2 key in chunks[cIndex].resources.Keys){
+				Debug.Log ("["+cIndex.ToString()+"]: " + key.ToString() + " maps to " + chunks[cIndex].resources[key].ToString());
+			}
+		}
+		
 		return false;
 	}
 
-	public bool IsResource(Vector3 position){
-		foreach (MapChunk chunk in chunks.Values){
-			return chunk.tileData.isResource(position);
-        }
-
-		return false;
+	public Resource GetResource(Vector3 mapTile){
+		return GetResource(new Vector2(mapTile.x, mapTile.y));
 	}
 
-	public Resource GetResource(Vector3 position){
-		return GetResource(new Vector2(position.x, position.y));
-	}
+	public Resource GetResource(Vector2 mapTile){
 
-	public Resource GetResource(Vector2 position){
-		Vector2 chunkLocation = PositionToChunk(position);
-		Debug.Log("Current Chunk:" + chunkLocation.ToString() + "\n");
-		return chunks[chunkLocation].resources[position];
+		Vector2 chunkIndex = MapTileToChunk(mapTile);
+		Vector2 chunkPosition = MapTileToChunkTile(mapTile);
+		Debug.Log("Current Chunk:" + chunkIndex.ToString() + "\n");
+		return chunks[chunkIndex].resources[chunkPosition];
 	}
 
 	public Vector2 GetChunkContainingTile(int x, int y){
@@ -125,8 +195,8 @@ public class TileMap : MonoBehaviour {
 		float chunkSizeX = chunk_tiles_x * tileSize;
 		float chunkSizeY = chunk_tiles_y * tileSize;
 
-		float centering_offset_x = -0.5f * chunkSizeX;
-		float centering_offset_y = -0.5f * chunkSizeY;
+		float centering_offset_x = 0;//-0.5f * chunkSizeX;
+		float centering_offset_y = 0;//-0.5f * chunkSizeY;
 
 		float x_offset = x * chunkSizeX + centering_offset_x;
 		float y_offset = y * chunkSizeY + centering_offset_y;
@@ -138,16 +208,16 @@ public class TileMap : MonoBehaviour {
 	}
 
 	public Vector2 PositionToChunk(float x, float y){
-		float chunkSizeX = tileSize*chunk_tiles_x;
-		float chunkSizeY = tileSize*chunk_tiles_y;
+		int chunkSizeX = (int)tileSize*chunk_tiles_x;
+		int chunkSizeY = (int)tileSize*chunk_tiles_y;
 
-		float x_offset = x - transform.position.x;
-		float y_offset = y - transform.position.y;
+		int x_offset = (int)(x - transform.position.x);
+		int y_offset = (int)(y - transform.position.y);
 
-		float chunk_x = x_offset/chunkSizeX;
-		float chunk_y = y_offset/chunkSizeY;
+		int chunk_x = x_offset/chunkSizeX;
+		int chunk_y = y_offset/chunkSizeY;
 
-		return new Vector2(chunk_x,chunk_y);
+		return new Vector2((float)chunk_x, (float)chunk_y);
 	}
 
 	public Vector2 PositionToChunk(Vector2 position){

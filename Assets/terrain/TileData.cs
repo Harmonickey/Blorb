@@ -106,7 +106,8 @@ public class TileData {
 				float mountainChance = 0.05f * distance + 0.05f; //set arbitrarily, might want to set a cap
 				float resourceChance = Mathf.Min (-0.01f * distance + 0.2f, 0.01f);
 
-				if (seed < resourceChance){
+				if (seed < resourceChance && 
+				    x > 0 && y > 0 && x < width-1 && y < height-1){ //not on an edge
 					SetTileType(x, y, TileType.Resource);
 					//other resource placing stuff
 				}
@@ -123,10 +124,13 @@ public class TileData {
 		}
 
 
-		int edgeWidth = (int) ManhattanDistance(chunkIndex, Vector2.zero) + 5; //5 chosen arbitrarily
+		int edgeWidth = (int) ManhattanDistance(chunkIndex, Vector2.zero) + 5; //constant chosen arbitrarily
 		int edgeHeight = (int) ManhattanDistance(chunkIndex, Vector2.zero) + 5;
-		FillRange(TileType.Grass, edgeHeight, 0,  height - edgeHeight, width);
-		FillRange(TileType.Grass, 0, edgeWidth, height, width - edgeWidth);
+		
+		FillRange(TileType.Grass, 0, 0,  edgeHeight, width);
+		FillRange(TileType.Grass, height - edgeHeight, 0,  height, width);
+		FillRange(TileType.Grass, 0, 0, height, edgeWidth);
+		FillRange(TileType.Grass, 0, height - edgeWidth, height, width);
 		//FillRange(TileType.Grass, corridorSize, corridorSize, (int) (width - distance), (int) (height - distance));
         //mountains should be denser and resources should be sparser the further away from the center you are
 		//also the size of the corridor should also be smaller (min 3?)

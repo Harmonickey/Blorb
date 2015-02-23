@@ -31,7 +31,7 @@ public class ResourceCollector : MonoBehaviour {
 		}
 	}
 
-	bool NextToResource(){
+	/*bool NextToResource(){ 
 		Debug.Log ("Checking if next to resource");
 		//Ideally I'd prefer to replace the contents of this function with some sort of message broadcast
 		Vector3 currentTile = map.PositionToTile(transform.position);
@@ -41,23 +41,35 @@ public class ResourceCollector : MonoBehaviour {
 		Debug.Log ("currentTile = [" + x.ToString() + ", " + y.ToString() + "]\n");
 
 		return (map.IsResource(x+1, y) || map.IsResource(x-1, y) || map.IsResource(x, y+1) || map.IsResource(x, y-1));
-	}
+	}*/
 
 	Resource FindResource(){
 		//Debug.Log ("Checking if next to resource");
 		Vector3 currentTile = map.PositionToTile(transform.position);
 		Debug.Log ("currentTile = " + currentTile.ToString() + "\n");
+		Debug.DrawLine(map.TileToPosition(currentTile), map.TileToPosition(currentTile + Vector3.left), Color.red,5f);
+		Debug.DrawLine(map.TileToPosition(currentTile), map.TileToPosition(currentTile + Vector3.up), Color.red,5f);
+		Debug.DrawLine(map.TileToPosition(currentTile), map.TileToPosition(currentTile + Vector3.right),Color.red,5f);
+		Debug.DrawLine(map.TileToPosition(currentTile), map.TileToPosition(currentTile + Vector3.down),Color.red,5f);
+		Debug.DrawLine(Vector3.zero, transform.position, Color.blue, 5f);
+		Debug.DrawLine(Vector3.zero, map.TileToPosition(currentTile), Color.green, 5f);
+
+		Debug.DrawLine(Vector3.zero, map.TileToPosition(new Vector2(5f, 5f)), Color.magenta, 30f);
 
 		if (map.IsResource(currentTile + Vector3.left)){
+
 			return map.GetResource(currentTile + Vector3.left);
 		} 
 		else if (map.IsResource(currentTile + Vector3.up)){
+
 			return map.GetResource(currentTile + Vector3.up);
 		} 
 		else if (map.IsResource(currentTile + Vector3.right)){
+
 			return map.GetResource(currentTile + Vector3.right);
 		}
 		else if (map.IsResource(currentTile + Vector3.down)){
+
 			return map.GetResource(currentTile + Vector3.down);
 		}
 
@@ -81,7 +93,7 @@ public class ResourceCollector : MonoBehaviour {
 
 	void CollectFromResource(){
 		if (currentResource != null){
-			float extraBlorb = currentResource.collectBlorb();
+			int extraBlorb = currentResource.collectBlorb();
 			Debug.Log ("extraBlorb = " + extraBlorb.ToString() + "\n");
 			center.blorbAmount += extraBlorb;
 		}
