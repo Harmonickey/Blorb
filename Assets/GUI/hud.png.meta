@@ -11,10 +11,12 @@ TextureImporter:
     21300012: hud_6
     21300014: hud_7
     21300016: hud_8
+    21300018: hud_9
+    21300020: hud_10
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
-    enableMipMap: 1
+    enableMipMap: 0
     linearTexture: 0
     correctGamma: 0
     fadeOut: 0
@@ -30,7 +32,7 @@ TextureImporter:
   grayScaleToAlpha: 0
   generateCubemap: 0
   seamlessCubemap: 0
-  textureFormat: -1
+  textureFormat: -3
   maxTextureSize: 1024
   textureSettings:
     filterMode: 1
@@ -65,20 +67,20 @@ TextureImporter:
     - name: hud_1
       rect:
         serializedVersion: 2
-        x: 805
-        y: 620
-        width: 79
-        height: 300
+        x: 806
+        y: 621
+        width: 78
+        height: 299
       alignment: 8
       pivot: {x: 1, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: hud_2
       rect:
         serializedVersion: 2
-        x: 889
-        y: 619
-        width: 235
-        height: 237
+        x: 890
+        y: 620
+        width: 234
+        height: 234
       alignment: 0
       pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -125,20 +127,40 @@ TextureImporter:
     - name: hud_7
       rect:
         serializedVersion: 2
-        x: 804
+        x: 806
         y: 930
-        width: 82
-        height: 41
+        width: 78
+        height: 40
       alignment: 0
       pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: hud_8
       rect:
         serializedVersion: 2
-        x: 804
-        y: 979
-        width: 82
-        height: 41
+        x: 806
+        y: 1181
+        width: 78
+        height: 39
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: hud_9
+      rect:
+        serializedVersion: 2
+        x: 806
+        y: 981
+        width: 78
+        height: 39
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: hud_10
+      rect:
+        serializedVersion: 2
+        x: 806
+        y: 1031
+        width: 78
+        height: 39
       alignment: 0
       pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}

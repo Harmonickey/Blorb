@@ -78,6 +78,7 @@ public class GUIManager : MonoBehaviour {
 		skipButtonDay = skipButtonNight = skipButton.localPosition;
 		moveIndicatorDay = moveIndicatorNight = moveIndicator.localPosition;
 
+		// magic numbers for how much to move each of the elements to be out of frame
 		towersNight.x += 3.2f;
 		skipButtonNight.y -= 1.64f;
 		moveIndicatorNight.y -= 1.64f;
