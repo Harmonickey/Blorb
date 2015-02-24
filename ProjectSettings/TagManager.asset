@@ -20,6 +20,8 @@ TagManager:
   - Center
   - Skip
   - Movement Indicator
+  - Bullet
+  - Towers
   - 
   Builtin Layer 0: Default
   Builtin Layer 1: TransparentFX

@@ -5,12 +5,12 @@ public class WorldManager : MonoBehaviour {
 	public static WorldManager instance;
 	public Light worldLight;
 	public Transform dayNightDial;
-	public SpriteRenderer pauseButton;
+	public SpriteRenderer pauseButton, fastForwardButton;
     public static float PixelOffset = 750.0f;
 	public bool isDay = true;
 
 	private float phaseDuration = 45f;
-	private float startNextPhase;
+	private float startNextPhase, savedTimeScale;
 
 	void GameStart () {
 		enabled = true;
@@ -31,11 +31,24 @@ public class WorldManager : MonoBehaviour {
 	public void PauseButton () {
 		if (!GUIManager.Instance.OnTutorialScreen) {
 			if (Time.timeScale == 0f) {
-				Time.timeScale = 1f;
+				Time.timeScale = savedTimeScale;
 				pauseButton.color = new Color(1f, 1f, 1f, 1f);
 			} else {
+				savedTimeScale = Time.timeScale;
 				Time.timeScale = 0f;
 				pauseButton.color = new Color(1f, 1f, 1f, 0.5f);
+			}
+		}
+	}
+
+	public void FastForwardButton () {
+		if (!GUIManager.Instance.OnTutorialScreen && Time.timeScale != 0f) {
+			if (Time.timeScale == 1f) {
+				Time.timeScale = 2f;
+				fastForwardButton.color = new Color(1f, 1f, 1f, 0.5f);
+			} else {
+				Time.timeScale = 1f;
+				fastForwardButton.color = new Color(1f, 1f, 1f, 1f);
 			}
 		}
 	}

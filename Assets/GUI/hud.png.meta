@@ -13,6 +13,7 @@ TextureImporter:
     21300016: hud_8
     21300018: hud_9
     21300020: hud_10
+    21300022: hud_11
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -163,6 +164,16 @@ TextureImporter:
         height: 140
       alignment: 5
       pivot: {x: 1, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: hud_11
+      rect:
+        serializedVersion: 2
+        x: 805
+        y: 1031
+        width: 40
+        height: 39
+      alignment: 0
+      pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
   spritePackingTag: 
   userData: 

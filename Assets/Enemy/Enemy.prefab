@@ -144,12 +144,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2037c55190120f5408b68b9930288c44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hitSpeed: 1
-  hitDamage: 1
-  isHitting: 0
-  instantDamage: 0
   healthbar: {fileID: 479112}
-  target: {fileID: 0}
 --- !u!212 &21242294
 SpriteRenderer:
   m_ObjectHideFlags: 1
