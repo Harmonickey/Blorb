@@ -3,7 +3,7 @@
 public class GUIManager : MonoBehaviour {
 	
 	public GUIText gameOverText, instructionsText, titleText;
-	public Camera minimap, maincamera;
+	public Camera maincamera;
 	public GameObject HUD;
 	public Transform GUI;
 	public SpriteRenderer HUDTutorial;
@@ -41,8 +41,6 @@ public class GUIManager : MonoBehaviour {
 		foreach (TextMesh text in texts) {
 			text.renderer.enabled = enabled;
 		}
-
-		minimap.enabled = enabled;
 	}
 
 	public static void UpdateTowerGUI(float blorbAmount)
