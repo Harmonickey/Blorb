@@ -325,7 +325,7 @@ public class Center : MonoBehaviour {
     {
 		if (other.gameObject.tag == "Enemy") { //only hit the player
             Enemy enemy = other.gameObject.GetComponent<Enemy>();
-			takeDamage(enemy.hitDamage);
+			takeDamage(enemy.HitDamage);
 			Destroy (enemy.gameObject);
 		}
     }

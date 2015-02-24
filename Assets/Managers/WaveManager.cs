@@ -63,7 +63,9 @@ public class WaveManager : MonoBehaviour {
 
 		if (!WorldManager.instance.isDay && spawnNextEnemy < 0f && enemiesSpawned < enemiesPerWave) {
 			Transform newEnemy = Instantiate (enemy) as Transform;
-			newEnemy.transform.position = 10 * Random.insideUnitCircle;
+			float randAngle = Random.Range(0f, 2 * Mathf.PI);
+
+			newEnemy.position = player.position + 10f * new Vector3(Mathf.Cos(randAngle), Mathf.Sin(randAngle));
             newEnemy.GetComponent<SimpleAI2D>().Player = player; //set the target as the player
 
             enemiesSpawned++;
