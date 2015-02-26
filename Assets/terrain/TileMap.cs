@@ -19,6 +19,7 @@ public class TileMap : MonoBehaviour {
 	private int left, right, top, bottom = 0;
 	private float tileSize = 1f;
 	private int pixelsPerTile = 32;
+	private GameObject center;
 	//private Queue<Transform> mountains;
 
 	// Use this for initialization
@@ -29,6 +30,7 @@ public class TileMap : MonoBehaviour {
 		resource = (Transform) Resources.Load("Resource", typeof(Transform));
 		chunk = (Transform) Resources.Load("Chunk", typeof(Transform));
 		tileSet = (Texture2D) Resources.Load("TileTextures4", typeof(Texture2D));
+		center = GameObject.FindGameObjectWithTag("Center");
 
 		for (int x = -2; x < 2; x++){
 			for (int y = -2; y < 2; y ++){
@@ -83,7 +85,41 @@ public class TileMap : MonoBehaviour {
 		
     }
 
-
+	void GenerateIfNearEdge(){
+		Vector3 position = center.transform.position;
+		Vector3 currentTile = PositionToTile(position);
+		Vector2 currentChunk = MapTileToChunk(currentTile);
+		if (currentChunk.x == left){
+			left -= 1;
+			map_tiles_x += chunk_tiles_x;
+			for (int y = top; y <= bottom; y++){
+				CreateNewChunk(left, y);
+			}
+		}
+		else if (currentChunk.x == right){
+			right += 1;
+			map_tiles_x += chunk_tiles_x;
+			for (int y = top; y <= bottom; y++){
+				CreateNewChunk(right, y);
+			}
+		}
+		else if (currentChunk.y == top){
+			top -= 1;
+			map_tiles_y += chunk_tiles_y;
+			for (int x = left; x <= right; x++)
+			{
+				CreateNewChunk(x, top);
+			}
+		}
+		else if (currentChunk.y == bottom){
+			bottom += 1;
+			map_tiles_y += chunk_tiles_y;
+			for (int x = left; x <= right; x++)
+			{
+				CreateNewChunk(x, top);
+			}
+		}
+	}
 
 	public Color[][] ChopTiles(){
 		int textureTilesX = tileSet.width / pixelsPerTile;
