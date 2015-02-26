@@ -124,8 +124,8 @@ public class TileData {
 		}
 
 
-		int edgeWidth = (int) ManhattanDistance(chunkIndex, Vector2.zero) + 5; //constant chosen arbitrarily
-		int edgeHeight = (int) ManhattanDistance(chunkIndex, Vector2.zero) + 5;
+		int edgeWidth = 5 - (int) ManhattanDistance(chunkIndex, Vector2.zero); //constant chosen arbitrarily
+		int edgeHeight = 5 - (int) ManhattanDistance(chunkIndex, Vector2.zero);
 		
 		FillRange(TileType.Grass, 0, 0,  edgeHeight, width);
 		FillRange(TileType.Grass, height - edgeHeight, 0,  height, width);

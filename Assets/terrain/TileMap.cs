@@ -40,7 +40,7 @@ public class TileMap : MonoBehaviour {
 	}
 
 	void Update(){
-		GenerateIfNearEdge();
+		StartCoroutine("GenerateIfNearEdge");
 	}
 	
 	void CreateNewChunk(int x, int y){
@@ -89,7 +89,7 @@ public class TileMap : MonoBehaviour {
 		
     }
 
-	void GenerateIfNearEdge(){
+	IEnumerator GenerateIfNearEdge(){
 		Vector3 position = center.transform.position;
 		Vector3 currentTile = PositionToTile(position);
 		Vector2 currentChunk = MapTileToChunk(currentTile);
@@ -98,6 +98,8 @@ public class TileMap : MonoBehaviour {
 			map_tiles_x += chunk_tiles_x;
 			for (int y = top; y <= bottom; y++){
 				CreateNewChunk(left, y);
+				
+				yield return null;
 			}
 		}
 		else if (currentChunk.x == right){
@@ -105,6 +107,7 @@ public class TileMap : MonoBehaviour {
 			map_tiles_x += chunk_tiles_x;
 			for (int y = top; y <= bottom; y++){
 				CreateNewChunk(right, y);
+				yield return null;
 			}
 		}
 		else if (currentChunk.y == top){
@@ -113,6 +116,7 @@ public class TileMap : MonoBehaviour {
 			for (int x = left; x <= right; x++)
 			{
 				CreateNewChunk(x, top);
+				yield return null;
 			}
 		}
 		else if (currentChunk.y == bottom){
@@ -121,6 +125,7 @@ public class TileMap : MonoBehaviour {
 			for (int x = left; x <= right; x++)
 			{
 				CreateNewChunk(x, top);
+				yield return null;
 			}
 		}
 	}
