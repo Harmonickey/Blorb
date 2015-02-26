@@ -38,6 +38,10 @@ public class TileMap : MonoBehaviour {
 			}
 		}
 	}
+
+	void Update(){
+		GenerateIfNearEdge();
+	}
 	
 	void CreateNewChunk(int x, int y){
 		Transform newChunkTransform = Instantiate(this.chunk) as Transform;
