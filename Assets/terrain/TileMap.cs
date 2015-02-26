@@ -8,12 +8,12 @@ public class TileMap : MonoBehaviour {
 
 	public int chunk_tiles_x;
 	public int chunk_tiles_y;
-	public Texture2D tileSet;
-	public Transform mountain;
-	public Transform resource;
-	public Transform chunk;
 	public Dictionary<Vector2, MapChunk> chunks;
-
+	
+	private Transform chunk;
+	private Transform mountain;
+	private Transform resource;
+	private Texture2D tileSet;
 	private int map_tiles_x;
 	private int map_tiles_y;
 	private int left, right, top, bottom = 0;
@@ -28,7 +28,7 @@ public class TileMap : MonoBehaviour {
 		mountain = (Transform) Resources.Load("Mountain", typeof(Transform));
 		resource = (Transform) Resources.Load("Resource", typeof(Transform));
 		chunk = (Transform) Resources.Load("Chunk", typeof(Transform));
-		tileSet = (Texture2D) Resources.Load("TileTextures", typeof(Texture2D));
+		tileSet = (Texture2D) Resources.Load("TileTextures4", typeof(Texture2D));
 
 		for (int x = -2; x < 2; x++){
 			for (int y = -2; y < 2; y ++){

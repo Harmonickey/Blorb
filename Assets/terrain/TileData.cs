@@ -6,7 +6,7 @@ public class TileData {
 
 	public int width;
 	public int height;
-	public enum TileType {None, Grass, Stone, Water, Resource, Orange, Purple, Teal};
+	public enum TileType {None, Grass, Stone, Resource};
 
 	private TileType[,] tiles; //Change to Tile sometime?
 	private Vector2 cIndex;
@@ -30,7 +30,7 @@ public class TileData {
 	}
 
 	public static bool isPassable(TileType t){
-		if (t == TileType.Stone || t == TileType.Water || t == TileType.None){
+		if (t == TileType.Stone || t == TileType.None){
 			return false;
 		}
 		else{

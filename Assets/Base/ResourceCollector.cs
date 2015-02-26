@@ -5,14 +5,14 @@ using System.Collections;
 public class ResourceCollector : MonoBehaviour {
 
 	private bool currentlyCollecting;
-	private SpriteRenderer collectorSprite;
+	//private SpriteRenderer collectorSprite;
 	private Resource currentResource;
 	private TileMap map;
 	private Center center;
 
 	// Use this for initialization
 	void Start () {
-		collectorSprite = GetComponent<SpriteRenderer>();
+		//collectorSprite = GetComponent<SpriteRenderer>();
 		map = GameObject.FindWithTag("Map").GetComponent<TileMap>();
 		center = GameObject.FindWithTag("Center").GetComponent<Center>();
 

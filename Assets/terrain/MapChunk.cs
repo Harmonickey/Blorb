@@ -29,7 +29,7 @@ public class MapChunk : MonoBehaviour {
 		GenerateMesh();
 		GenerateTexture();
 		CreateObjects();
-		ResourceTest();
+		//ResourceTest();
 		//Debug.Log ("Chunk complete!");
 	}
 
@@ -80,6 +80,7 @@ public class MapChunk : MonoBehaviour {
 		
 		MeshRenderer meshRenderer = GetComponent<MeshRenderer>();
 		meshRenderer.sharedMaterial = new Material((Material) Resources.Load("MapMaterial", typeof(Material)));
+		//meshRenderer.sharedMaterial.SetTextureScale("_MainTex", new Vector2(1f, -1f)); //otherwise texture is upside down
 		meshRenderer.sharedMaterial.mainTexture = mapTexture;
 	}
 	
@@ -154,7 +155,7 @@ public class MapChunk : MonoBehaviour {
 	}
 	
 	void CreateObjects(){
-		Debug.Log ("Creating Objects");
+		//Debug.Log ("Creating Objects");
 		for (int y = 0; y < tiles_y; y++){
 			for (int x = 0; x < tiles_x; x++){
 				//Vector2 centeringOffset = new Vector2(0.5f * tileSize,  - 0.5f* tileSize);
@@ -162,6 +163,7 @@ public class MapChunk : MonoBehaviour {
 				if (!tileData.isPassable(x, y)){
 					Transform newMountain = Instantiate(mountain) as Transform;
 					newMountain.transform.position = tileMap.TileToPosition((int) absolutePosition.x, (int) absolutePosition.y);
+					//do something with the scale?
 					newMountain.tag = "Mountain";
 					newMountain.transform.parent = this.gameObject.transform;
 					//mountains.Enqueue(newMountain);
