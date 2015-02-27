@@ -87,7 +87,7 @@ public class Placement : MonoBehaviour {
 
     private void UpdateGUIColors()
     {
-        GUIManager.CheckTowerGUIColors();
+        GUIManager.RefreshTowerGUIColors();
 
         this.GetComponent<SpriteRenderer>().color = new Color(0.337f, 0.694f, 1f);
         this.transform.parent.GetComponent<SpriteRenderer>().color = new Color(0.337f, 0.694f, 1f);
@@ -97,6 +97,8 @@ public class Placement : MonoBehaviour {
     {
         if (GameObject.FindGameObjectsWithTag("Placement").Length > 0)
             center.RemoveAllPossiblePlacements();
+
+        GUIManager.RefreshTowerGUIColors();
     }
 
     void CreatePlacement()

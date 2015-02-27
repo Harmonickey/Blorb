@@ -3,6 +3,8 @@ using System.Collections;
 
 public abstract class BuildDirection
 {
+    //would like to improve these data structures into Vector objects
+    //      then we could access the 'x' value instead of the [0] value
     public static float[] Up = new float[3] { 0, 1.0f, 0 };  //0
     public static float[] UpMid = new float[3] { 0.5f, 1.0f, 1f }; //1
     public static float[] UpRightMid = new float[3] { 1.0f, 0.5f, 2f }; //2
@@ -45,11 +47,7 @@ public abstract class BuildDirection
                                      new Vector2(startingFrom.position.x + (dir[0] * 1.5f), startingFrom.position.y + (dir[1] * 1.5f)));
         
         Debug.DrawLine(new Vector3(startingFrom.position.x + dir[0], startingFrom.position.y + dir[1], 0),
-                                new Vector3(startingFrom.position.x + (dir[0] * 1.5f), startingFrom.position.y + (dir[1] * 1.5f)), Color.blue, 10.0f);
-        
-        //test out where linecasts are going
-        Debug.DrawRay(new Vector3(startingFrom.position.x + dir[0], startingFrom.position.y + dir[1]),
-                       new Vector3(dir[0] * 0.1f, dir[1] * 0.1f), Color.blue, 10.0f);
+                                new Vector3(startingFrom.position.x + (dir[0] * 1.5f), startingFrom.position.y + (dir[1] * 1.5f)), Color.blue, 3.0f, false);
         
         //blacklist pseudo-children, and other placement pieces
         ArrayList blackList = new ArrayList();

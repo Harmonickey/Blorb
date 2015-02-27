@@ -1120,7 +1120,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 241d6d8df6309a446abcdbb017256636, type: 2}
       propertyPath: MoveDiagonal
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 241d6d8df6309a446abcdbb017256636, type: 2}
       propertyPath: IgnoreTags.Array.data[1]
@@ -2251,10 +2251,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   chunk_tiles_x: 25
   chunk_tiles_y: 25
-  tileSet: {fileID: 2800000, guid: 035168451bc9c4e4cb12048514fa70da, type: 3}
-  mountain: {fileID: 418206, guid: cb6acb9c9e5e9c44eaae9e06be99ac48, type: 2}
-  resource: {fileID: 418206, guid: d20c8ef166a21ae499a2799959f3d105, type: 2}
-  chunk: {fileID: 461258, guid: aef79eb3945f5344e855e4f78e7d7427, type: 2}
 --- !u!4 &1472864438
 Transform:
   m_ObjectHideFlags: 0
@@ -2700,7 +2696,7 @@ MonoBehaviour:
   - Resource
   IgnoreTags:
   - Enemy
-  MoveDiagonal: 1
+  MoveDiagonal: 0
   DrawMapInEditor: 0
 --- !u!4 &1825071988
 Transform:

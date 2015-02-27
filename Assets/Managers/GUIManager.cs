@@ -61,7 +61,7 @@ public class GUIManager : MonoBehaviour {
 		}
 	}
 
-    public static void CheckTowerGUIColors()
+    public static void RefreshTowerGUIColors()
     {
         SpriteRenderer[] srs = GameObject.FindGameObjectsWithTag("Towers")[0].GetComponentsInChildren<SpriteRenderer>();
         Center center = GameObject.FindGameObjectWithTag("Player").GetComponent<Center>();
@@ -72,7 +72,7 @@ public class GUIManager : MonoBehaviour {
                 if (!center.HasEnoughResources(sr.GetComponent<Placement>().cost))
                     continue;
             }
-            else if (sr.GetComponentInChildren<Placement>() != null)
+            if (sr.GetComponentInChildren<Placement>() != null)
             {
                 if (!center.HasEnoughResources(sr.GetComponentInChildren<Placement>().cost))
                     continue;
