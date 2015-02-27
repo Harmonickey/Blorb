@@ -24,7 +24,6 @@ public class PlacementBottom : MonoBehaviour {
             else
             {
                 this.GetComponent<SpriteRenderer>().color = new Color(0.516f, 0.886f, 0.882f, 0);
-
                 //Placement.placementPiece.positionToSnap = Vector3.zero;
             }
         //}

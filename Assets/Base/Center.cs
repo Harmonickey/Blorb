@@ -167,13 +167,13 @@ public class Center : MonoBehaviour {
         if (!isActive) return;
 
         //get the location of the top of the base
-        Color color = new Color(255.0f, 255.0f, 255.0f); //normal color
+        Color color = new Color(1f, 1f, 1f); //normal color
 
         switch (placementPiece.type)
         {
             case "Placement":
                 placementPiece.piece = placement;
-                color = new Color(0.516f, 0.886f, 0.882f, 0);
+                color = new Color(0.516f, 0.886f, 0.882f, 0); 
                 break;
             case "Turret":
             case "TestPiece":

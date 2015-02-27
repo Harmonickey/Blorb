@@ -16,11 +16,12 @@ public abstract class BaseCohesion {
         
         //start at center at linecast in every direction
         RaycastHit2D[] hits;
+        float distance = 1.3f; // may want to play with this value, as it might reach too far and catch attachments that shouldn't be caught
         for (int i = 0; i < BuildDirection.Directions.Count; i++)
         {
            
             hits = Physics2D.LinecastAll(new Vector2(startingFrom.position.x + BuildDirection.ToDirFromSpot(i)[0], startingFrom.position.y + BuildDirection.ToDirFromSpot(i)[1]),
-                                         new Vector2(startingFrom.position.x + (BuildDirection.ToDirFromSpot(i)[0] * 1.3f), startingFrom.position.y + (BuildDirection.ToDirFromSpot(i)[1]* 1.3f)));
+                                         new Vector2(startingFrom.position.x + (BuildDirection.ToDirFromSpot(i)[0] * distance), startingFrom.position.y + (BuildDirection.ToDirFromSpot(i)[1] * distance)));
             
             /* // see where the linecast is going
             Debug.DrawLine(new Vector2(startingFrom.position.x + BuildDirection.ToDirFromSpot(i)[0], startingFrom.position.y + BuildDirection.ToDirFromSpot(i)[1]),
@@ -40,6 +41,35 @@ public abstract class BaseCohesion {
                 }
             }
         
+        }
+    }
+
+    //mark all the attachments that are not attached to the main body
+    //     this is so the user knows which are going to be deleted, for example
+    public static void MarkAllBrokenAttachments(Transform deletingAttachment)
+    {
+        Attachments[] attachments = GameObject.FindObjectsOfType<Attachments>();
+
+        foreach (Attachments attachment in attachments)
+        {
+            if (!attachment.wasFound)
+            {
+                attachment.GetComponent<SpriteRenderer>().color = new Color(1f, 0f, 0f); //turn it red
+            }
+        }
+    }
+
+    //delete all attachments that are not attached to main body
+    public static void DeleteAllBrokenAttachments()
+    {
+        Attachments[] attachments = GameObject.FindObjectsOfType<Attachments>();
+
+        foreach (Attachments attachment in attachments)
+        {
+            if (!attachment.wasFound)
+            {
+                Object.Destroy(attachment.gameObject);
+            }
         }
     }
 }
