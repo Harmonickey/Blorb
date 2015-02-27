@@ -32,7 +32,7 @@ public class WaveManager : MonoBehaviour {
 		waveEnded = false;
 		enemiesSpawned = 0;
 		spawnNextEnemy = enemySpawnDelay;
-        player.transform.parent.GetComponent<Center>().IsActive = false;
+        player.GetComponent<Center>().IsActive = false;
         Pathfinder2D.Instance.Create2DMap();
         GameObject.FindObjectOfType<Placement>().StopPlacement();
 

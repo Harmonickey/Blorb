@@ -2,16 +2,16 @@
 using System.Collections;
 
 public class Center : MonoBehaviour {
+
+    public Transform basePiece;
     public Transform turret;
     public Transform wall;
     public Transform collector;
-    public Transform bottom;
     public Transform placement;
     public Transform healthbar;
     public TextMesh resourcePoolText;
 	public GameObject blorbIndicator;
 
-    private const float pixelOffset = 750.0F;
     private const float placementOffset = 0.725f;
 
 	private float healthInternal;
@@ -55,14 +55,6 @@ public class Center : MonoBehaviour {
 
 	private bool collectingFromResource = false;
 
-    public bool[] TakenSpot
-    {
-        get { return takenSpots; }
-        set { takenSpots = value;  }
-    }
-
-    private bool[] takenSpots = new bool[16];
-
     public bool IsActive
     {
         get { return isActive; }
@@ -80,8 +72,8 @@ public class Center : MonoBehaviour {
 		//resourcePoolText.text = resourcePool.ToString ();
 		collectingFromResource = false;
 
-		this.renderer.enabled = true;
-        this.transform.FindChild("Player").renderer.enabled = true;
+        this.transform.FindChild("Player Bottom").renderer.enabled = true;
+        this.transform.FindChild("Player Center").renderer.enabled = true;
         isActive = true;
 	}
 
@@ -93,8 +85,9 @@ public class Center : MonoBehaviour {
 	void Start () {
 		GameEventManager.GameStart += GameStart;
 		enabled = false;
-		this.renderer.enabled = false;
-        this.transform.FindChild("Player").renderer.enabled = false;
+
+        this.transform.FindChild("Player Bottom").renderer.enabled = false;
+        this.transform.FindChild("Player Center").renderer.enabled = false;
 		healthbar = this.transform.Find ("GUI/HUD/Health");
 
 		resourcePoolText.renderer.sortingLayerName = "UI";
@@ -103,23 +96,18 @@ public class Center : MonoBehaviour {
 
     public void FindAllPossiblePlacements()
     {
-        //start with the center and iterate through children
-        for (int i = 0; i < takenSpots.Length; i++)
+        //start with the center
+        for (int i = 0; i < BuildDirection.Directions.Count; i++)
         {
-            if (!takenSpots[i])
-            {
-                //place down a placement spot
+            //place down a placement spot, don't have to worry about 
+            if (!BuildDirection.DetectOtherObjects(BuildDirection.ToDirFromSpot(i), this.transform))
                 SetPlacement(BuildDirection.ToDirFromSpot(i), this.transform);
-            }
         }
 
-        foreach (Transform child in this.transform)
-        {
+        foreach (Transform child in basePiece)
             if (child.GetComponent<Attachments>() != null)
-            {
                 child.GetComponent<Attachments>().FindAllPossiblePlacements(this);
-            }
-        }
+
     }
 
     public void RemoveAllPossiblePlacements()
@@ -140,8 +128,7 @@ public class Center : MonoBehaviour {
 
     public void SetPlacement(float[] dir, Transform parent)
     {
-        //placement pieces cost 0
-        PlacePiece("Placement", dir, parent, 0, true);
+        PlacePiece(new PlacementPiece("Placement", dir, parent));
 
         //check if there is a valid path to the center
         /*
@@ -171,121 +158,75 @@ public class Center : MonoBehaviour {
 
         Vector3 movement = new Vector3(inputHorizontal, inputVertical, 0.0f);
 
-        this.transform.position += movement * speed * Time.deltaTime;
+        basePiece.position += movement * speed * Time.deltaTime;
         
     }
 
-    public void PlacePiece(string tag, float[] direction, Transform selectedBasePiece, int cost, bool isOkay = true)
+    public void PlacePiece(PlacementPiece placementPiece)
     {
         if (!isActive) return;
 
-        float xDirection = (float)direction[0];
-        float yDirection = (float)direction[1];
-
         //get the location of the top of the base
-        float offset = GetOffset(selectedBasePiece);
-        Transform piece = placement;
-        Transform tempBottom = bottom;
         Color color = new Color(255.0f, 255.0f, 255.0f); //normal color
 
-        if (tag != "Placement")
-        {
-            Debug.Log("Placing: " + tag);
-        }
-
-        switch (tag)
+        switch (placementPiece.type)
         {
             case "Placement":
-                tempBottom = placement;
-                color = (isOkay ? new Color(0.516f, 0.886f, 0.882f, 0) : new Color(1f, 0.0f, 0.0f, 1.0f));
+                placementPiece.piece = placement;
+                color = new Color(0.516f, 0.886f, 0.882f, 0);
                 break;
             case "Turret":
             case "TestPiece":
-                piece = turret;
+                placementPiece.piece = turret;
                 break;
             case "Wall":
-                piece = wall;
+                placementPiece.piece = wall;
                 break;
             case "Collector":
-                piece = collector;
+                placementPiece.piece = collector;
                 break;
         }
+    
+        //create the placement piece
+        Transform tower = Instantiate(placementPiece.piece) as Transform;
+        tower.tag = placementPiece.type;
+        tower.transform.parent = basePiece;
 
-        Transform childBottom = Instantiate(tempBottom) as Transform;
-        childBottom.transform.parent = selectedBasePiece;
-        childBottom.transform.localScale = Vector3.one;
-        childBottom.GetComponent<SpriteRenderer>().color = color;
-        childBottom.tag = tag;
-
-        if (tag != "Placement")
-            childBottom.GetComponent<Attachments>().Spot = BuildDirection.ToSpotFromDir(direction);
-        if (tag == "Placement")
-            childBottom.GetComponent<PlacementBottom>().Spot = BuildDirection.ToSpotFromDir(direction);
-
-        if (tag != "Placement")
+        if (placementPiece.type == "Placement")
         {
-            //reserve spot for parent
-            if (selectedBasePiece == this.transform) //if we're actually the center...
-                ReserveSpot(BuildDirection.ToSpotFromDir(direction), selectedBasePiece.GetComponent<Center>());
-            else
-                ReserveSpot(BuildDirection.ToSpotFromDir(direction), selectedBasePiece.GetComponent<Attachments>());
-
-            //reserve spot for child just placed (cannot build back on parent)
-            ReserveSpot(BuildDirection.OppositeSpot(BuildDirection.ToSpotFromDir(direction)), childBottom.GetComponentInChildren<Attachments>());
-
-            //create the tower
-            Transform childTower = Instantiate(piece) as Transform;
-            childTower.transform.parent = childBottom;
-            childTower.transform.localScale = Vector3.one;
-            childTower.tag = tag;
+            tower.GetComponent<SpriteRenderer>().color = color;
+            tower.GetComponent<PlacementBottom>().pseudoParent = placementPiece.parent;
         }
 
-        float xOffset = (offset + placementOffset) * (float)xDirection;
-        float yOffset = (offset + placementOffset) * (float)yDirection;
+        float xOffset = (placementPiece.type == "Placement"
+            ? (placementPiece.parent.transform.localPosition.x  //get offset from nearest parent
+              + (GetPixelOffset() + placementOffset) 
+              * placementPiece.direction[0])
+            : placementPiece.positionToSnap.x);  //or just place it exactly where there was a placement piece
 
-        childBottom.transform.position = new Vector3(selectedBasePiece.position.x + xOffset, selectedBasePiece.position.y + yOffset);
+        float yOffset = (placementPiece.type == "Placement" 
+            ? (placementPiece.parent.transform.localPosition.y
+              + (GetPixelOffset() + placementOffset) 
+              * placementPiece.direction[1])
+            : placementPiece.positionToSnap.y);
 
-		blorbAmount -= cost;
+        tower.transform.localPosition = new Vector3(xOffset, yOffset);
+
+        if (placementPiece.type == "Placement")
+            blorbAmount -= placementPiece.cost; //can pass in tower.transform.position here for floating blorb amount
 		//resourcePoolText.text = resourcePool.ToString ();
     }
 
     void RemovePiece(float[] dir, Transform parent)
     {
-        foreach (Transform child in parent)
-        {
-            if (child.GetComponent<Attachments>() != null &&
-                child.GetComponent<Attachments>().Spot == BuildDirection.ToSpotFromDir(dir))
-            {
-                Destroy(child.gameObject);
-                break;
-            }
-        }
+        return;
     }
 
-    private void ReserveSpot(int spot, Attachments obj)
+    private float GetPixelOffset()
     {
-        obj.TakenSpot[spot] = true;
-        obj.TakenSpot[(spot + 1) % takenSpots.Length] = true;
-        obj.TakenSpot[(((spot - 1) % takenSpots.Length) + takenSpots.Length) % takenSpots.Length] = true;
+        SpriteRenderer bottomRenderer = this.transform.FindChild("Player Bottom").GetComponent<SpriteRenderer>();
 
-        if (BuildDirection.IsMid(BuildDirection.ToDirFromSpot(spot))) //we may need to reserve the neighbors
-            obj.TakenSpot[BuildDirection.GetDiagonal(spot)] = true;
-    }
-
-    private void ReserveSpot(int spot, Center obj)
-    {
-        obj.TakenSpot[spot] = true;
-        obj.TakenSpot[(spot + 1) % takenSpots.Length] = true;
-        obj.TakenSpot[(((spot - 1) % takenSpots.Length) + takenSpots.Length) % takenSpots.Length] = true;
-
-        if (BuildDirection.IsMid(BuildDirection.ToDirFromSpot(spot))) //we may need to reserve the neighbors
-            obj.TakenSpot[BuildDirection.GetDiagonal(spot)] = true;
-    }
-
-    private float GetOffset(Transform selectedBasePiece)
-    {
-        SpriteRenderer bottomRenderer = selectedBasePiece.GetComponentInChildren<SpriteRenderer>();;
-        return (bottomRenderer.sprite.rect.height / WorldManager.PixelOffset); //height or width works because they're equivalent
+        return (bottomRenderer.sprite.rect.width / WorldManager.PixelOffset); 
     }
 
     public void takeDamage(float damage)
@@ -328,63 +269,5 @@ public class Center : MonoBehaviour {
 			takeDamage(enemy.HitDamage);
 			Destroy (enemy.gameObject);
 		}
-    }
-}
-
-public abstract class BuildDirection
-{
-    public static float[] Up = new float[3] { 0, 1f, 0 };  //0
-    public static float[] UpMid = new float[3] { 0.5f, 1f, 1f }; //1
-    public static float[] UpRight = new float[3] { 1f, 1f, 2f }; //2
-    public static float[] UpRightMid = new float[3] { 1f, 0.5f, 3f }; //3
-    public static float[] Right = new float[3] { 1f, 0, 4f };  //4
-    public static float[] RightMid = new float[3] { 1f, -0.5f, 5f }; //5
-    public static float[] RightDown = new float[3] { 1f, -1f, 6f }; //6
-    public static float[] RightDownMid = new float[3] { 0.5f, -1f, 7f }; //7
-    public static float[] Down = new float[3] { 0, -1f, 8f };  //8
-    public static float[] DownMid = new float[3] { -0.5f, -1f, 9f }; //9
-    public static float[] DownLeft = new float[3] { -1f, -1f, 10f }; //10
-    public static float[] DownLeftMid = new float[3] { -1f, -0.5f, 11f }; //11
-    public static float[] Left = new float[3] { -1f, 0, 12f };  //12
-    public static float[] LeftMid = new float[3] { -1f, 0.5f, 13f }; //13
-    public static float[] LeftUp = new float[3] { -1f, 1f, 14f }; //14
-    public static float[] LeftUpMid = new float[3] { -0.5f, 1f, 15f }; //15
-
-    private static ArrayList directions = 
-        new ArrayList() { Up, UpMid, UpRight, UpRightMid,
-                          Right, RightMid, RightDown, RightDownMid,
-                          Down, DownMid, DownLeft, DownLeftMid, 
-                          Left, LeftMid, LeftUp, LeftUpMid };
-
-    public static int OppositeSpot(int spot)
-    {
-        return (spot + 8) % 16;
-    }
-
-    public static int ToSpotFromDir(float[] dir)
-    {
-        return (int)dir[2];
-    }
-
-    public static float[] ToDirFromSpot(int spot)
-    {
-        //return (float [])directions[];
-        return (float[])directions[spot];
-    }
-
-    public static bool IsMid(float[] dir)
-    {
-        return (ToSpotFromDir(dir) % 2 != 0);
-    }
-
-    public static int GetDiagonal(int spot)
-    {
-        if (spot == 1 || spot == 5 || spot == 9 || spot == 13)
-            return (spot + 2) % 16;
-
-        if (spot == 3 || spot == 7 || spot == 11 || spot == 15)
-            return (spot - 2) % 16;
-
-        return spot; //not needed
     }
 }
