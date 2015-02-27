@@ -159,7 +159,9 @@ public class Center : MonoBehaviour {
         Vector3 movement = new Vector3(inputHorizontal, inputVertical, 0.0f);
 
         basePiece.position += movement * speed * Time.deltaTime;
-        
+
+        if (inputHorizontal != 0 || inputVertical != 0)
+            GameObject.FindObjectsOfType<Placement>()[0].StopPlacement(); //quick hack to access from here...
     }
 
     public void PlacePiece(PlacementPiece placementPiece)
