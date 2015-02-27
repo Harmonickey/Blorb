@@ -1116,7 +1116,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 241d6d8df6309a446abcdbb017256636, type: 2}
       propertyPath: DrawMapInEditor
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 241d6d8df6309a446abcdbb017256636, type: 2}
       propertyPath: MoveDiagonal
@@ -1153,6 +1153,22 @@ Prefab:
     - target: {fileID: 11400000, guid: 241d6d8df6309a446abcdbb017256636, type: 2}
       propertyPath: IgnoreTags.Array.data[3]
       value: Wall GUI
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 241d6d8df6309a446abcdbb017256636, type: 2}
+      propertyPath: MapStartPosition.x
+      value: -50
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 241d6d8df6309a446abcdbb017256636, type: 2}
+      propertyPath: MapStartPosition.y
+      value: -50
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 241d6d8df6309a446abcdbb017256636, type: 2}
+      propertyPath: MapEndPosition.x
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 241d6d8df6309a446abcdbb017256636, type: 2}
+      propertyPath: MapEndPosition.y
+      value: 50
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 241d6d8df6309a446abcdbb017256636, type: 2}
@@ -2686,8 +2702,8 @@ MonoBehaviour:
   HeuristicAggression: 0
   zStart: -10
   zEnd: 10
-  MapStartPosition: {x: -25, y: -25}
-  MapEndPosition: {x: 25, y: 25}
+  MapStartPosition: {x: -50, y: -50}
+  MapEndPosition: {x: 50, y: 50}
   DisallowedTags:
   - Turret
   - Wall
@@ -2697,7 +2713,7 @@ MonoBehaviour:
   IgnoreTags:
   - Enemy
   MoveDiagonal: 0
-  DrawMapInEditor: 0
+  DrawMapInEditor: 1
 --- !u!4 &1825071988
 Transform:
   m_ObjectHideFlags: 0
