@@ -212,6 +212,11 @@ public class Center : MonoBehaviour {
 
         tower.transform.localPosition = new Vector3(xOffset, yOffset);
 
+        if (placementPiece.type != "Placement")
+        {
+            tower.GetComponent<FixedJoint>().connectedBody = this.GetComponent<Rigidbody>();
+        }
+
         if (placementPiece.type == "Placement")
             blorbAmount -= placementPiece.cost; //can pass in tower.transform.position here for floating blorb amount
 		//resourcePoolText.text = resourcePool.ToString ();
