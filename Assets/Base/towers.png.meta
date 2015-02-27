@@ -55,37 +55,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 995
-        width: 750
-        height: 750
-      alignment: 0
-      pivot: {x: .5, y: .5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-    - name: towers_1
-      rect:
-        serializedVersion: 2
-        x: 1000
-        y: 995
-        width: 750
-        height: 750
-      alignment: 0
-      pivot: {x: .5, y: .5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-    - name: towers_2
-      rect:
-        serializedVersion: 2
-        x: 2000
-        y: 995
-        width: 750
-        height: 750
-      alignment: 0
-      pivot: {x: .5, y: .5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-    - name: towers_3
-      rect:
-        serializedVersion: 2
-        x: 3000
-        y: 995
+        y: 0
         width: 750
         height: 750
       alignment: 0
@@ -94,7 +64,7 @@ TextureImporter:
     - name: towers_4
       rect:
         serializedVersion: 2
-        x: 0
+        x: 1000
         y: 0
         width: 750
         height: 750
@@ -104,7 +74,7 @@ TextureImporter:
     - name: towers_5
       rect:
         serializedVersion: 2
-        x: 1000
+        x: 2000
         y: 0
         width: 750
         height: 750
@@ -114,7 +84,7 @@ TextureImporter:
     - name: towers_6
       rect:
         serializedVersion: 2
-        x: 2000
+        x: 3000
         y: 0
         width: 750
         height: 750
@@ -124,7 +94,7 @@ TextureImporter:
     - name: towers_7
       rect:
         serializedVersion: 2
-        x: 3000
+        x: 3999
         y: 0
         width: 750
         height: 750
