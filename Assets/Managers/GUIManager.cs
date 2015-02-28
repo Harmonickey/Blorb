@@ -45,7 +45,7 @@ public class GUIManager : MonoBehaviour {
 
 	public static void UpdateTowerGUI(float blorbAmount)
 	{
-		Placement[] placements = GameObject.FindGameObjectWithTag("Towers").GetComponentsInChildren<Placement>();
+		Placement[] placements = GUIManager.instance.towers.gameObject.GetComponentsInChildren<Placement>();
 		foreach (Placement placement in placements)
 		{
 			if (placement.cost > blorbAmount)
@@ -63,7 +63,7 @@ public class GUIManager : MonoBehaviour {
 
     public static void RefreshTowerGUIColors()
     {
-        SpriteRenderer[] srs = GameObject.FindGameObjectsWithTag("Towers")[0].GetComponentsInChildren<SpriteRenderer>();
+		SpriteRenderer[] srs = GUIManager.instance.towers.gameObject.GetComponentsInChildren<SpriteRenderer>();
         Center center = GameObject.FindGameObjectWithTag("Player").GetComponent<Center>();
         foreach (SpriteRenderer sr in srs)
         {

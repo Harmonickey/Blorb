@@ -170,17 +170,13 @@ public class Center : MonoBehaviour {
 				
 				nextFireTime = fireDelay;
 			}
+
+			Vector3 mouse = new Vector3(Input.mousePosition.x / Screen.width * 2f - 1f,
+			                            Input.mousePosition.y / Screen.height * 2f - 1f,
+			                            0f);
 			
-//			Vector3 lookTarget = new Vector3();
-//			Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
-//			RaycastHit hit;
-//			
-//			if (Physics.Raycast (ray, out hit)) { 
-//				lookTarget = hit.point; 
-//			}
-//			
-//			Quaternion rotation = Quaternion.LookRotation(lookTarget, centerTurret.TransformDirection(Vector3.forward));
-//			centerTurret.rotation = new Quaternion(0, 0, rotation.z, rotation.w) * Quaternion.Euler(0, 0, -90);
+			Quaternion rotation = Quaternion.LookRotation(mouse, centerTurret.TransformDirection(Vector3.forward));
+			centerTurret.rotation = new Quaternion(0, 0, rotation.z, rotation.w) * Quaternion.Euler(0, 0, -90);
 		}
 	}
 
