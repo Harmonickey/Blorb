@@ -4,36 +4,34 @@ using System.Collections;
 public class Bullet : MonoBehaviour {
 	private float speed = 10.0f;
 	private float damage = 10.0f;
-	private Transform target;
-
+	private Vector3 direction;
+	private float TTL;
+	
 	// Use this for initialization
 	void Start () {
-	
+		TTL = 2f;
+	}
+
+	void OnTriggerEnter (Collider other) {
+		if (other.gameObject.tag == "Enemy") {
+			other.gameObject.SendMessage("takeDamage", damage);
+			Destroy (gameObject);
+		}
 	}
 	
 	void Update () {
+		TTL -= Time.deltaTime;
 		// destroy bullet if destination does not exist anymore
-		if (target == null) {
+		if (TTL <= 0f) {
 			Destroy(gameObject);
 			return;
 		}
 		
 		// fly towards the destination
-		float stepSize = Time.deltaTime * speed;
-		transform.position = Vector3.MoveTowards(transform.position, target.position, stepSize);
-		
-		// reached?
-		if (transform.position.Equals(target.position)) {
-			// decrease teddy health
-			Enemy e = target.GetComponent<Enemy>();
-			e.takeDamage(damage);          
-			
-			// destroy bullet
-			Destroy(gameObject);
-		}
+		transform.position += direction * speed * Time.deltaTime;
 	}
-	
-	public void setTarget(Transform v) {
-		target = v;
+
+	public void setDirection(Vector3 d) {
+		direction = d;
 	}
 }

@@ -29,7 +29,7 @@ public class Turret : MonoBehaviour {
 				Bullet b = g.GetComponent<Bullet>();
 				
 				// set destination        
-				b.setTarget(myTarget.transform);
+				b.setDirection(Vector3.Normalize(myTarget.position - transform.position));
 			}
 
 			myTarget = GetNearestTaggedObject();

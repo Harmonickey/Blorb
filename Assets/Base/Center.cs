@@ -2,17 +2,20 @@
 using System.Collections;
 
 public class Center : MonoBehaviour {
-
+	public GameObject bullet;
     public Transform basePiece;
     public Transform turret;
     public Transform wall;
     public Transform collector;
     public Transform placement;
     public Transform healthbar;
+	private Transform centerTurret;
     public TextMesh resourcePoolText;
 	public GameObject blorbIndicator;
 
     private const float placementOffset = 0.725f;
+	private static float fireDelay = 0.25f;
+	private float nextFireTime;
 
 	private float healthInternal;
 	private float resourcesInternal;
@@ -85,9 +88,9 @@ public class Center : MonoBehaviour {
 	void Start () {
 		GameEventManager.GameStart += GameStart;
 		enabled = false;
-
         this.transform.FindChild("Player Bottom").renderer.enabled = false;
-        this.transform.FindChild("Player Center").renderer.enabled = false;
+		centerTurret = this.transform.FindChild ("Player Center").transform;
+		centerTurret.renderer.enabled = false;
 		healthbar = this.transform.Find ("GUI/HUD/Health");
 
 		resourcePoolText.renderer.sortingLayerName = "UI";
@@ -148,6 +151,37 @@ public class Center : MonoBehaviour {
         //Debug.Log("Has Path: " + HasPathToCenter());
         
     }
+
+	void Update()
+	{
+		if (!WorldManager.instance.isDay) {
+			nextFireTime -= Time.deltaTime;
+			
+			if (nextFireTime < 0f && Input.GetMouseButton(0)) {
+				GameObject g = (GameObject)Instantiate(bullet, transform.position, Quaternion.identity);
+				
+				// get access to bullet component
+				Bullet b = g.GetComponent<Bullet>();
+				
+				// set destination
+				float angle = centerTurret.eulerAngles.z * Mathf.Deg2Rad;
+				b.setDirection(new Vector3(Mathf.Cos(angle), Mathf.Sin(angle)));
+				
+				nextFireTime = fireDelay;
+			}
+			
+			Vector3 lookTarget = new Vector3();
+			Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
+			RaycastHit hit;
+			
+			if (Physics.Raycast (ray, out hit)) { 
+				lookTarget = hit.point; 
+			}
+			
+			Quaternion rotation = Quaternion.LookRotation(lookTarget, centerTurret.TransformDirection(Vector3.forward));
+			centerTurret.rotation = new Quaternion(0, 0, rotation.z, rotation.w) * Quaternion.Euler(0, 0, -90);
+		}
+	}
 
     void FixedUpdate()
     {

@@ -23,7 +23,7 @@ public class Enemy : MonoBehaviour {
 		if (health <= 0f) {
 			Destroy(this.gameObject);
 
-			GameObject.FindGameObjectWithTag("Center").SendMessage("receiveBlorb", killValue);
+			GameObject.FindGameObjectWithTag("Player").SendMessage("receiveBlorb", killValue);
 		}
 	}
 }

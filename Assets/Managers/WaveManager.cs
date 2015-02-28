@@ -25,7 +25,7 @@ public class WaveManager : MonoBehaviour {
 	}
 
 	void DayStart() {
-        player.transform.parent.GetComponent<Center>().IsActive = true;
+        player.GetComponent<Center>().IsActive = true;
 	}
 
 	void NightStart() {

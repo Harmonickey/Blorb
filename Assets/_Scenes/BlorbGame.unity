@@ -161,6 +161,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6775662968db4060b278de54d6a5fdf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bullet: {fileID: 103078, guid: dc751d600c38a471c82bc52f386f623b, type: 2}
   basePiece: {fileID: 768650252}
   turret: {fileID: 437516, guid: e72a9ce88ec4a8348b9080deb6fc74bb, type: 2}
   wall: {fileID: 446076, guid: 031934ff20a40f241ac6550ac66b40dd, type: 2}
