@@ -15,7 +15,7 @@ public class Bullet : MonoBehaviour {
 	void OnTriggerEnter (Collider other) {
 		if (other.gameObject.tag == "Enemy") {
 			other.gameObject.SendMessage("takeDamage", damage);
-			Destroy (gameObject);
+			ObjectPool.instance.PoolObject(gameObject);
 		}
 	}
 	
@@ -23,7 +23,7 @@ public class Bullet : MonoBehaviour {
 		TTL -= Time.deltaTime;
 		// destroy bullet if destination does not exist anymore
 		if (TTL <= 0f) {
-			Destroy(gameObject);
+			ObjectPool.instance.PoolObject(gameObject);
 			return;
 		}
 		

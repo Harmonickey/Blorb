@@ -43,7 +43,8 @@ public class Center : MonoBehaviour {
 
 			if (Mathf.Abs(diff) > 0f) {
 				// Add blorb indicator
-				GameObject g = (GameObject)Instantiate(blorbIndicator, resourcePoolText.transform.position, Quaternion.identity);
+				GameObject g = ObjectPool.instance.GetObjectForType("BlorbIndicator", true);
+				g.transform.position = resourcePoolText.transform.position;
 				g.transform.parent = resourcePoolText.transform;
 				BlorbIndicator b = g.GetComponent<BlorbIndicator>();
 				b.setDiff(diff);
@@ -158,8 +159,8 @@ public class Center : MonoBehaviour {
 			nextFireTime -= Time.deltaTime;
 			
 			if (nextFireTime < 0f && Input.GetMouseButton(0)) {
-				GameObject g = (GameObject)Instantiate(bullet, transform.position, Quaternion.identity);
-				
+				GameObject g = ObjectPool.instance.GetObjectForType("Bullet", false);
+				g.transform.position = transform.position;
 				// get access to bullet component
 				Bullet b = g.GetComponent<Bullet>();
 				
@@ -170,16 +171,16 @@ public class Center : MonoBehaviour {
 				nextFireTime = fireDelay;
 			}
 			
-			Vector3 lookTarget = new Vector3();
-			Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
-			RaycastHit hit;
-			
-			if (Physics.Raycast (ray, out hit)) { 
-				lookTarget = hit.point; 
-			}
-			
-			Quaternion rotation = Quaternion.LookRotation(lookTarget, centerTurret.TransformDirection(Vector3.forward));
-			centerTurret.rotation = new Quaternion(0, 0, rotation.z, rotation.w) * Quaternion.Euler(0, 0, -90);
+//			Vector3 lookTarget = new Vector3();
+//			Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
+//			RaycastHit hit;
+//			
+//			if (Physics.Raycast (ray, out hit)) { 
+//				lookTarget = hit.point; 
+//			}
+//			
+//			Quaternion rotation = Quaternion.LookRotation(lookTarget, centerTurret.TransformDirection(Vector3.forward));
+//			centerTurret.rotation = new Quaternion(0, 0, rotation.z, rotation.w) * Quaternion.Euler(0, 0, -90);
 		}
 	}
 
@@ -192,6 +193,7 @@ public class Center : MonoBehaviour {
 
         Vector3 movement = new Vector3(inputHorizontal, inputVertical, 0.0f);
 
+		//rigidbody.MovePosition(transform.position + movement * speed * Time.fixedDeltaTime);
         basePiece.position += movement * speed * Time.deltaTime;
 
         if (inputHorizontal != 0 || inputVertical != 0)
@@ -308,7 +310,7 @@ public class Center : MonoBehaviour {
 		if (other.gameObject.tag == "Enemy") { //only hit the player
             Enemy enemy = other.gameObject.GetComponent<Enemy>();
 			takeDamage(enemy.HitDamage);
-			Destroy (enemy.gameObject);
+			ObjectPool.instance.PoolObject(enemy.gameObject);
 		}
     }
 }

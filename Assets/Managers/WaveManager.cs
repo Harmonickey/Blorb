@@ -52,7 +52,7 @@ public class WaveManager : MonoBehaviour {
 		GameObject[] taggedGameObjects = GameObject.FindGameObjectsWithTag("Enemy"); 
 
 		foreach (GameObject obj in taggedGameObjects) {
-			Destroy (obj);
+			ObjectPool.instance.PoolObject (obj);
 		}
 
 		enabled = false;
@@ -62,10 +62,10 @@ public class WaveManager : MonoBehaviour {
 		spawnNextEnemy -= Time.deltaTime;
 
 		if (!WorldManager.instance.isDay && spawnNextEnemy < 0f && enemiesSpawned < enemiesPerWave) {
-			Transform newEnemy = Instantiate (enemy) as Transform;
+			GameObject newEnemy = ObjectPool.instance.GetObjectForType("Enemy", true);
 			float randAngle = Random.Range(0f, 2 * Mathf.PI);
 
-			newEnemy.position = player.position + 10f * new Vector3(Mathf.Cos(randAngle), Mathf.Sin(randAngle));
+			newEnemy.transform.position = player.position + 10f * new Vector3(Mathf.Cos(randAngle), Mathf.Sin(randAngle));
             newEnemy.GetComponent<SimpleAI2D>().Player = player; //set the target as the player
 
             enemiesSpawned++;

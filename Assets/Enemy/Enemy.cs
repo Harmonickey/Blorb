@@ -21,7 +21,7 @@ public class Enemy : MonoBehaviour {
 		healthbar.localScale = new Vector2 (health * 0.0015f, 0.15f);
 
 		if (health <= 0f) {
-			Destroy(this.gameObject);
+			ObjectPool.instance.PoolObject(this.gameObject);
 
 			GameObject.FindGameObjectWithTag("Player").SendMessage("receiveBlorb", killValue);
 		}

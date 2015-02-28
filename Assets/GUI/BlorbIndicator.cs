@@ -26,7 +26,7 @@ public class BlorbIndicator : MonoBehaviour {
 		pos.y -= Time.deltaTime * 2f;
 
 		if (color.a <= 0f) {
-			Object.Destroy(gameObject);
+			ObjectPool.instance.PoolObject(gameObject);
 		}
 
 		textMesh.color = color;
