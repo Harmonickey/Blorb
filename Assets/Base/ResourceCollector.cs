@@ -8,13 +8,11 @@ public class ResourceCollector : MonoBehaviour {
 	//private SpriteRenderer collectorSprite;
 	private Resource currentResource;
 	private TileMap map;
-	private Center center;
 
 	// Use this for initialization
 	void Start () {
 		//collectorSprite = GetComponent<SpriteRenderer>();
 		map = GameObject.FindWithTag("Map").GetComponent<TileMap>();
-		center = GameObject.FindWithTag("Center").GetComponent<Center>();
 
 		currentlyCollecting = false;
 	}
@@ -95,7 +93,7 @@ public class ResourceCollector : MonoBehaviour {
 		if (currentResource != null){
 			int extraBlorb = currentResource.collectBlorb();
 			Debug.Log ("extraBlorb = " + extraBlorb.ToString() + "\n");
-			center.blorbAmount += extraBlorb;
+			BlorbManager.Instance.Transaction(extraBlorb, gameObject.transform.position);
 		}
 		else {
 			Debug.LogWarning("ResourceCollector: Attempt to collect from resource while currentResource is null!");

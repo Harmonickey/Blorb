@@ -10,15 +10,12 @@ public class Center : MonoBehaviour {
     public Transform placement;
     public Transform healthbar;
 	private Transform centerTurret;
-    public TextMesh resourcePoolText;
-	public GameObject blorbIndicator;
 
     private const float placementOffset = 0.725f;
 	private static float fireDelay = 0.25f;
 	private float nextFireTime;
 
 	private float healthInternal;
-	private float resourcesInternal;
 
     public float speed;
 
@@ -30,28 +27,7 @@ public class Center : MonoBehaviour {
 			healthbar.localScale = new Vector2 (health, 1f);
 		}
 	}
-
-	public float blorbAmount
-	{ 
-		//made property so updates text dynamically
-		get {return resourcesInternal;}
-		set {
-			float diff = value - resourcesInternal;
-			resourcesInternal = value; 
-			resourcePoolText.text = ((int)resourcesInternal).ToString();
-			GUIManager.UpdateTowerGUI(blorbAmount);
-
-			if (Mathf.Abs(diff) > 0f) {
-				// Add blorb indicator
-				GameObject g = ObjectPool.instance.GetObjectForType("BlorbIndicator", true);
-				g.transform.position = resourcePoolText.transform.position;
-				g.transform.parent = resourcePoolText.transform;
-				BlorbIndicator b = g.GetComponent<BlorbIndicator>();
-				b.setDiff(diff);
-			}
-		}
-	}
-
+	
     public bool CollectingFromResource
     {
         get { return collectingFromResource; }
@@ -71,9 +47,7 @@ public class Center : MonoBehaviour {
 		enabled = true;
 
 		health = 100f;
-
-		blorbAmount = 100f;
-		//resourcePoolText.text = resourcePool.ToString ();
+		BlorbManager.Instance.Set (100f, transform.position);
 		collectingFromResource = false;
 
         this.transform.FindChild("Player Bottom").renderer.enabled = true;
@@ -93,9 +67,6 @@ public class Center : MonoBehaviour {
 		centerTurret = this.transform.FindChild ("Player Center").transform;
 		centerTurret.renderer.enabled = false;
 		healthbar = this.transform.Find ("GUI/HUD/Health");
-
-		resourcePoolText.renderer.sortingLayerName = "UI";
-		resourcePoolText.renderer.sortingOrder = 2;
 	}
 
     public void FindAllPossiblePlacements()
@@ -251,9 +222,9 @@ public class Center : MonoBehaviour {
             tower.GetComponent<FixedJoint>().connectedBody = this.GetComponent<Rigidbody>();
         }
 
-        if (placementPiece.type == "Placement")
-            blorbAmount -= placementPiece.cost; //can pass in tower.transform.position here for floating blorb amount
-		//resourcePoolText.text = resourcePool.ToString ();
+        if (placementPiece.type == "Placement") {
+			BlorbManager.Instance.Transaction(-placementPiece.cost, tower.transform.position);
+		}
     }
 
     void RemovePiece(float[] dir, Transform parent)
@@ -277,12 +248,6 @@ public class Center : MonoBehaviour {
 		}
     }
 
-	public void receiveBlorb(float blorb)
-	{
-		blorbAmount += blorb;
-		//resourcePoolText.text = resourcePool.ToString ();
-	}
-
     private bool HasPathToCenter()
     {
         Pathfinding2D finder = this.gameObject.GetComponent<Pathfinding2D>();
@@ -298,7 +263,7 @@ public class Center : MonoBehaviour {
 
     public bool HasEnoughResources(int cost)
     {
-		return blorbAmount >= cost;
+		return BlorbManager.Instance.BlorbAmount >= cost;
     }
 
     void OnCollisionEnter(Collision other)
