@@ -2,6 +2,12 @@
 using System.Collections;
 
 public class Center : MonoBehaviour {
+	public static Center Instance
+	{
+		get { return instance; }
+	}
+	private static Center instance;
+
 	public GameObject bullet;
     public Transform basePiece;
     public Transform turret;
@@ -14,6 +20,8 @@ public class Center : MonoBehaviour {
     private const float placementOffset = 0.725f;
 	private static float fireDelay = 0.25f;
 	private float nextFireTime;
+
+	private float addHealthCost = 25f;
 
 	private float healthInternal;
 
@@ -57,12 +65,22 @@ public class Center : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		instance = this;
 		GameEventManager.GameStart += GameStart;
 		enabled = false;
         this.transform.FindChild("Player Bottom").renderer.enabled = false;
 		centerTurret = this.transform.FindChild ("Player Center").transform;
 		centerTurret.renderer.enabled = false;
 		healthbar = this.transform.Find ("GUI/HUD/Health");
+	}
+
+	public void AddHealthButton()
+	{
+		if (!GUIManager.Instance.OnTutorialScreen && Time.timeScale != 0f &&
+		    BlorbManager.Instance.BlorbAmount >= addHealthCost && health <= 90f) {
+			BlorbManager.Instance.Transaction(-addHealthCost, transform.position);
+			health += 10f;
+		}
 	}
 
     public void FindAllPossiblePlacements()
@@ -123,6 +141,13 @@ public class Center : MonoBehaviour {
 	void Update()
 	{
 		if (!WorldManager.instance.isDay) {
+			Vector3 mouse = new Vector3(Input.mousePosition.x / (float)Screen.width * 2f - 1f,
+			                            Input.mousePosition.y / (float)Screen.height * 2f - 1f,
+			                            0f);
+			
+			Quaternion rotation = Quaternion.LookRotation(mouse, centerTurret.TransformDirection(Vector3.forward));
+			centerTurret.rotation = new Quaternion(0, 0, rotation.z, rotation.w) * Quaternion.Euler(0, 0, -90);
+
 			nextFireTime -= Time.deltaTime;
 			
 			if (nextFireTime < 0f && Input.GetMouseButton(0)) {
@@ -137,13 +162,6 @@ public class Center : MonoBehaviour {
 				
 				nextFireTime = fireDelay;
 			}
-
-			Vector3 mouse = new Vector3(Input.mousePosition.x / Screen.width * 2f - 1f,
-			                            Input.mousePosition.y / Screen.height * 2f - 1f,
-			                            0f);
-			
-			Quaternion rotation = Quaternion.LookRotation(mouse, centerTurret.TransformDirection(Vector3.forward));
-			centerTurret.rotation = new Quaternion(0, 0, rotation.z, rotation.w) * Quaternion.Euler(0, 0, -90);
 		}
 	}
 
