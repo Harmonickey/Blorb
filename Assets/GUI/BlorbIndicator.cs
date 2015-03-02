@@ -4,12 +4,15 @@ using System.Collections;
 public class BlorbIndicator : MonoBehaviour {
 	private Vector3 pos;
 	private Color color;
+	private float startFade;
 
 	private TextMesh textMesh;
 
-	public void setDiff (float d) {
-		textMesh = this.GetComponent<TextMesh>();
+	public void SetDiff (float d) {
+		startFade = 2f;
 		pos = transform.position;
+
+		textMesh = this.GetComponent<TextMesh>();
 
 		if (d > 0) {
 			textMesh.text = "+" + ((int)d).ToString();
@@ -22,8 +25,12 @@ public class BlorbIndicator : MonoBehaviour {
 	}
 	
 	void Update () {
-		color.a -= Time.deltaTime / 2f;
-		pos.y -= Time.deltaTime * 2f;
+		startFade -= Time.deltaTime;
+		pos.y += Time.deltaTime * 2f;
+
+		if (startFade <= 0f) {
+			color.a -= Time.deltaTime / 2f;
+		}
 
 		if (color.a <= 0f) {
 			ObjectPool.instance.PoolObject(gameObject);

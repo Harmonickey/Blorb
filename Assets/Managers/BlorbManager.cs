@@ -3,6 +3,7 @@ using System.Collections;
 
 public class BlorbManager : MonoBehaviour {
 	public TextMesh blorbAmountText;
+	public Transform map;
 	private static BlorbManager instance;
 	private float blorbAmount;
 
@@ -38,9 +39,9 @@ public class BlorbManager : MonoBehaviour {
 			// Add blorb indicator
 			GameObject g = ObjectPool.instance.GetObjectForType("BlorbIndicator", true);
 			g.transform.position = position;
-			g.transform.parent = blorbAmountText.transform;
+			g.transform.parent = map;
 			BlorbIndicator b = g.GetComponent<BlorbIndicator>();
-			b.setDiff(diff);
+			b.SetDiff(diff);
 		}
 
 		return blorbAmount;

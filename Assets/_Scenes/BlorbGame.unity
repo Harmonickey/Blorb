@@ -261,6 +261,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   blorbAmountText: {fileID: 1173905448}
+  map: {fileID: 1472864438}
 --- !u!1 &239317690
 GameObject:
   m_ObjectHideFlags: 0

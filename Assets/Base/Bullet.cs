@@ -2,9 +2,9 @@
 using System.Collections;
 
 public class Bullet : MonoBehaviour {
-	private float speed = 10.0f;
+	private float speed = 30.0f;
 	private float damage = 10.0f;
-	private Vector3 direction;
+	private Vector3 velocity;
 	private float TTL;
 	
 	// Use this for initialization
@@ -26,12 +26,11 @@ public class Bullet : MonoBehaviour {
 			ObjectPool.instance.PoolObject(gameObject);
 			return;
 		}
-		
-		// fly towards the destination
-		transform.position += direction * speed * Time.deltaTime;
+
+		transform.Translate (velocity * Time.deltaTime);
 	}
 
 	public void setDirection(Vector3 d) {
-		direction = d;
+		velocity = speed * Vector3.Normalize(d);
 	}
 }

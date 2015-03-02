@@ -23,7 +23,7 @@ public class Enemy : MonoBehaviour {
 		if (health <= 0f) {
 			ObjectPool.instance.PoolObject(this.gameObject);
 
-			GameObject.FindGameObjectWithTag("Player").SendMessage("receiveBlorb", killValue);
+			BlorbManager.Instance.Transaction(killValue, transform.position);
 		}
 	}
 }
