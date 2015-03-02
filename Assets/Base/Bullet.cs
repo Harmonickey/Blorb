@@ -19,15 +19,15 @@ public class Bullet : MonoBehaviour {
 		}
 	}
 	
-	void Update () {
-		TTL -= Time.deltaTime;
+	void FixedUpdate () {
+		TTL -= Time.fixedDeltaTime;
 		// destroy bullet if destination does not exist anymore
 		if (TTL <= 0f) {
 			ObjectPool.instance.PoolObject(gameObject);
 			return;
 		}
 
-		transform.Translate (velocity * Time.deltaTime);
+		transform.Translate (velocity * Time.fixedDeltaTime);
 	}
 
 	public void setDirection(Vector3 d) {
