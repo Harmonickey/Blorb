@@ -13,7 +13,7 @@ GameObject:
   - 23: {fileID: 2319868}
   - 114: {fileID: 11419868}
   - 65: {fileID: 6552906}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Chunk
   m_TagString: Untagged
   m_Icon: {fileID: 0}
