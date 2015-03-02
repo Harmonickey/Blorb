@@ -72,7 +72,7 @@ public class Placement : MonoBehaviour {
                         StopPlacement();
 
                     //reinit building process
-                    Pathfinder2D.Instance.Create2DMap();
+                    //Pathfinder2D.Instance.Create2DMap();
                     center.RecalculateAllPossiblePlacements();
                     
                 }
