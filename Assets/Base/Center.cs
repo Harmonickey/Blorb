@@ -159,8 +159,8 @@ public class Center : MonoBehaviour {
 		//rigidbody.MovePosition(transform.position + movement * speed * Time.fixedDeltaTime);
         basePiece.position += movement * speed * Time.fixedDeltaTime;
 
-        if (BoundsIntersect(this.collider))
-            basePiece.position -= movement * speed * Time.fixedDeltaTime;
+        //if (BoundsIntersect(this.collider))
+        //    basePiece.position -= movement * speed * Time.fixedDeltaTime;
 
         if (inputHorizontal != 0 || inputVertical != 0)
             GameObject.FindObjectsOfType<Placement>()[0].StopPlacement(); //quick hack to access from here...
