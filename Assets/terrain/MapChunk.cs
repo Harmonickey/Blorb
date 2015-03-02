@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 [RequireComponent(typeof(MeshFilter))]
 [RequireComponent(typeof(MeshRenderer))]
-[RequireComponent(typeof(MeshCollider))]
+//[RequireComponent(typeof(MeshCollider))]
 public class MapChunk : MonoBehaviour {
 	public int tiles_x;
 	public int tiles_y;
