@@ -127,13 +127,6 @@ public class MapChunk : MonoBehaviour {
 				triangles[triangleOffset + 4] = bottomRightVertex;
 				triangles[triangleOffset + 5] = bottomLeftVertex;
 				
-				if(!tileData.isPassable(x, y)){
-					vertices[topLeftVertex].z = 0.001f;
-					vertices[topRightVertex].z = 0.001f;
-					vertices[bottomLeftVertex].z = 0.001f;
-					vertices[bottomRightVertex].z = 0.001f;
-				}
-				
 			}
 		}
 		

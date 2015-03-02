@@ -132,7 +132,7 @@ public class TileMap : MonoBehaviour {
 			map_tiles_y += chunk_tiles_y;
 			for (int x = left; x <= right; x++)
 			{
-				CreateNewChunk(x, top);
+				CreateNewChunk(x, bottom);
 				yield return null;
 			}
 		}
