@@ -10,11 +10,19 @@ public class TileData {
 
 	private TileType[,] tiles; //Change to Tile sometime?
 	private Vector2 cIndex;
+	private float mountainDistanceFactor;
+	private float mountainBaseDensity;
+	private float resourceDistanceFactor;
+	private float resourceBaseDensity;
 
-	public TileData(int width, int height, Vector2 chunkIndex){
+	public TileData(int width, int height, float mountainDistanceFactor, float mountainBaseDensity, float resourceDistanceFactor, float resourceBaseDensity, Vector2 chunkIndex){
 		tiles = new TileType[width, height]; //change to Tile sometime?
 		this.width = width;
 		this.height = height;
+		this.mountainDistanceFactor = mountainDistanceFactor;
+		this.mountainBaseDensity = mountainBaseDensity;
+		this.resourceDistanceFactor = resourceDistanceFactor;
+		this.resourceBaseDensity = resourceBaseDensity;
 		cIndex = chunkIndex;
 
 		GenerateMap(cIndex);
@@ -103,8 +111,8 @@ public class TileData {
 			for(int y = 0; y < height; y++){
 				float seed = Random.Range(0f, 1f);
 				float distance = ManhattanDistance(chunkIndex, Vector2.zero);
-				float mountainChance = 0.05f * distance + 0.05f; //set arbitrarily, might want to set a cap
-				float resourceChance = Mathf.Min (-0.01f * distance + 0.2f, 0.01f);
+				float mountainChance = mountainDistanceFactor * distance + mountainBaseDensity;
+				float resourceChance = Mathf.Min (resourceDistanceFactor * distance + resourceBaseDensity, 0.01f);
 
 				if (seed < resourceChance && 
 				    x > 0 && y > 0 && x < width-1 && y < height-1){ //not on an edge

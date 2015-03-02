@@ -18,11 +18,10 @@ public class MapChunk : MonoBehaviour {
 	private float tileSize = 1f;
 	private int pixelsPerTile = 32;
 
-	// Use this for initialization
 	void Start () {
-		tileData = new TileData(tiles_x, tiles_y, chunkIndex);
-		resources = new Dictionary<Vector2, Resource>();
-		GenerateChunk();
+		//tileData = new TileData(tiles_x, tiles_y, chunkIndex);
+
+		//GenerateChunk();
 	}
 
 	public void GenerateChunk () {
@@ -156,6 +155,7 @@ public class MapChunk : MonoBehaviour {
 	
 	void CreateObjects(){
 		//Debug.Log ("Creating Objects");
+		resources = new Dictionary<Vector2, Resource>();
 		for (int y = 0; y < tiles_y; y++){
 			for (int x = 0; x < tiles_x; x++){
 				//Vector2 centeringOffset = new Vector2(0.5f * tileSize,  - 0.5f* tileSize);

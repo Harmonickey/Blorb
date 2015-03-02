@@ -8,6 +8,9 @@ public class TileMap : MonoBehaviour {
 
 	public int chunk_tiles_x;
 	public int chunk_tiles_y;
+	public float mountainDistanceFactor, mountainBaseDensity = 0.05f;
+	public float resourceDistanceFactor = -0.01f;
+	public float resourceBaseDensity = 0.2f;
 	public Dictionary<Vector2, MapChunk> chunks;
 	
 	private Transform chunk;
@@ -50,9 +53,13 @@ public class TileMap : MonoBehaviour {
 		newChunkTransform.parent = this.gameObject.transform;
 
 		MapChunk chunk = newChunkTransform.gameObject.GetComponent<MapChunk>();
+
 		chunk.tiles_x = chunk_tiles_x;
 		chunk.tiles_y = chunk_tiles_y;
 		chunk.chunkIndex = new Vector2(x, y);
+		chunk.tileData = new TileData(chunk.tiles_x, chunk.tiles_y, 
+		                              mountainDistanceFactor, mountainBaseDensity, resourceDistanceFactor, resourceBaseDensity,
+		                              chunk.chunkIndex);
 		chunk.tileMap = this;
 		chunk.mountain = this.mountain;
 		chunk.resource = this.resource;
@@ -84,6 +91,7 @@ public class TileMap : MonoBehaviour {
 		}
 
         chunks[chunk.chunkIndex] = chunk;
+		chunk.GenerateChunk();
 
 
 		
