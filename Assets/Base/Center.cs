@@ -55,10 +55,6 @@ public class Center : MonoBehaviour {
         isActive = true;
 	}
 
-	void OnTriggerEnter (Collider collision) {
-		gameObject.SetActive (false);
-	}
-
 	// Use this for initialization
 	void Start () {
 		GameEventManager.GameStart += GameStart;
