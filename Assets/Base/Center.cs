@@ -256,11 +256,8 @@ public class Center : MonoBehaviour {
         if (placementPiece.type != "Placement")
         {
             tower.GetComponent<FixedJoint>().connectedBody = this.GetComponent<Rigidbody>();
-        }
-
-        if (placementPiece.type == "Placement") {
 			BlorbManager.Instance.Transaction(-placementPiece.cost, tower.transform.position);
-		}
+        }
     }
 
     void RemovePiece(float[] dir, Transform parent)

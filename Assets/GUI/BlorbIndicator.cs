@@ -9,7 +9,7 @@ public class BlorbIndicator : MonoBehaviour {
 	private TextMesh textMesh;
 
 	public void SetDiff (float d) {
-		startFade = 2f;
+		startFade = 0.5f;
 		pos = transform.position;
 
 		textMesh = this.GetComponent<TextMesh>();
