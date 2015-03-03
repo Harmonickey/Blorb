@@ -4,6 +4,7 @@ using System.Collections;
 public abstract class BaseCohesion {
 
     public static ArrayList visitedNodes = new ArrayList();
+    private static ArrayList markedAttachments = new ArrayList();
     
 	public static void FindAllNeighbors(Transform startingFrom = null, Transform deletingAttachment = null)
     {
@@ -49,26 +50,42 @@ public abstract class BaseCohesion {
     public static void MarkAllBrokenAttachments(Transform deletingAttachment)
     {
         Attachments[] attachments = GameObject.FindObjectsOfType<Attachments>();
+        TurnRed(deletingAttachment, true);
 
         foreach (Attachments attachment in attachments)
         {
             if (!attachment.wasFound)
             {
-                attachment.GetComponent<SpriteRenderer>().color = new Color(1f, 0f, 0f); //turn it red
+                TurnRed(attachment.transform, true);
+                markedAttachments.Add(attachment);
             }
+        }
+    }
+
+    public static void UnMarkAllAttachments()
+    {
+        foreach (Attachments attachment in markedAttachments)
+        {
+            TurnRed(attachment.transform, false);
         }
     }
 
     //delete all attachments that are not attached to main body
     public static void DeleteAllBrokenAttachments()
     {
-        Attachments[] attachments = GameObject.FindObjectsOfType<Attachments>();
-
-        foreach (Attachments attachment in attachments)
+        foreach (Attachments attachment in markedAttachments)
         {
-            if (!attachment.wasFound)
+            Object.Destroy(attachment.gameObject);
+        }
+    }
+
+    private static void TurnRed(Transform targetPiece, bool red)
+    {
+        foreach (Transform child in targetPiece)
+        {
+            if (child.GetComponent<SpriteRenderer>() != null)
             {
-                Object.Destroy(attachment.gameObject);
+                child.GetComponent<SpriteRenderer>().color = new Color((red ? 1f : 0f), 0f, 0f); //turn them red
             }
         }
     }

@@ -50,16 +50,18 @@ public class Placement : MonoBehaviour {
         {
             selected = true;
             preSelected = false;
+
+            BaseCohesion.UnMarkAllAttachments();
         }
     }
 
     void Update()
     {
+        
         if (selected)
-        {   
+        {
             if (Input.GetMouseButtonDown(0)) //for now, drop with mouse-button "0" which is left-click
             {
-
                 if (placementPiece.positionToSnap != Vector3.zero)
                 {
                     center.PlacePiece(placementPiece);
@@ -72,9 +74,8 @@ public class Placement : MonoBehaviour {
                         StopPlacement();
 
                     //reinit building process
-                    //Pathfinder2D.Instance.Create2DMap();
                     center.RecalculateAllPossiblePlacements();
-                    
+
                 }
             }
         }
@@ -82,6 +83,27 @@ public class Placement : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             StopPlacement();
+            BaseCohesion.UnMarkAllAttachments();
+        }
+    }
+
+    void FixedUpdate()
+    {
+        if (Input.GetMouseButtonDown(0) && !selected)
+        {
+
+            Attachments[] attachments = GameObject.FindObjectsOfType<Attachments>();
+            Vector3 mouse = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0));
+            mouse = new Vector3(mouse.x, mouse.y, 0);
+
+            foreach (Attachments attachment in attachments)
+            {
+                if (attachment.collider.bounds.Contains(mouse))
+                {
+                    BaseCohesion.FindAllNeighbors(null, attachment.transform); // find out our base cohesion network
+                    BaseCohesion.MarkAllBrokenAttachments(attachment.transform);
+                }
+            }
         }
     }
 

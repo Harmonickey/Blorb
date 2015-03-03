@@ -24,11 +24,4 @@ public class Attachments : MonoBehaviour {
         }
 
     }
-
-    void OnMouseDown()
-    {
-        // if we're not placing pieces (maybe change this later...)
-        if (GameObject.FindGameObjectsWithTag("Placement").Length == 0)
-            BaseCohesion.FindAllNeighbors(null, this.transform); // find out our base cohesion network
-    }
 }

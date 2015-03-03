@@ -93,5 +93,6 @@ public class WorldManager : MonoBehaviour {
 		} else {
 			worldLight.intensity += (0.4f - worldLight.intensity) * 0.01f;
 		}
+
 	}
 }
