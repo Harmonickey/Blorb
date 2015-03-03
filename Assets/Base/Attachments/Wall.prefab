@@ -28,6 +28,7 @@ GameObject:
   - 114: {fileID: 11492562}
   - 65: {fileID: 6591292}
   - 54: {fileID: 5486366}
+  - 138: {fileID: 13887452}
   m_Layer: 0
   m_Name: Wall
   m_TagString: Wall
@@ -183,6 +184,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   wasFound: 0
+--- !u!138 &13887452
+FixedJoint:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 146076}
+  m_ConnectedBody: {fileID: 0}
+  m_BreakForce: Infinity
+  m_BreakTorque: Infinity
+  m_EnableCollision: 0
 --- !u!212 &21246078
 SpriteRenderer:
   m_ObjectHideFlags: 1
