@@ -99,6 +99,8 @@ public class Placement : MonoBehaviour {
             center.RemoveAllPossiblePlacements();
 
         GUIManager.RefreshTowerGUIColors();
+
+        selected = false;
     }
 
     void CreatePlacement()
