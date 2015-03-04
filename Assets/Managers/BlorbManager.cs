@@ -21,6 +21,18 @@ public class BlorbManager : MonoBehaviour {
 		instance = this;
 		blorbAmountText.renderer.sortingLayerName = "UI";
 		blorbAmountText.renderer.sortingOrder = 2;
+		GameEventManager.GameStart += GameStart;
+	}
+
+	void GameStart ()
+	{
+		StartCoroutine (DelayBlorb ());
+	}
+
+	IEnumerator DelayBlorb()
+	{       
+		yield return new WaitForSeconds(0.01f);
+		BlorbManager.Instance.Set (100f, Center.Instance.transform.position);
 	}
 
 	public float Set(float amount, Vector3 position)

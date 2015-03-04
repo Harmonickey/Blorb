@@ -55,7 +55,6 @@ public class Center : MonoBehaviour {
 		enabled = true;
 
 		health = 100f;
-		BlorbManager.Instance.Set (100f, transform.position);
 		collectingFromResource = false;
 
         this.transform.FindChild("Player Bottom").renderer.enabled = true;
@@ -141,8 +140,8 @@ public class Center : MonoBehaviour {
 	void Update()
 	{
 		if (!WorldManager.instance.isDay) {
-			Vector3 mouse = new Vector3(Input.mousePosition.x / (float)Screen.width * 2f - 1f,
-			                            Input.mousePosition.y / (float)Screen.height * 2f - 1f,
+			Vector3 mouse = new Vector3(Input.mousePosition.x / (float)(Screen.width * 2f) - 1f,
+			                            Input.mousePosition.y / (float)(Screen.height * 2f) - 1f,
 			                            0f);
 			
 			Quaternion rotation = Quaternion.LookRotation(mouse, centerTurret.TransformDirection(Vector3.forward));

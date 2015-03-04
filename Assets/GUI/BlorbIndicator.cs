@@ -13,6 +13,8 @@ public class BlorbIndicator : MonoBehaviour {
 		pos = transform.position;
 
 		textMesh = this.GetComponent<TextMesh>();
+		textMesh.renderer.sortingLayerName = "UI";
+		textMesh.renderer.sortingOrder = 2;
 
 		if (d > 0) {
 			textMesh.text = "+" + ((int)d).ToString();
@@ -22,6 +24,9 @@ public class BlorbIndicator : MonoBehaviour {
 			color = new Color(1f, 0f, 0f, 1f);
 		}
 
+		if (GUIManager.Instance.OnTutorialScreen) {
+			textMesh.renderer.enabled = false;
+		}
 	}
 	
 	void Update () {
@@ -38,5 +43,9 @@ public class BlorbIndicator : MonoBehaviour {
 
 		textMesh.color = color;
 		transform.position = pos;
+
+		if (!textMesh.renderer.enabled) {
+			textMesh.renderer.enabled = true;
+		}
 	}
 }
