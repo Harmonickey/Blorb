@@ -46,8 +46,8 @@ public abstract class BuildDirection
         hits = Physics2D.LinecastAll(new Vector2(startingFrom.position.x + dir[0], startingFrom.position.y + dir[1]),
                                      new Vector2(startingFrom.position.x + (dir[0] * 1.5f), startingFrom.position.y + (dir[1] * 1.5f)));
         
-        //Debug.DrawLine(new Vector3(startingFrom.position.x + dir[0], startingFrom.position.y + dir[1], 0),
-        //                        new Vector3(startingFrom.position.x + (dir[0] * 1.5f), startingFrom.position.y + (dir[1] * 1.5f)), Color.blue, 3.0f, false);
+        Debug.DrawLine(new Vector3(startingFrom.position.x + dir[0], startingFrom.position.y + dir[1], 0),
+                                new Vector3(startingFrom.position.x + (dir[0] * 1.5f), startingFrom.position.y + (dir[1] * 1.5f)), Color.blue, 3.0f, false);
         
         //blacklist pseudo-children, and other placement pieces
         ArrayList blackList = new ArrayList();
