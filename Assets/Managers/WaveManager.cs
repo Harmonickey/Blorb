@@ -34,6 +34,7 @@ public class WaveManager : MonoBehaviour {
 		spawnNextEnemy = enemySpawnDelay;
         player.GetComponent<Center>().IsActive = false;
 
+        Debug.Log("Calling Pathfinder");
         Pathfinder2D.Instance.MapStartPosition = new Vector2(-25 + player.position.x, -25 + player.position.y);
         Pathfinder2D.Instance.MapEndPosition = new Vector2(25 + player.position.x, 25 + player.position.y);
         Pathfinder2D.Instance.Create2DMap();
