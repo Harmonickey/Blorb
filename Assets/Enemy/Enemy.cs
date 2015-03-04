@@ -3,7 +3,9 @@ using System.Collections;
 
 public class Enemy : MonoBehaviour {
 
-	public Transform healthbar;
+	public Transform HealthbarPrefab;
+	private HealthBar healthbar;
+	private float health;
 
     public float HitDamage {
 		get {
@@ -13,12 +15,19 @@ public class Enemy : MonoBehaviour {
 
 	private float hitDamage = 10f;
 	private const float killValue = 10f;
-	
-    private float health = 100.0f;
+
+	void Start () {
+		health = 100f;
+		Transform tmp = Instantiate (HealthbarPrefab, transform.position, transform.rotation) as Transform;
+
+		tmp.parent = this.transform;
+		healthbar = tmp.GetComponent<HealthBar> ();
+		healthbar.Reset ();
+	}
 
 	public void takeDamage (float amount) {
 		health -= amount;
-		healthbar.localScale = new Vector2 (health * 0.0015f, 0.15f);
+		healthbar.Set (health / 100f);
 
 		if (health <= 0f) {
 			ObjectPool.instance.PoolObject(this.gameObject);
