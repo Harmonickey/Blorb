@@ -9,11 +9,13 @@ public class Placement : MonoBehaviour {
 
     public int cost;
 
-    public ArrayList possiblePlacements = new ArrayList();
+    public static ArrayList possiblePlacements = new ArrayList();
 
     private bool selected;
     private bool preSelected;
     private Center center;
+
+    public static bool isInRange = false;
 
     void Start()
     {
@@ -73,10 +75,41 @@ public class Placement : MonoBehaviour {
                     if (!center.HasEnoughResources(this.cost))
                         StopPlacement();
 
+                    possiblePlacements = new ArrayList();
+
                     //reinit building process
                     center.RecalculateAllPossiblePlacements();
 
                 }
+            }
+            else
+            {
+               
+                Vector3 mouse = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0));
+                mouse = new Vector3(mouse.x, mouse.y, 0);
+
+                PlacementBottom closest = possiblePlacements[0] as PlacementBottom;
+                float selectionThreshold = (((this.GetComponent<SpriteRenderer>().sprite.rect.width * 2) / WorldManager.PixelOffset) / 2) + 0.1f;
+                float closestDistance = Mathf.Infinity;
+                foreach (PlacementBottom possiblePlacement in possiblePlacements)
+                {
+                    float distance = Vector2.Distance(mouse, possiblePlacement.transform.position);
+                    if (distance < closestDistance)
+                    {
+                        closestDistance = distance;
+                        closest = possiblePlacement;
+                    }
+                    possiblePlacement.GetComponent<SpriteRenderer>().color = new Color(0.516f, 0.886f, 0.882f, 0);
+                }
+
+                if (closestDistance <= selectionThreshold)
+                {
+                    placementPiece.positionToSnap = closest.transform.localPosition;
+                    closest.GetComponent<SpriteRenderer>().color = new Color(0.516f, 0.886f, 0.882f, 0.9f);
+                }
+                
+
+
             }
         }
 
@@ -117,6 +150,8 @@ public class Placement : MonoBehaviour {
 
     public void StopPlacement()
     {
+        possiblePlacements = new ArrayList();
+
         if (GameObject.FindGameObjectsWithTag("Placement").Length > 0)
             center.RemoveAllPossiblePlacements();
 

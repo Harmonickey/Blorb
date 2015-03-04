@@ -17,7 +17,7 @@ public class Center : MonoBehaviour {
     public Transform healthbar;
 	private Transform centerTurret;
 
-    private const float placementOffset = 0.725f;
+    private const float placementOffset = 0.81f;
 	private static float fireDelay = 0.25f;
 	private float nextFireTime;
 
