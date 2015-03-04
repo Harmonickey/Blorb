@@ -28,6 +28,8 @@ public class GUIManager : MonoBehaviour {
 	private int viewStage = 0; // 0- title screen, 1- tutorial screen, 2- main game, 3- game over screen
 	private bool shownTutorial = false; // skip stage 1 after seeing it once
 
+	public bool MouseOverUI = false;
+
 	void setHUD (bool enabled) {
 		SpriteRenderer[] renderers = HUD.GetComponentsInChildren<SpriteRenderer>();
 		TextMesh[] texts = HUD.GetComponentsInChildren<TextMesh> ();

@@ -148,8 +148,8 @@ public class Center : MonoBehaviour {
 			centerTurret.rotation = new Quaternion(0, 0, rotation.z, rotation.w) * Quaternion.Euler(0, 0, -90);
 
 			nextFireTime -= Time.deltaTime;
-			
-			if (nextFireTime < 0f && Input.GetMouseButton(0)) {
+
+			if (nextFireTime < 0f && Input.GetMouseButton(0) && !GUIManager.Instance.MouseOverUI) {
 				GameObject g = ObjectPool.instance.GetObjectForType("Bullet", false);
 				g.transform.position = transform.position;
 				// get access to bullet component
