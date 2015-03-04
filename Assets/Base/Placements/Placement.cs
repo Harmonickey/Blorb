@@ -28,6 +28,8 @@ public class Placement : MonoBehaviour {
     {
         if (GUIManager.Instance.OnTutorialScreen) return;
 
+        BaseCohesion.UnMarkAllAttachments();
+
         preSelected = true;
 
         //only create new ones if we have none
@@ -82,12 +84,12 @@ public class Placement : MonoBehaviour {
 
                 }
             }
-            else
+            else if (possiblePlacements.Count > 0)
             {
                
                 Vector3 mouse = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0));
                 mouse = new Vector3(mouse.x, mouse.y, 0);
-
+                
                 PlacementBottom closest = possiblePlacements[0] as PlacementBottom;
                 float selectionThreshold = (((this.GetComponent<SpriteRenderer>().sprite.rect.width * 2) / WorldManager.PixelOffset) / 2) + 0.1f;
                 float closestDistance = Mathf.Infinity;
@@ -108,8 +110,6 @@ public class Placement : MonoBehaviour {
                     closest.GetComponent<SpriteRenderer>().color = new Color(0.516f, 0.886f, 0.882f, 0.9f);
                 }
                 
-
-
             }
         }
 
@@ -133,7 +133,7 @@ public class Placement : MonoBehaviour {
             {
                 if (attachment.collider.bounds.Contains(mouse))
                 {
-                    BaseCohesion.FindAllNeighbors(null, attachment.transform); // find out our base cohesion network
+                    BaseCohesion.FindAllNeighbors(attachment.transform); // find out our base cohesion network
                     BaseCohesion.MarkAllBrokenAttachments(attachment.transform);
                 }
             }
@@ -150,6 +150,8 @@ public class Placement : MonoBehaviour {
 
     public void StopPlacement()
     {
+        selected = false;
+
         possiblePlacements = new ArrayList();
 
         if (GameObject.FindGameObjectsWithTag("Placement").Length > 0)
@@ -157,7 +159,7 @@ public class Placement : MonoBehaviour {
 
         GUIManager.RefreshTowerGUIColors();
 
-        selected = false;
+        
     }
 
     void CreatePlacement()

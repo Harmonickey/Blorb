@@ -14,7 +14,6 @@ public class Attachments : MonoBehaviour {
 
     public void FindAllPossiblePlacements(Center center)
     {
-
         for (int i = 0; i < BuildDirection.Directions.Count; i++)
         {
             //check to make sure it's not going to place on another branch of the structure that
