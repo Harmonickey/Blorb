@@ -13,7 +13,7 @@ public class Bullet : MonoBehaviour {
 	}
 
 	void OnTriggerEnter (Collider other) {
-		if (other.gameObject.tag == "Enemy") {
+		if (other.gameObject.tag == "Enemy" && other.enabled) {
 			other.gameObject.SendMessage("takeDamage", damage);
 			Reset ();
 			ObjectPool.instance.PoolObject(gameObject);
@@ -29,7 +29,7 @@ public class Bullet : MonoBehaviour {
 			return;
 		}
 
-		transform.position += velocity * Time.fixedDeltaTime;
+		transform.Translate (velocity * Time.fixedDeltaTime);
 	}
 
 	public void setDirection(Vector3 d) {

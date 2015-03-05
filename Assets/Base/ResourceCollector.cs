@@ -20,11 +20,13 @@ public class ResourceCollector : MonoBehaviour {
 
 		length = theParticleSystem.GetParticles(particles);
 		for (int i = 0; i < particles.Length; i++) {
-			Vector3 rp = particles[i].position - transform.position;
+			Vector3 rp = particles[i].position + theParticleSystem.transform.localPosition;
+
+			if (i == 0) { Debug.Log (rp.magnitude); }
 			if (rp.magnitude < 0.2f) {
 				particles[i].lifetime = 0f;
 			} else {
-				particles[i].position = Vector3.MoveTowards(particles[i].position, transform.position, power * Time.deltaTime);
+				particles[i].position = Vector3.MoveTowards(particles[i].position, -theParticleSystem.transform.localPosition, power * Time.deltaTime);
 			}
 		}
 		theParticleSystem.SetParticles(particles, length);

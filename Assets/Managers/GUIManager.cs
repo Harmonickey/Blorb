@@ -35,13 +35,15 @@ public class GUIManager : MonoBehaviour {
 		TextMesh[] texts = HUD.GetComponentsInChildren<TextMesh> ();
 
 		foreach (SpriteRenderer renderer in renderers) {
-			if (renderer.sprite.name != "hud_4") {
+			if (renderer.sprite.name != "hud_4" && renderer.gameObject.tag != "Tower Detail") {
 				renderer.enabled = enabled;
 			}
 		}
 
 		foreach (TextMesh text in texts) {
-			text.renderer.enabled = enabled;
+			if (text.gameObject.tag != "Tower Detail") {
+				text.renderer.enabled = enabled;
+			}
 		}
 	}
 

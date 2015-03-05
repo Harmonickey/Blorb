@@ -49,7 +49,7 @@ public class Turret : MonoBehaviour {
 		}
 	}
 
-	Transform GetNearestTaggedObject() {
+	private Transform GetNearestTaggedObject() {
 		
 		float nearestDistanceSqr = Mathf.Infinity;
 		GameObject[] taggedGameObjects = GameObject.FindGameObjectsWithTag("Enemy"); 
