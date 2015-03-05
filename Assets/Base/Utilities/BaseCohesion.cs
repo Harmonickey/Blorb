@@ -73,12 +73,33 @@ public abstract class BaseCohesion {
         markedAttachments = new ArrayList();
     }
 
-    //delete all attachments that are not attached to main body
-    public static void DeleteAllBrokenAttachments()
+    public static void ResetWasFoundForAttachments()
     {
-        foreach (Attachments attachment in markedAttachments)
+        foreach (Attachments attachment in GameObject.FindObjectsOfType<Attachments>())
         {
-            Object.Destroy(attachment.gameObject);
+            attachment.wasFound = false;
+        }
+    }
+
+    //delete all attachments that are not attached to main body
+    public static void DeleteAllBrokenAttachments(bool useMarked)
+    {
+        if (useMarked)
+        {
+            foreach (Attachments attachment in markedAttachments)
+            {
+                Object.Destroy(attachment.gameObject);
+            }
+        }
+        else
+        {
+            foreach (Attachments attachment in GameObject.FindObjectsOfType<Attachments>())
+            {
+                if (!attachment.wasFound)
+                {
+                    Object.Destroy(attachment.gameObject);
+                }
+            }
         }
     }
 

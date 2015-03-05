@@ -14,7 +14,8 @@ public class Bullet : MonoBehaviour {
 
 	void OnTriggerEnter (Collider other) {
 		if (other.gameObject.tag == "Enemy") {
-			other.gameObject.SendMessage("takeDamage", damage);
+            other.gameObject.GetComponent<Enemy>().takeDamage(damage);
+			//other.gameObject.SendMessage("takeDamage", damage);
 			ObjectPool.instance.PoolObject(gameObject);
 		}
 	}

@@ -280,16 +280,21 @@ public class Center : MonoBehaviour {
 		}
     }
 
-    private bool HasPathToCenter()
+    public bool HasPathToCenter()
     {
         Pathfinding2D finder = this.gameObject.GetComponent<Pathfinding2D>();
         finder.FindPath(new Vector3(20.0f + this.transform.position.x, 20.0f + this.transform.position.y, 0.0f), this.transform.position);
         Debug.DrawLine(new Vector3(20.0f + this.transform.position.x, 20.0f + this.transform.position.y, 0.0f),
                        this.transform.position, Color.red, 100.0f, false);
 
+        Debug.Log("PATH LENGTH: " + finder.Path.Count);
         if (finder.Path.Count > 0)
+        {
+            Debug.Log("Found Path");
+            finder.Path.Clear();
             return true;
-
+        }
+        Debug.Log("No Path To Center");
         return false;
     }
 

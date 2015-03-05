@@ -10,6 +10,14 @@ public class Attachments : MonoBehaviour {
     public void takeDamage(float damage)
     {
         health -= damage;
+
+        if (health <= 0f)
+        {
+            //find all neighbors if possible (starting from center), skipping this particular attachment
+            BaseCohesion.FindAllNeighbors(this.transform);
+            BaseCohesion.DeleteAllBrokenAttachments(false); //delete all that were not found
+            BaseCohesion.UnMarkAllAttachments();
+        }
     }
 
     public void FindAllPossiblePlacements(Center center)
@@ -22,5 +30,15 @@ public class Attachments : MonoBehaviour {
                 center.SetPlacement(BuildDirection.ToDirFromSpot(i), this.transform);
         }
 
+    }
+
+    void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.tag == "Enemy")
+        { //only hit the player
+            Enemy enemy = other.gameObject.GetComponent<Enemy>();
+            takeDamage(enemy.HitDamage);
+            ObjectPool.instance.PoolObject(enemy.gameObject);
+        }
     }
 }
