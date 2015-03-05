@@ -28,7 +28,7 @@ public class SimpleAI2D : Pathfinding2D
         if (Player != null)
         {
             //save distance so we do not have to call it multiple times
-            tempDistance = Vector3.Distance(transform.position, Player.position);
+            tempDistance = Vector3.Distance(transform.position, Player.localPosition);
 
             //Check if we are able to search
             if (search == true)

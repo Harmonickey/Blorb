@@ -140,16 +140,16 @@ public class Center : MonoBehaviour {
 	void Update()
 	{
 		if (!WorldManager.instance.isDay) {
-			Vector3 mouse = new Vector3(Input.mousePosition.x / (float)(Screen.width * 2f) - 1f,
-			                            Input.mousePosition.y / (float)(Screen.height * 2f) - 1f,
+			Vector3 mouse = new Vector3(Input.mousePosition.x - Screen.width / 2f,
+			                            Input.mousePosition.y - Screen.height / 2f,
 			                            0f);
 			
-			Quaternion rotation = Quaternion.LookRotation(mouse, centerTurret.TransformDirection(Vector3.forward));
+			Quaternion rotation = Quaternion.LookRotation(mouse.normalized, Vector3.forward);
 			centerTurret.rotation = new Quaternion(0, 0, rotation.z, rotation.w) * Quaternion.Euler(0, 0, -90);
 
 			nextFireTime -= Time.deltaTime;
-			
-			if (nextFireTime < 0f && Input.GetMouseButton(0)) {
+
+			if (nextFireTime < 0f && Input.GetMouseButton(0) && !GUIManager.Instance.MouseOverUI) {
 				GameObject g = ObjectPool.instance.GetObjectForType("Bullet", false);
 				g.transform.position = transform.position;
 				// get access to bullet component

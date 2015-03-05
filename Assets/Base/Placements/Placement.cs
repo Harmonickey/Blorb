@@ -4,10 +4,12 @@ using System.Collections;
 public class Placement : MonoBehaviour {
 
     public Transform player;
+	public SpriteRenderer pictograph;
 
     public static PlacementPiece placementPiece;
 
     public int cost;
+	public TextMesh costText;
 
     public static ArrayList possiblePlacements = new ArrayList();
 
@@ -22,6 +24,28 @@ public class Placement : MonoBehaviour {
         selected = false;
         center = player.GetComponent<Center>();
     }
+
+	void setTowerDetail (bool enabled)
+	{
+		pictograph.renderer.enabled = enabled;
+		pictograph.transform.parent.renderer.enabled = enabled;
+		costText.text = cost.ToString ();
+		costText.renderer.enabled = enabled;
+	}
+
+	void OnMouseEnter ()
+	{
+		GUIManager.Instance.MouseOverUI = true;
+		if (!GUIManager.Instance.OnTutorialScreen) {
+			setTowerDetail (true);
+		}
+	}
+	
+	void OnMouseExit ()
+	{
+		GUIManager.Instance.MouseOverUI = false;
+		setTowerDetail (false);
+	}
 
 	// Use this for initialization
 	void OnMouseDown()

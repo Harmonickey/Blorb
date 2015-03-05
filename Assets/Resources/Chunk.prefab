@@ -12,8 +12,7 @@ GameObject:
   - 64: {fileID: 6419868}
   - 23: {fileID: 2319868}
   - 114: {fileID: 11419868}
-  - 65: {fileID: 6552906}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Chunk
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -72,18 +71,6 @@ MeshCollider:
   m_SmoothSphereCollisions: 0
   m_Convex: 0
   m_Mesh: {fileID: 0}
---- !u!65 &6552906
-BoxCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 161258}
-  m_Material: {fileID: 13400000, guid: 1f35847626e8b264398c217e9e1d8ac8, type: 2}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 25, y: 25, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &11419868
 MonoBehaviour:
   m_ObjectHideFlags: 1
