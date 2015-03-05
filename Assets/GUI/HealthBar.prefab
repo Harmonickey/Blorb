@@ -10,7 +10,7 @@ GameObject:
   - 4: {fileID: 435332}
   - 114: {fileID: 11489732}
   m_Layer: 0
-  m_Name: Health Bar
+  m_Name: HealthBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -26,7 +26,7 @@ GameObject:
   - 4: {fileID: 457532}
   - 212: {fileID: 21257532}
   m_Layer: 0
-  m_Name: Health Background
+  m_Name: Health Bar Back
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -42,7 +42,7 @@ GameObject:
   - 4: {fileID: 469638}
   - 212: {fileID: 21269638}
   m_Layer: 0
-  m_Name: Health Bar
+  m_Name: Health Bar Front
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

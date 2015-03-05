@@ -658,7 +658,6 @@ GameObject:
   - 212: {fileID: 479597928}
   - 61: {fileID: 479597924}
   - 114: {fileID: 479597925}
-  - 50: {fileID: 479597926}
   m_Layer: 5
   m_Name: Turret
   m_TagString: Turret
@@ -703,21 +702,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 69281698}
   cost: 25
---- !u!50 &479597926
-Rigidbody2D:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 479597922}
-  m_Mass: 9.99999975e-05
-  m_LinearDrag: 0
-  m_AngularDrag: 0
-  m_GravityScale: 0
-  m_FixedAngle: 0
-  m_IsKinematic: 1
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
 --- !u!212 &479597928
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1561,6 +1545,7 @@ MonoBehaviour:
   HUD: {fileID: 650051451}
   GUI: {fileID: 371103352}
   HUDTutorial: {fileID: 818692804}
+  MouseOverUI: 0
 --- !u!4 &870855512
 Transform:
   m_ObjectHideFlags: 0
@@ -1770,6 +1755,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemy: {fileID: 442294, guid: 64941476ad224584198e7145f228cc9d, type: 2}
   player: {fileID: 69281698}
+  theBase: {fileID: 0}
   waveEnded: 1
 --- !u!1 &1140173633
 GameObject:
@@ -2439,7 +2425,6 @@ GameObject:
   - 212: {fileID: 1495883331}
   - 61: {fileID: 1495883329}
   - 114: {fileID: 1495883328}
-  - 50: {fileID: 1495883327}
   m_Layer: 5
   m_Name: Collector
   m_TagString: Collector
@@ -2459,21 +2444,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 132545669}
   m_RootOrder: 0
---- !u!50 &1495883327
-Rigidbody2D:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1495883325}
-  m_Mass: 9.99999975e-05
-  m_LinearDrag: 0
-  m_AngularDrag: 0
-  m_GravityScale: 0
-  m_FixedAngle: 0
-  m_IsKinematic: 1
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
 --- !u!114 &1495883328
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2533,7 +2503,6 @@ GameObject:
   - 212: {fileID: 1529438642}
   - 61: {fileID: 1529438640}
   - 114: {fileID: 1529438641}
-  - 50: {fileID: 1529438643}
   m_Layer: 5
   m_Name: Wall
   m_TagString: Wall
@@ -2601,21 +2570,6 @@ SpriteRenderer:
   m_SortingOrder: 2
   m_Sprite: {fileID: 21300014, guid: cac4650eae1214d7d92dd7b3fa9758b4, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
---- !u!50 &1529438643
-Rigidbody2D:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1529438638}
-  m_Mass: 9.99999975e-05
-  m_LinearDrag: 0
-  m_AngularDrag: 0
-  m_GravityScale: 0
-  m_FixedAngle: 0
-  m_IsKinematic: 1
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
 --- !u!1 &1609933698
 GameObject:
   m_ObjectHideFlags: 0

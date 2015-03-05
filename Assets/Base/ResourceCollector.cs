@@ -3,93 +3,84 @@ using System.Collections;
 
 [RequireComponent(typeof(SpriteRenderer))]
 public class ResourceCollector : MonoBehaviour {
+	private float range = 100f;
+	private Transform myTarget;
+	private SpriteRenderer collector;
+	private float nextCollect;
 
-	private bool currentlyCollecting;
-	//private SpriteRenderer collectorSprite;
-	private Resource currentResource;
-	private TileMap map;
+	public ParticleSystem theParticleSystem;
+	private float power = 1.0f;
+	private int length;
+	private ParticleSystem.Particle[] particles = new ParticleSystem.Particle[1000];
+	
+	void LateUpdate () {
+		if (!theParticleSystem) {
+			return;
+		}
 
-	// Use this for initialization
+		length = theParticleSystem.GetParticles(particles);
+		for (int i = 0; i < particles.Length; i++) {
+			Vector3 rp = particles[i].position - transform.position;
+			if (rp.magnitude < 0.2f) {
+				particles[i].lifetime = 0f;
+			} else {
+				particles[i].position = Vector3.MoveTowards(particles[i].position, transform.position, power * Time.deltaTime);
+			}
+		}
+		theParticleSystem.SetParticles(particles, length);
+	}
+
 	void Start () {
 		//collectorSprite = GetComponent<SpriteRenderer>();
-		map = GameObject.FindWithTag("Map").GetComponent<TileMap>();
-
-		currentlyCollecting = false;
+		collector = this.transform.GetComponent<SpriteRenderer> ();
+		theParticleSystem = this.transform.parent.GetComponentInChildren<ParticleSystem> ();
 	}
 	
-	// Update is called once per frame
 	void Update () {
-		if (Input.GetKeyDown(KeyCode.LeftAlt) && (currentResource != null || FindResource() != null)){
-			Debug.Log ("Toggling Resource Attachment");
-			ToggleResourceAttachment();
-		}
+		// doing this the expensive way for now. TODO make this more efficient
+		myTarget = GetNearestTaggedObject();
 
-		if (currentResource != null){
-			CollectFromResource();
-		}
-	}
+		if (myTarget) {
+			Vector3 moveDirection = myTarget.position - collector.transform.position; 
+			if (moveDirection != Vector3.zero) 
+			{
+				float angle = Mathf.Atan2(moveDirection.y, moveDirection.x) * Mathf.Rad2Deg;
+				
+				collector.transform.rotation = Quaternion.AngleAxis(angle - 90f, Vector3.forward);
+			}
 
-	/*bool NextToResource(){ 
-		Debug.Log ("Checking if next to resource");
-		//Ideally I'd prefer to replace the contents of this function with some sort of message broadcast
-		Vector3 currentTile = map.PositionToTile(transform.position);
+			theParticleSystem.transform.position = myTarget.position;
+			Resource r = myTarget.GetComponent<Resource>();
 
-		int x = (int) currentTile.x;
-		int y = (int) currentTile.y;
-		Debug.Log ("currentTile = [" + x.ToString() + ", " + y.ToString() + "]\n");
-
-		return (map.IsResource(x+1, y) || map.IsResource(x-1, y) || map.IsResource(x, y+1) || map.IsResource(x, y-1));
-	}*/
-
-	Resource FindResource(){
-		//Debug.Log ("Checking if next to resource");
-		Vector3 currentTile = map.PositionToTile(transform.position);
-		Debug.Log ("currentTile = " + currentTile.ToString() + "\n");
-		Debug.DrawLine(map.TileToPosition(currentTile), map.TileToPosition(currentTile + Vector3.left), Color.red,5f);
-		Debug.DrawLine(map.TileToPosition(currentTile), map.TileToPosition(currentTile + Vector3.up), Color.red,5f);
-		Debug.DrawLine(map.TileToPosition(currentTile), map.TileToPosition(currentTile + Vector3.right),Color.red,5f);
-		Debug.DrawLine(map.TileToPosition(currentTile), map.TileToPosition(currentTile + Vector3.down),Color.red,5f);
-		Debug.DrawLine(Vector3.zero, transform.position, Color.blue, 5f);
-		Debug.DrawLine(Vector3.zero, map.TileToPosition(currentTile), Color.green, 5f);
-
-		Debug.DrawLine(Vector3.zero, map.TileToPosition(new Vector2(5f, 5f)), Color.magenta, 30f);
-
-		if (map.IsResource(currentTile + Vector3.left)){
-
-			return map.GetResource(currentTile + Vector3.left);
-		} 
-		else if (map.IsResource(currentTile + Vector3.up)){
-
-			return map.GetResource(currentTile + Vector3.up);
-		} 
-		else if (map.IsResource(currentTile + Vector3.right)){
-
-			return map.GetResource(currentTile + Vector3.right);
-		}
-		else if (map.IsResource(currentTile + Vector3.down)){
-
-			return map.GetResource(currentTile + Vector3.down);
-		}
-
-		Debug.Log ("Not next to any resource!");
-		return null;
-
-	}
-
-	void ToggleResourceAttachment(){
-		if (currentlyCollecting) {
-			currentResource = null;
-			currentlyCollecting = false;
-			Debug.Log ("No longer attached to Resource");
-		}
-		else {
-			currentResource = FindResource();
-			currentlyCollecting = true;
-			Debug.Log ("Attached to Resource");
+			if (!theParticleSystem.isPlaying) {
+				theParticleSystem.Play();
+			}
 		}
 	}
 
-	void CollectFromResource(){
+	Transform GetNearestTaggedObject() {
+		
+		float nearestDistanceSqr = Mathf.Infinity;
+		GameObject[] taggedGameObjects = GameObject.FindGameObjectsWithTag("Resource"); 
+		Transform nearestObj = null;
+		
+		// loop through each tagged object, remembering nearest one found
+		// this can be massively slow with lots of enemies
+		foreach (GameObject obj in taggedGameObjects) {
+			
+			Vector3 objectPos = obj.transform.position;
+			float distanceSqr = (objectPos - transform.position).sqrMagnitude;
+			
+			if (distanceSqr < range && distanceSqr < nearestDistanceSqr) {
+				nearestObj = obj.transform;
+				nearestDistanceSqr = distanceSqr;
+			}
+		}
+		
+		return nearestObj;
+	}
+
+	/*void CollectFromResource(){
 		if (currentResource != null){
 			int extraBlorb = currentResource.collectBlorb();
 			Debug.Log ("extraBlorb = " + extraBlorb.ToString() + "\n");
@@ -100,5 +91,5 @@ public class ResourceCollector : MonoBehaviour {
 		}
 
 		//Debug.Log ("resourcePool = " + center.blorbAmount.ToString() + "\n");
-	}
+	}*/
 }

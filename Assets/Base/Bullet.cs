@@ -29,7 +29,7 @@ public class Bullet : MonoBehaviour {
 			return;
 		}
 
-		transform.Translate (velocity * Time.fixedDeltaTime);
+		transform.position += velocity * Time.fixedDeltaTime;
 	}
 
 	public void setDirection(Vector3 d) {
