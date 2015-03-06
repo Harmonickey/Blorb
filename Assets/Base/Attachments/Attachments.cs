@@ -15,7 +15,7 @@ public class Attachments : MonoBehaviour {
         {
             //find all neighbors if possible (starting from center), skipping this particular attachment
             BaseCohesionManager.FindAllNeighbors(this.transform);
-            BaseCohesionManager.DeleteAllBrokenAttachments(false); //delete all that were not found
+            BaseCohesionManager.DeleteAllMarkedAttachments(false); //delete all that were not found
             BaseCohesionManager.UnMarkAllAttachments();
         }
     }
