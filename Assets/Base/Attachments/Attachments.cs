@@ -9,9 +9,11 @@ public class Attachments : MonoBehaviour {
 
     public int sellBackAmount;
 
-    public void takeDamage(float damage)
+    private float accumulatedHitDamage = 0.0f;
+
+    public void takeDamage()
     {
-        health -= damage;
+        health -= accumulatedHitDamage;
 
         if (health <= 0f)
         {
@@ -20,6 +22,16 @@ public class Attachments : MonoBehaviour {
             BaseCohesionManager.DeleteAllMarkedAttachments(false); //delete all that were not found
             BaseCohesionManager.UnMarkAllAttachments();
         }
+    }
+
+    void Start()
+    {
+        GameEventManager.DayStart += DayStart;
+    }
+
+    void DayStart()
+    {
+        CancelInvoke();
     }
 
     public void FindAllPossiblePlacements(Center center)
@@ -39,8 +51,11 @@ public class Attachments : MonoBehaviour {
         if (other.gameObject.tag == "Enemy")
         {
             Enemy enemy = other.gameObject.GetComponent<Enemy>();
-            takeDamage(enemy.HitDamage);
-            //ObjectPool.instance.PoolObject(enemy.gameObject);
+
+            if (accumulatedHitDamage == 0)
+                InvokeRepeating("takeDamage", 0, 1.0f); //start hitting every second
+        
+            accumulatedHitDamage += enemy.HitDamage;
         }
     }
 }
