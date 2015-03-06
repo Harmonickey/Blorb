@@ -9,6 +9,7 @@ public class ResourceCollector : MonoBehaviour {
 	private float nextCollect;
 
 	public ParticleSystem theParticleSystem;
+	public Transform mountain;
 	private float power = 10.0f;
 	private int length;
 	private ParticleSystem.Particle[] particles = new ParticleSystem.Particle[100];
@@ -22,12 +23,23 @@ public class ResourceCollector : MonoBehaviour {
 		for (int i = 0; i < particles.Length; i++) {
 			Vector3 rp = particles[i].position + theParticleSystem.transform.localPosition;
 
-			if (i == 0) { Debug.Log (rp.magnitude); }
 			if (rp.magnitude < 0.2f) {
 				particles[i].lifetime = -1f;
 				if (myTarget) {
 					int amount = myTarget.GetComponent<Resource>().deplete (10);
 					BlorbManager.Instance.Transaction(amount, myTarget.position);
+
+					if (amount == 0) {
+						// Turn resource into mountain
+						Transform targetParent = myTarget.parent;
+						Vector3 targetPosition = myTarget.position;
+						Destroy(myTarget.gameObject);
+
+						Transform newMountain = Instantiate(mountain) as Transform;
+						newMountain.position = targetPosition;
+						newMountain.tag = "Mountain";
+						newMountain.parent = targetParent;
+					}
 				}
 			} else {
 				particles[i].position = Vector3.MoveTowards(particles[i].position, -theParticleSystem.transform.localPosition, power * Time.deltaTime);

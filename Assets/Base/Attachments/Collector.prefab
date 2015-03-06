@@ -211,6 +211,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   theParticleSystem: {fileID: 19829522}
+  mountain: {fileID: 451834, guid: cb6acb9c9e5e9c44eaae9e06be99ac48, type: 2}
 --- !u!138 &13806650
 FixedJoint:
   m_ObjectHideFlags: 1
