@@ -53,7 +53,7 @@ public class ResourceCollector : MonoBehaviour {
 
 			theParticleSystem.transform.position = myTarget.position;
 			Resource r = myTarget.GetComponent<Resource>();
-
+            
 			if (!theParticleSystem.isPlaying) {
 				theParticleSystem.Play();
 			}
