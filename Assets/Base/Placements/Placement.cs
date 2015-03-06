@@ -17,7 +17,7 @@ public class Placement : MonoBehaviour {
     private bool preSelected;
     private Center center;
 
-    public static bool isInRange = false;
+    public static bool isSelling = false;
 
     void Start()
     {
@@ -77,10 +77,10 @@ public class Placement : MonoBehaviour {
         if (preSelected == true)
         {
             selected = true;
-            preSelected = false;
-
             BaseCohesion.UnMarkAllAttachments();
         }
+
+        preSelected = false;
     }
 
     void Update()
@@ -88,68 +88,33 @@ public class Placement : MonoBehaviour {
         
         if (selected)
         {
-            if (Input.GetMouseButtonDown(0)) //for now, drop with mouse-button "0" which is left-click
+            if (Input.GetMouseButtonDown(0) && placementPiece.positionToSnap != Vector3.zero) //for now, drop with mouse-button "0" which is left-click
             {
-                if (placementPiece.positionToSnap != Vector3.zero)
-                {
-                    center.PlacePiece(placementPiece);
-
-                    //reset our placement piece
-                    placementPiece = new PlacementPiece(this.cost, this.tag);
-
-                    //remove the placment piece after it's set because now it was replaced by a real tower
-                    if (!center.HasEnoughResources(this.cost))
-                        StopPlacement();
-
-                    possiblePlacements = new ArrayList();
-
-                    //reinit building process
-                    center.RecalculateAllPossiblePlacements();
-
-                }
+                PlacePiece();
             }
             else if (possiblePlacements.Count > 0)
             {
-               
-                Vector3 mouse = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0));
-                mouse = new Vector3(mouse.x, mouse.y, 0);
-                
-                PlacementBottom closest = possiblePlacements[0] as PlacementBottom;
-                float selectionThreshold = (((this.GetComponent<SpriteRenderer>().sprite.rect.width * 2) / WorldManager.PixelOffset) / 2) + 0.1f;
-                float closestDistance = Mathf.Infinity;
-                foreach (PlacementBottom possiblePlacement in possiblePlacements)
-                {
-                    float distance = Vector2.Distance(mouse, possiblePlacement.transform.position);
-                    if (distance < closestDistance)
-                    {
-                        closestDistance = distance;
-                        closest = possiblePlacement;
-                    }
-                    possiblePlacement.GetComponent<SpriteRenderer>().color = new Color(0.516f, 0.886f, 0.882f, 0);
-                }
-
-                if (closestDistance <= selectionThreshold)
-                {
-                    placementPiece.positionToSnap = closest.transform.localPosition;
-                    closest.GetComponent<SpriteRenderer>().color = new Color(0.516f, 0.886f, 0.882f, 0.9f);
-                }
-                else
-                {
-                    placementPiece.positionToSnap = Vector3.zero;
-                }
+                FindClosestPlacement();
             }
         }
 
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             StopPlacement();
-            BaseCohesion.UnMarkAllAttachments();
         }
-    }
+        else if (Input.GetKeyDown(KeyCode.O))
+        {
+            StopPlacement();
 
-    void FixedUpdate()
-    {
-        if (Input.GetMouseButtonDown(0) && !selected)
+            isSelling = true;
+        }
+        else if (Input.GetKeyDown(KeyCode.P))
+        {
+            BaseCohesion.UnMarkAllAttachments();
+            isSelling = false;
+        }
+
+        if (Input.GetMouseButtonDown(0) && isSelling)
         {
 
             Attachments[] attachments = GameObject.FindObjectsOfType<Attachments>();
@@ -160,10 +125,58 @@ public class Placement : MonoBehaviour {
             {
                 if (attachment.collider.bounds.Contains(mouse))
                 {
+                    BaseCohesion.UnMarkAllAttachments();
                     BaseCohesion.FindAllNeighbors(attachment.transform); // find out our base cohesion network
-                    BaseCohesion.MarkAllBrokenAttachments(attachment.transform);
+                    BaseCohesion.MarkAllAttachments(attachment.transform);
                 }
             }
+        }
+    }
+
+    private void PlacePiece()
+    {
+        center.PlacePiece(placementPiece);
+
+        //reset our placement piece
+        placementPiece = new PlacementPiece(this.cost, this.tag);
+
+        //remove the placment piece after it's set because now it was replaced by a real tower
+        if (!center.HasEnoughResources(this.cost))
+            StopPlacement();
+
+        possiblePlacements = new ArrayList();
+
+        //reinit building process
+        center.RecalculateAllPossiblePlacements();
+    }
+
+    private void FindClosestPlacement()
+    {
+        Vector3 mouse = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0));
+        mouse = new Vector3(mouse.x, mouse.y, 0);
+
+        PlacementBottom closest = possiblePlacements[0] as PlacementBottom;
+        float selectionThreshold = (((this.GetComponent<SpriteRenderer>().sprite.rect.width * 2) / WorldManager.PixelOffset) / 2) + 0.1f;
+        float closestDistance = Mathf.Infinity;
+        foreach (PlacementBottom possiblePlacement in possiblePlacements)
+        {
+            float distance = Vector2.Distance(mouse, possiblePlacement.transform.position);
+            if (distance < closestDistance)
+            {
+                closestDistance = distance;
+                closest = possiblePlacement;
+            }
+            possiblePlacement.GetComponent<SpriteRenderer>().color = new Color(0.516f, 0.886f, 0.882f, 0);
+        }
+
+        if (closestDistance <= selectionThreshold)
+        {
+            placementPiece.positionToSnap = closest.transform.localPosition;
+            closest.GetComponent<SpriteRenderer>().color = new Color(0.516f, 0.886f, 0.882f, 0.9f);
+        }
+        else
+        {
+            placementPiece.positionToSnap = Vector3.zero;
         }
     }
 
@@ -178,6 +191,10 @@ public class Placement : MonoBehaviour {
     public void StopPlacement()
     {
         selected = false;
+
+        BaseCohesion.UnMarkAllAttachments();
+
+        isSelling = false;
 
         possiblePlacements = new ArrayList();
 

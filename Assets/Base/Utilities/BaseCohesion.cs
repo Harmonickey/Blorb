@@ -17,7 +17,7 @@ public abstract class BaseCohesion {
         
         //start at center at linecast in every direction
         RaycastHit2D[] hits;
-        float distance = 0.1f; // may want to play with this value, as it might reach too far and catch attachments that shouldn't be caught
+        float distance = 0.01f; // may want to play with this value, as it might reach too far and catch attachments that shouldn't be caught
         for (int i = 0; i < BuildDirection.Directions.Count; i++)
         {
            
@@ -25,13 +25,13 @@ public abstract class BaseCohesion {
                                          new Vector2(startingFrom.position.x + (BuildDirection.ToDirFromSpot(i)[0] * distance), startingFrom.position.y + (BuildDirection.ToDirFromSpot(i)[1] * distance)));
             
              // see where the linecast is going
-            Debug.DrawLine(new Vector2(startingFrom.position.x + BuildDirection.ToDirFromSpot(i)[0], startingFrom.position.y + BuildDirection.ToDirFromSpot(i)[1]),
-                           new Vector2(startingFrom.position.x + (BuildDirection.ToDirFromSpot(i)[0] * distance), startingFrom.position.y + (BuildDirection.ToDirFromSpot(i)[1] * distance)), Color.blue, 10.0f, false);
+            //Debug.DrawLine(new Vector2(startingFrom.position.x + BuildDirection.ToDirFromSpot(i)[0], startingFrom.position.y + BuildDirection.ToDirFromSpot(i)[1]),
+            //               new Vector2(startingFrom.position.x + (BuildDirection.ToDirFromSpot(i)[0] * distance), startingFrom.position.y + (BuildDirection.ToDirFromSpot(i)[1] * distance)), Color.blue, 10.0f, false);
             
 
             for (var j = 0; j < hits.Length; j++)
             {
-                Transform attachment = hits[j].collider.transform.parent; // 'parent' because it's hitting the 2D collider
+                Transform attachment = hits[j].collider.transform.parent; // 'parent' because it's hitting the child 2D collider
                 if (attachment.GetComponent<Attachments>() != null &&  // is acutally an attachment
                     !visitedNodes.Contains(attachment)) // haven't visited it
                 {
@@ -41,13 +41,12 @@ public abstract class BaseCohesion {
                     FindAllNeighbors(attachment, deletingAttachment);  //recurse into them
                 }
             }
-        
         }
     }
 
     //mark all the attachments that are not attached to the main body
     //     this is so the user knows which are going to be deleted, for example
-    public static void MarkAllBrokenAttachments(Transform deletingAttachment)
+    public static void MarkAllAttachments(Transform deletingAttachment)
     {
         Attachments[] attachments = GameObject.FindObjectsOfType<Attachments>();
         TurnRed(deletingAttachment, true);
@@ -70,10 +69,13 @@ public abstract class BaseCohesion {
             TurnRed(attachment.transform, false);
         }
 
-        markedAttachments = new ArrayList();
+        markedAttachments.Clear();
+        visitedNodes.Clear();
+
+        ResetWasFoundForAttachments();
     }
 
-    public static void ResetWasFoundForAttachments()
+    private static void ResetWasFoundForAttachments()
     {
         foreach (Attachments attachment in GameObject.FindObjectsOfType<Attachments>())
         {

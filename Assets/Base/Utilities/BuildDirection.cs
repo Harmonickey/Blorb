@@ -39,15 +39,22 @@ public abstract class BuildDirection
         return (float[])Directions[spot];
     }
 
+
+    //we are only testing in one direction at a time
     public static bool DetectOtherObjects(float[] dir, Transform startingFrom)
     {
-        //raycast to find objects
-        RaycastHit2D[] hits;
-        hits = Physics2D.LinecastAll(new Vector2(startingFrom.position.x + dir[0], startingFrom.position.y + dir[1]),
-                                     new Vector2(startingFrom.position.x + (dir[0] * 1.5f), startingFrom.position.y + (dir[1] * 1.5f)));
-        
-        Debug.DrawLine(new Vector3(startingFrom.position.x + dir[0], startingFrom.position.y + dir[1], 0),
-                                new Vector3(startingFrom.position.x + (dir[0] * 1.5f), startingFrom.position.y + (dir[1] * 1.5f)), Color.blue, 3.0f, false);
+
+        float[] localDir = new float[2] { dir[0], dir[1] };
+        //Debug.Log(localDir[0]);
+        //Debug.Log(localDir[1]);
+        localDir[0] *= 0.9f; //scale the distance
+        localDir[1] *= 0.9f;
+        RaycastHit2D[] hits = Physics2D.LinecastAll(new Vector2(startingFrom.position.x + localDir[0], startingFrom.position.y + localDir[1]),
+                                     new Vector2(startingFrom.position.x + (localDir[0] * 1.1f), startingFrom.position.y + (localDir[1] * 1.1f)));
+
+        //Debug.DrawLine(new Vector3(startingFrom.position.x + localDir[0], startingFrom.position.y + localDir[1]),
+        //               new Vector3(startingFrom.position.x + (localDir[0] * 1.1f), startingFrom.position.y + (localDir[1] * 1.1f)), Color.blue, 30.0f, false);
+
         
         //blacklist pseudo-children, and other placement pieces
         ArrayList blackList = new ArrayList();
@@ -59,7 +66,7 @@ public abstract class BuildDirection
                 blackList.Add(j);
             }
         }
-        
+
         for (int j = 0; j < hits.Length; j++)
         {
             if (blackList.Contains(j)) continue; //skip pseudo-children and placement pieces
@@ -67,7 +74,7 @@ public abstract class BuildDirection
             //okay, we found one, don't place here!
             return true;
         }
-        
+
         return false;
     }
 }

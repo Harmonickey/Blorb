@@ -173,33 +173,10 @@ public class Center : MonoBehaviour {
 
         Vector3 movement = new Vector3(inputHorizontal, inputVertical, 0.0f);
 
-		//rigidbody.MovePosition(transform.position + movement * speed * Time.fixedDeltaTime);
-        basePiece.position += movement * speed * Time.fixedDeltaTime;
-
-        //if (BoundsIntersect(this.collider))
-        //    basePiece.position -= movement * speed * Time.fixedDeltaTime;
+		basePiece.position += movement * speed * Time.fixedDeltaTime;
 
         if (inputHorizontal != 0 || inputVertical != 0)
             GameObject.FindObjectsOfType<Placement>()[0].StopPlacement(); //quick hack to access from here...
-    }
-
-    private bool BoundsIntersect(Collider collider)
-    {
-        GameObject[] resources = GameObject.FindGameObjectsWithTag("Resource");
-        GameObject[] mountains = GameObject.FindGameObjectsWithTag("Mountain");
-        foreach (GameObject re in resources)
-        {
-            if (collider.bounds.Intersects(re.collider.bounds))
-                return true;
-        }
-
-        foreach (GameObject mo in mountains)
-        {
-            if (collider.bounds.Intersects(mo.collider.bounds))
-                return true;
-        }
-
-        return false;
     }
 
     public void PlacePiece(PlacementPiece placementPiece)
@@ -284,8 +261,8 @@ public class Center : MonoBehaviour {
     {
         Pathfinding2D finder = this.gameObject.GetComponent<Pathfinding2D>();
         finder.FindPath(new Vector3(20.0f + this.transform.position.x, 20.0f + this.transform.position.y, 0.0f), this.transform.position);
-        Debug.DrawLine(new Vector3(20.0f + this.transform.position.x, 20.0f + this.transform.position.y, 0.0f),
-                       this.transform.position, Color.red, 100.0f, false);
+        //Debug.DrawLine(new Vector3(20.0f + this.transform.position.x, 20.0f + this.transform.position.y, 0.0f),
+        //               this.transform.position, Color.red, 100.0f, false);
 
         Debug.Log("PATH LENGTH: " + finder.Path.Count);
         if (finder.Path.Count > 0)
