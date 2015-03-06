@@ -72,29 +72,34 @@ public abstract class BaseCohesionManager {
             TurnRed(attachment.transform, false);
         }
 
-        markedAttachments.Clear();
-        visitedNodes.Clear();
-
-        ResetWasFoundForAttachments();
+        ResetAttachmentCohesionChecker();
     }
 
-    private static void ResetWasFoundForAttachments()
+    private static void ResetAttachmentCohesionChecker()
     {
         foreach (Attachments attachment in GameObject.FindObjectsOfType<Attachments>())
         {
             attachment.wasFound = false;
         }
+
+        markedAttachments.Clear();
+        visitedNodes.Clear();
     }
 
     //delete all attachments that are not attached to main body
-    public static void DeleteAllMarkedAttachments(bool useMarked)
+    public static int DeleteAllMarkedAttachments(bool useMarked)
     {
+        int totalSellBack = 0;
+
         if (useMarked)
         {
             foreach (Attachments attachment in markedAttachments)
             {
+                totalSellBack += attachment.sellBackAmount;
                 Object.Destroy(attachment.gameObject);
             }
+
+            ResetAttachmentCohesionChecker();
         }
         else
         {
@@ -106,6 +111,8 @@ public abstract class BaseCohesionManager {
                 }
             }
         }
+
+        return totalSellBack;
     }
 
     private static void TurnRed(Transform targetPiece, bool red)

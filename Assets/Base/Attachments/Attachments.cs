@@ -7,6 +7,8 @@ public class Attachments : MonoBehaviour {
 
     public bool wasFound = false; // for base cohesion checking
 
+    public int sellBackAmount;
+
     public void takeDamage(float damage)
     {
         health -= damage;

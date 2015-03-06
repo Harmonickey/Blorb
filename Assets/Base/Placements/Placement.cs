@@ -17,7 +17,7 @@ public class Placement : MonoBehaviour {
     private bool preSelected;
     private Center center;
 
-    public static bool isSelling = false;
+    public static bool isPlacingTowers = false;
 
     void Start()
     {
@@ -77,6 +77,7 @@ public class Placement : MonoBehaviour {
         if (preSelected == true)
         {
             selected = true;
+            isPlacingTowers = true;
             BaseCohesionManager.UnMarkAllAttachments();
         }
 
@@ -95,40 +96,6 @@ public class Placement : MonoBehaviour {
             else if (possiblePlacements.Count > 0)
             {
                 FindClosestPlacement();
-            }
-        }
-
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            StopPlacement();
-        }
-        else if (Input.GetKeyDown(KeyCode.O))
-        {
-            StopPlacement();
-
-            isSelling = true;
-        }
-        else if (Input.GetKeyDown(KeyCode.P))
-        {
-            BaseCohesionManager.UnMarkAllAttachments();
-            isSelling = false;
-        }
-
-        if (Input.GetMouseButtonDown(0) && isSelling)
-        {
-
-            Attachments[] attachments = GameObject.FindObjectsOfType<Attachments>();
-            Vector3 mouse = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0));
-            mouse = new Vector3(mouse.x, mouse.y, 0);
-
-            foreach (Attachments attachment in attachments)
-            {
-                if (attachment.collider.bounds.Contains(mouse))
-                {
-                    BaseCohesionManager.UnMarkAllAttachments();
-                    BaseCohesionManager.FindAllNeighbors(attachment.transform); // find out our base cohesion network
-                    BaseCohesionManager.MarkAllAttachments(attachment.transform);
-                }
             }
         }
     }
@@ -194,9 +161,9 @@ public class Placement : MonoBehaviour {
     {
         selected = false;
 
-        BaseCohesionManager.UnMarkAllAttachments();
+        isPlacingTowers = false;
 
-        isSelling = false;
+        BaseCohesionManager.UnMarkAllAttachments();
 
         possiblePlacements = new ArrayList();
 

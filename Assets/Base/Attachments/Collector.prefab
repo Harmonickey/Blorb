@@ -199,6 +199,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   wasFound: 0
+  sellBackAmount: 50
 --- !u!114 &11418212
 MonoBehaviour:
   m_ObjectHideFlags: 1
