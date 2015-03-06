@@ -128,7 +128,6 @@ public class Placement : MonoBehaviour {
                     BaseCohesionManager.UnMarkAllAttachments();
                     BaseCohesionManager.FindAllNeighbors(attachment.transform); // find out our base cohesion network
                     BaseCohesionManager.MarkAllAttachments(attachment.transform);
-                    //attachment.transform.FindChild("Turret Bottom").GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 0f);
                 }
             }
         }
@@ -167,13 +166,15 @@ public class Placement : MonoBehaviour {
                 closestDistance = distance;
                 closest = possiblePlacement;
             }
-            possiblePlacement.GetComponent<SpriteRenderer>().color = new Color(0.516f, 0.886f, 0.882f, 0);
+            possiblePlacement.GetComponent<SpriteRenderer>().color = PlacementBottom.unSelectedColor;
+            possiblePlacement.GetComponent<SpriteRenderer>().sortingOrder = 1;
         }
 
         if (closestDistance <= selectionThreshold)
         {
             placementPiece.positionToSnap = closest.transform.localPosition;
-            closest.GetComponent<SpriteRenderer>().color = new Color(0.516f, 0.886f, 0.882f, 0.9f);
+            closest.GetComponent<SpriteRenderer>().color = PlacementBottom.selectedColor;
+            closest.GetComponent<SpriteRenderer>().sortingOrder = 2;
         }
         else
         {

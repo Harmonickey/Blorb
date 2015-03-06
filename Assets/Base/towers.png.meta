@@ -8,9 +8,10 @@ TextureImporter:
     21300006: towers_3
     21300008: towers_4
     21300010: towers_5
-    21300012: towers_6
+    21300012: towers_2
     21300014: towers_7
     21300016: towers_5
+    21300018: towers_6
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -108,6 +109,16 @@ TextureImporter:
         x: 4998
         y: 0
         width: 750
+        height: 750
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: towers_2
+      rect:
+        serializedVersion: 2
+        x: 5962
+        y: 0
+        width: 770
         height: 750
       alignment: 0
       pivot: {x: .5, y: .5}

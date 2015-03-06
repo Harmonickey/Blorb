@@ -5,55 +5,14 @@ public class PlacementBottom : MonoBehaviour {
 
     public Transform pseudoParent; //for detection logic
 
+    public static Color selectedColor = new Color(0.2f, 0.2f, 0.882f, 1f);
+    public static Color unSelectedColor = new Color(0.516f, 0.886f, 0.882f, 1f);
+
     public PlacementVote vote = new PlacementVote();
 
     void Start()
     {
         Placement.possiblePlacements.Add(this);
-    }
-
-    void Update()
-    {
-        /*
-        Vector3 mouse = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0));
-        mouse = new Vector3(mouse.x, mouse.y, 0);
-        Vector3 offsetDirection = GetOffset();
-        float frontCurrDistance = Vector2.Distance(mouse, new Vector2(this.transform.position.x + (offsetDirection.x * 0.2f),
-                                                                        this.transform.position.y + (offsetDirection.y * 0.2f)));
-           
-        float backCurrDistance = Vector2.Distance(mouse, new Vector2(this.transform.position.x - (offsetDirection.x * 0.2f),
-                                                                        this.transform.position.y - (offsetDirection.y * 0.2f)));
-
-        float selectionThreshold = (((this.GetComponent<SpriteRenderer>().sprite.rect.width * 2) / WorldManager.PixelOffset) / 2) + 0.1f;
-            
-        Debug.DrawLine(new Vector3(this.transform.position.x + (offsetDirection.x * 0.2f), this.transform.position.y + (offsetDirection.y * 0.2f)), 
-                        new Vector3((this.transform.position.x + (offsetDirection.x * 0.2f)) + selectionThreshold,
-                                    this.transform.position.y + (offsetDirection.y * 0.2f)), Color.red);
-        Debug.DrawLine(new Vector3(this.transform.position.x - (offsetDirection.x * 0.2f), this.transform.position.y - (offsetDirection.y * 0.2f)), 
-                        new Vector3((this.transform.position.x - (offsetDirection.x * 0.2f)) + selectionThreshold,
-                                    this.transform.position.y - (offsetDirection.y * 0.2f)), Color.blue);
-            
-            
-        vote.frontCurrDistance = frontCurrDistance;
-        vote.backCurrDistance = backCurrDistance;
-        vote.placement = this.transform;
-        //we are closest to placement, so set snap position to this placement piece
-        Placement.possiblePlacements.Add(vote);
-
-        Transform closestPiece = GetClosest().placement;
-        Placement.placementPiece.positionToSnap = closestPiece.localPosition;
-        PlacementBottom[] srs = GameObject.FindObjectsOfType<PlacementBottom>();
-        closestPiece.GetComponent<SpriteRenderer>().color = new Color(0.516f, 0.886f, 0.882f, 0.9f);
-
-        Placement.possiblePlacements.Remove(vote);
-
-        if (frontCurrDistance > selectionThreshold && backCurrDistance > selectionThreshold)
-        {
-            this.GetComponent<SpriteRenderer>().color = new Color(0.516f, 0.886f, 0.882f, 0);
-            Placement.possiblePlacements.Remove(vote);
-            vote = new PlacementVote();
-        }
-        */
     }
 
     private PlacementVote GetClosest()

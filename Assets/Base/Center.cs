@@ -190,7 +190,7 @@ public class Center : MonoBehaviour {
         {
             case "Placement":
                 placementPiece.piece = placement;
-                color = new Color(0.516f, 0.886f, 0.882f, 0); 
+                color = PlacementBottom.unSelectedColor;
                 break;
             case "Turret":
             case "TestPiece":
@@ -213,6 +213,7 @@ public class Center : MonoBehaviour {
         {
             tower.GetComponent<SpriteRenderer>().color = color;
             tower.GetComponent<PlacementBottom>().pseudoParent = placementPiece.parent;
+            tower.GetComponent<SpriteRenderer>().receiveShadows = false;
         }
 
         float xOffset = (placementPiece.type == "Placement"

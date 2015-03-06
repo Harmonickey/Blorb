@@ -57,11 +57,6 @@ public class GUIManager : MonoBehaviour {
 				placement.GetComponent<SpriteRenderer>().color = new Color(0.3f, 0f, 0f);
 				placement.transform.parent.GetComponent<SpriteRenderer>().color = new Color(0.3f, 0f, 0f);
 			}
-			else
-			{
-				//placement.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f);
-				//placement.transform.parent.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f);
-			}
 		}
 
 		// add health button
