@@ -1337,7 +1337,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 241d6d8df6309a446abcdbb017256636, type: 2}
       propertyPath: DrawMapInEditor
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 241d6d8df6309a446abcdbb017256636, type: 2}
       propertyPath: MoveDiagonal
@@ -3243,7 +3243,7 @@ MonoBehaviour:
   IgnoreTags:
   - Enemy
   MoveDiagonal: 0
-  DrawMapInEditor: 0
+  DrawMapInEditor: 1
 --- !u!4 &1825071988
 Transform:
   m_ObjectHideFlags: 0

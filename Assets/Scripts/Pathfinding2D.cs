@@ -9,6 +9,7 @@ public class Pathfinding2D : MonoBehaviour
 
     public void FindPath(Vector3 startPosition, Vector3 endPosition)
     {
+        Debug.Log("Has Instance: " + (Pathfinder2D.Instance != null));
         Pathfinder2D.Instance.InsertInQueue(startPosition, endPosition, SetList);
     }
 
