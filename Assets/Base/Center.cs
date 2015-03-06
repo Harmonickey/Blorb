@@ -85,11 +85,11 @@ public class Center : MonoBehaviour {
     public void FindAllPossiblePlacements()
     {
         //start with the center
-        for (int i = 0; i < BuildDirection.Directions.Count; i++)
+        for (int i = 0; i < BuildingManager.Directions.Count; i++)
         {
             //place down a placement spot, don't have to worry about 
-            if (!BuildDirection.DetectOtherObjects(BuildDirection.ToDirFromSpot(i), this.transform))
-                SetPlacement(BuildDirection.ToDirFromSpot(i), this.transform);
+            if (!BuildingManager.DetectOtherObjects(BuildingManager.ToDirFromSpot(i), this.transform))
+                SetPlacement(BuildingManager.ToDirFromSpot(i), this.transform);
         }
 
         foreach (Transform child in basePiece)
@@ -264,14 +264,14 @@ public class Center : MonoBehaviour {
         //Debug.DrawLine(new Vector3(20.0f + this.transform.position.x, 20.0f + this.transform.position.y, 0.0f),
         //               this.transform.position, Color.red, 100.0f, false);
 
-        Debug.Log("PATH LENGTH: " + finder.Path.Count);
+        //Debug.Log("PATH LENGTH: " + finder.Path.Count);
         if (finder.Path.Count > 0)
         {
-            Debug.Log("Found Path");
+            //Debug.Log("Found Path");
             finder.Path.Clear();
             return true;
         }
-        Debug.Log("No Path To Center");
+        //Debug.Log("No Path To Center");
         return false;
     }
 

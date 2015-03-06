@@ -1,44 +1,48 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
-public abstract class BaseCohesion {
+public abstract class BaseCohesionManager {
 
-    public static ArrayList visitedNodes = new ArrayList();
-    private static ArrayList markedAttachments = new ArrayList();
+    public static List<int> visitedNodes = new List<int>();
+    private static List<Attachments> markedAttachments = new List<Attachments>();
     
 	public static void FindAllNeighbors(Transform deletingAttachment, Transform startingFrom = null)
     {
         //excluding self, can all other pieces connect to the center?
         if (startingFrom == null) 
             startingFrom = GameObject.FindGameObjectWithTag("Player").transform; //set our starting node
-
-        if (!visitedNodes.Contains(deletingAttachment)) 
-            visitedNodes.Add(deletingAttachment); //add the node we're trying to delete, so we skip over it
+        
+        if (!visitedNodes.Contains(deletingAttachment.GetInstanceID()))
+            visitedNodes.Add(deletingAttachment.GetInstanceID()); //add the node we're trying to delete, so we skip over it
         
         //start at center at linecast in every direction
         RaycastHit2D[] hits;
-        float distance = 0.01f; // may want to play with this value, as it might reach too far and catch attachments that shouldn't be caught
-        for (int i = 0; i < BuildDirection.Directions.Count; i++)
+        float distance = 0.9f; // may want to play with this value, as it might reach too far and catch attachments that shouldn't be caught
+        for (int i = 0; i < BuildingManager.Directions.Count; i++)
         {
-           
-            hits = Physics2D.LinecastAll(new Vector2(startingFrom.position.x + BuildDirection.ToDirFromSpot(i)[0], startingFrom.position.y + BuildDirection.ToDirFromSpot(i)[1]),
-                                         new Vector2(startingFrom.position.x + (BuildDirection.ToDirFromSpot(i)[0] * distance), startingFrom.position.y + (BuildDirection.ToDirFromSpot(i)[1] * distance)));
-            
-             // see where the linecast is going
-            //Debug.DrawLine(new Vector2(startingFrom.position.x + BuildDirection.ToDirFromSpot(i)[0], startingFrom.position.y + BuildDirection.ToDirFromSpot(i)[1]),
-            //               new Vector2(startingFrom.position.x + (BuildDirection.ToDirFromSpot(i)[0] * distance), startingFrom.position.y + (BuildDirection.ToDirFromSpot(i)[1] * distance)), Color.blue, 10.0f, false);
-            
+            float[] localDir = new float[2] { BuildingManager.ToDirFromSpot(i)[0], BuildingManager.ToDirFromSpot(i)[1] };
+            localDir[0] *= 0.9f;
+            localDir[1] *= 0.9f;
 
+            hits = Physics2D.LinecastAll(new Vector2(startingFrom.position.x + localDir[0], startingFrom.position.y + localDir[1]),
+                                         new Vector2(startingFrom.position.x + (localDir[0] * distance), startingFrom.position.y + (localDir[1] * distance)));
+            
+            // see where the linecast is going
+            //Debug.DrawLine(new Vector3(startingFrom.position.x + localDir[0], startingFrom.position.y + localDir[1]),
+            //               new Vector3(startingFrom.position.x + (localDir[0] * distance), startingFrom.position.y + (localDir[1] * distance)), Color.blue, 10.0f, false);
+            
             for (var j = 0; j < hits.Length; j++)
             {
                 Transform attachment = hits[j].collider.transform.parent; // 'parent' because it's hitting the child 2D collider
-                if (attachment.GetComponent<Attachments>() != null &&  // is acutally an attachment
-                    !visitedNodes.Contains(attachment)) // haven't visited it
+                
+                if (attachment.GetComponent<Attachments>() != null &&  // is actually an attachment
+                    !visitedNodes.Contains(attachment.GetInstanceID())) // haven't visited it
                 {
-                    visitedNodes.Add(attachment);
+                    visitedNodes.Add(attachment.GetInstanceID());
                     attachment.GetComponent<Attachments>().wasFound = true; //set all the attachments to 'found' if they're part of our hit list
 
-                    FindAllNeighbors(attachment, deletingAttachment);  //recurse into them
+                    FindAllNeighbors(deletingAttachment, attachment);  //recurse into them
                 }
             }
         }
@@ -65,7 +69,6 @@ public abstract class BaseCohesion {
     {
         foreach (Attachments attachment in markedAttachments)
         {
-            attachment.wasFound = false;
             TurnRed(attachment.transform, false);
         }
 

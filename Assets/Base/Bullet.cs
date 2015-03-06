@@ -13,7 +13,8 @@ public class Bullet : MonoBehaviour {
 	}
 
 	void OnTriggerEnter (Collider other) {
-		if (other.gameObject.tag == "Enemy" && other.enabled) {
+		if (other.gameObject.tag == "Enemy" && other.gameObject != null) {
+
 			other.gameObject.SendMessage("takeDamage", damage);
 			Reset ();
 			ObjectPool.instance.PoolObject(gameObject);

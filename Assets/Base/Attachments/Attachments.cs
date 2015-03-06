@@ -14,20 +14,20 @@ public class Attachments : MonoBehaviour {
         if (health <= 0f)
         {
             //find all neighbors if possible (starting from center), skipping this particular attachment
-            BaseCohesion.FindAllNeighbors(this.transform);
-            BaseCohesion.DeleteAllBrokenAttachments(false); //delete all that were not found
-            BaseCohesion.UnMarkAllAttachments();
+            BaseCohesionManager.FindAllNeighbors(this.transform);
+            BaseCohesionManager.DeleteAllBrokenAttachments(false); //delete all that were not found
+            BaseCohesionManager.UnMarkAllAttachments();
         }
     }
 
     public void FindAllPossiblePlacements(Center center)
     {
-        for (int i = 0; i < BuildDirection.Directions.Count; i++)
+        for (int i = 0; i < BuildingManager.Directions.Count; i++)
         {
             //check to make sure it's not going to place on another branch of the structure that
             //  isn't necessarily a parent or child
-            if (!BuildDirection.DetectOtherObjects(BuildDirection.ToDirFromSpot(i), this.transform))
-                center.SetPlacement(BuildDirection.ToDirFromSpot(i), this.transform);
+            if (!BuildingManager.DetectOtherObjects(BuildingManager.ToDirFromSpot(i), this.transform))
+                center.SetPlacement(BuildingManager.ToDirFromSpot(i), this.transform);
         }
 
     }

@@ -52,7 +52,7 @@ public class Placement : MonoBehaviour {
     {
         if (GUIManager.Instance.OnTutorialScreen) return;
 
-        BaseCohesion.UnMarkAllAttachments();
+        BaseCohesionManager.UnMarkAllAttachments();
 
         preSelected = true;
 
@@ -77,7 +77,7 @@ public class Placement : MonoBehaviour {
         if (preSelected == true)
         {
             selected = true;
-            BaseCohesion.UnMarkAllAttachments();
+            BaseCohesionManager.UnMarkAllAttachments();
         }
 
         preSelected = false;
@@ -110,7 +110,7 @@ public class Placement : MonoBehaviour {
         }
         else if (Input.GetKeyDown(KeyCode.P))
         {
-            BaseCohesion.UnMarkAllAttachments();
+            BaseCohesionManager.UnMarkAllAttachments();
             isSelling = false;
         }
 
@@ -125,9 +125,10 @@ public class Placement : MonoBehaviour {
             {
                 if (attachment.collider.bounds.Contains(mouse))
                 {
-                    BaseCohesion.UnMarkAllAttachments();
-                    BaseCohesion.FindAllNeighbors(attachment.transform); // find out our base cohesion network
-                    BaseCohesion.MarkAllAttachments(attachment.transform);
+                    BaseCohesionManager.UnMarkAllAttachments();
+                    BaseCohesionManager.FindAllNeighbors(attachment.transform); // find out our base cohesion network
+                    BaseCohesionManager.MarkAllAttachments(attachment.transform);
+                    //attachment.transform.FindChild("Turret Bottom").GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 0f);
                 }
             }
         }
@@ -192,7 +193,7 @@ public class Placement : MonoBehaviour {
     {
         selected = false;
 
-        BaseCohesion.UnMarkAllAttachments();
+        BaseCohesionManager.UnMarkAllAttachments();
 
         isSelling = false;
 
