@@ -5,14 +5,14 @@ public class BlorbManager : MonoBehaviour {
 	public TextMesh blorbAmountText;
 	public Transform map;
 	private static BlorbManager instance;
-	private float blorbAmount;
+	private int blorbAmount;
 
 	public static BlorbManager Instance
 	{
 		get { return instance; }
 	}
 
-	public float BlorbAmount {
+	public int BlorbAmount {
 		get { return blorbAmount; }
 	}
 
@@ -32,16 +32,16 @@ public class BlorbManager : MonoBehaviour {
 	IEnumerator DelayBlorb()
 	{       
 		yield return new WaitForSeconds(0.01f);
-		BlorbManager.Instance.Set (100f, Center.Instance.transform.position);
+		BlorbManager.Instance.Set (100, Center.Instance.transform.position);
 	}
 
-	public float Set(float amount, Vector3 position)
+	public float Set(int amount, Vector3 position)
 	{
-		blorbAmount = 0f;
+		blorbAmount = 0;
 		return Transaction (amount, position);
 	}
 
-	public float Transaction(float diff, Vector3 position)
+	public float Transaction(int diff, Vector3 position)
 	{
 		blorbAmount += diff;
 		blorbAmountText.text = ((int)blorbAmount).ToString();

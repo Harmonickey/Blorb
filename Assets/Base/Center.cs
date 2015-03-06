@@ -21,7 +21,7 @@ public class Center : MonoBehaviour {
 	private static float fireDelay = 0.25f;
 	private float nextFireTime;
 
-	public static float addHealthCost = 25f;
+	public static int addHealthCost = 25;
 
 	private float healthInternal;
 

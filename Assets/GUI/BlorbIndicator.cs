@@ -8,7 +8,7 @@ public class BlorbIndicator : MonoBehaviour {
 
 	private TextMesh textMesh;
 
-	public void SetDiff (float d) {
+	public void SetDiff (int d) {
 		startFade = 0.5f;
 		pos = transform.position;
 
@@ -17,10 +17,10 @@ public class BlorbIndicator : MonoBehaviour {
 		textMesh.renderer.sortingOrder = 2;
 
 		if (d > 0) {
-			textMesh.text = "+" + ((int)d).ToString();
+			textMesh.text = "+" + d.ToString();
 			color = new Color(0f, 1f, 0f, 1f);
 		} else {
-			textMesh.text = ((int)d).ToString();
+			textMesh.text = d.ToString();
 			color = new Color(1f, 0f, 0f, 1f);
 		}
 

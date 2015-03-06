@@ -3,15 +3,15 @@ using System.Collections;
 
 [RequireComponent(typeof(SpriteRenderer))]
 public class ResourceCollector : MonoBehaviour {
-	private float range = 100f;
+	private float range = 50f;
 	private Transform myTarget;
 	private SpriteRenderer collector;
 	private float nextCollect;
 
 	public ParticleSystem theParticleSystem;
-	private float power = 1.0f;
+	private float power = 10.0f;
 	private int length;
-	private ParticleSystem.Particle[] particles = new ParticleSystem.Particle[1000];
+	private ParticleSystem.Particle[] particles = new ParticleSystem.Particle[100];
 	
 	void LateUpdate () {
 		if (!theParticleSystem) {
@@ -24,7 +24,11 @@ public class ResourceCollector : MonoBehaviour {
 
 			if (i == 0) { Debug.Log (rp.magnitude); }
 			if (rp.magnitude < 0.2f) {
-				particles[i].lifetime = 0f;
+				particles[i].lifetime = -1f;
+				if (myTarget) {
+					int amount = myTarget.GetComponent<Resource>().deplete (10);
+					BlorbManager.Instance.Transaction(amount, myTarget.position);
+				}
 			} else {
 				particles[i].position = Vector3.MoveTowards(particles[i].position, -theParticleSystem.transform.localPosition, power * Time.deltaTime);
 			}
@@ -81,17 +85,4 @@ public class ResourceCollector : MonoBehaviour {
 		
 		return nearestObj;
 	}
-
-	/*void CollectFromResource(){
-		if (currentResource != null){
-			int extraBlorb = currentResource.collectBlorb();
-			Debug.Log ("extraBlorb = " + extraBlorb.ToString() + "\n");
-			BlorbManager.Instance.Transaction(extraBlorb, gameObject.transform.position);
-		}
-		else {
-			Debug.LogWarning("ResourceCollector: Attempt to collect from resource while currentResource is null!");
-		}
-
-		//Debug.Log ("resourcePool = " + center.blorbAmount.ToString() + "\n");
-	}*/
 }
