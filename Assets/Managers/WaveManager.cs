@@ -26,6 +26,8 @@ public class WaveManager : MonoBehaviour {
 
 	void DayStart() {
         player.GetComponent<Center>().IsActive = true;
+
+        GUIManager.RefreshTowerGUIColors();
 	}
 
 	void NightStart() {
@@ -42,14 +44,14 @@ public class WaveManager : MonoBehaviour {
         
         //should check here if there is a path to the player
         //if not, then change the disallowed tags
-        /*
+        
         if (!player.GetComponent<Center>().HasPathToCenter())
         {
             Pathfinder2D.Instance.DisallowedTags.Clear();
             Pathfinder2D.Instance.DisallowedTags.AddRange(new string[2] { "Mountain", "Resource" });
             Pathfinder2D.Instance.Create2DMap();
         }
-        */
+        
         GameObject.FindObjectOfType<Placement>().StopPlacement();
 
 		waveCount++;

@@ -37,10 +37,10 @@ public class Attachments : MonoBehaviour {
     void OnCollisionEnter(Collision other)
     {
         if (other.gameObject.tag == "Enemy")
-        { //only hit the player
+        {
             Enemy enemy = other.gameObject.GetComponent<Enemy>();
             takeDamage(enemy.HitDamage);
-            ObjectPool.instance.PoolObject(enemy.gameObject);
+            //ObjectPool.instance.PoolObject(enemy.gameObject);
         }
     }
 }

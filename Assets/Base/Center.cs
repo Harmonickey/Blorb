@@ -117,24 +117,6 @@ public class Center : MonoBehaviour {
     public void SetPlacement(float[] dir, Transform parent)
     {
         PlacePiece(new PlacementPiece("Placement", dir, parent));
-
-        //check if there is a valid path to the center
-        /*
-        PlacePiece("TestPiece", dir, parent, true);
-        if (HasPathToCenter())
-        {
-            Debug.Log("HAS PATH");
-            RemovePiece(dir, parent);
-            PlacePiece("Placement", dir, parent, true);
-        }
-        else
-        {
-            RemovePiece(dir, parent);
-            PlacePiece("Placement", dir, parent, false);
-        }
-         * */
-        //Debug.Log("Has Path: " + HasPathToCenter());
-        
     }
 
 	void Update()
