@@ -87,7 +87,7 @@ public abstract class BaseCohesionManager {
     }
 
     //delete all attachments that are not attached to main body
-    public static int DeleteAllMarkedAttachments(bool useMarked)
+    public static int DeleteUnconnectedAttachments(bool useMarked)
     {
         int totalSellBack = 0;
 

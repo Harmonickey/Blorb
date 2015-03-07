@@ -19,7 +19,7 @@ public class Attachments : MonoBehaviour {
         {
             //find all neighbors if possible (starting from center), skipping this particular attachment
             BaseCohesionManager.FindAllNeighbors(this.transform);
-            BaseCohesionManager.DeleteAllMarkedAttachments(false); //delete all that were not found
+            BaseCohesionManager.DeleteUnconnectedAttachments(false); //delete all that were not found
             BaseCohesionManager.UnMarkAllAttachments();
         }
     }
@@ -27,6 +27,12 @@ public class Attachments : MonoBehaviour {
     void Start()
     {
         GameEventManager.DayStart += DayStart;
+        GameEventManager.GameOver += GameOver;
+    }
+
+    void GameOver()
+    {
+        Destroy(this.gameObject);
     }
 
     void DayStart()

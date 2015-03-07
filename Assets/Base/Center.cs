@@ -15,7 +15,8 @@ public class Center : MonoBehaviour {
     public Transform collector;
     public Transform placement;
     public Transform healthbar;
-	private Transform centerTurret;
+	public Transform centerTurret;
+    public Transform playerBottom;
 
     private const float placementOffset = 0.81f;
 	private static float fireDelay = 0.25f;
@@ -57,20 +58,25 @@ public class Center : MonoBehaviour {
 		health = 100f;
 		collectingFromResource = false;
 
-        this.transform.FindChild("Player Bottom").renderer.enabled = true;
-        this.transform.FindChild("Player Center").renderer.enabled = true;
+        playerBottom.renderer.enabled = true;
+        centerTurret.renderer.enabled = true;
         isActive = true;
 	}
+
+    void GameOver() {
+        enabled = false;
+        playerBottom.renderer.enabled = false;
+        centerTurret.renderer.enabled = false;
+    }
 
 	// Use this for initialization
 	void Start () {
 		instance = this;
 		GameEventManager.GameStart += GameStart;
+        GameEventManager.GameOver += GameOver;
 		enabled = false;
-        this.transform.FindChild("Player Bottom").renderer.enabled = false;
-		centerTurret = this.transform.FindChild ("Player Center").transform;
+        playerBottom.renderer.enabled = false;
 		centerTurret.renderer.enabled = false;
-		healthbar = this.transform.Find ("GUI/HUD/Health");
 	}
 
 	public void AddHealthButton()
@@ -98,7 +104,7 @@ public class Center : MonoBehaviour {
 
     }
 
-    public void RemoveAllPossiblePlacements()
+    public static void RemoveAllPossiblePlacements()
     {
         GameObject[] placements = GameObject.FindGameObjectsWithTag("Placement");
 
@@ -158,7 +164,7 @@ public class Center : MonoBehaviour {
 		basePiece.position += movement * speed * Time.fixedDeltaTime;
 
         if (inputHorizontal != 0 || inputVertical != 0)
-            GameObject.FindObjectsOfType<Placement>()[0].StopPlacement(); //quick hack to access from here...
+            Placement.StopPlacement(); //quick hack to access from here...
     }
 
     public void PlacePiece(PlacementPiece placementPiece)
@@ -226,7 +232,7 @@ public class Center : MonoBehaviour {
 
     private float GetPixelOffset()
     {
-        SpriteRenderer bottomRenderer = this.transform.FindChild("Player Bottom").GetComponent<SpriteRenderer>();
+        SpriteRenderer bottomRenderer = playerBottom.GetComponent<SpriteRenderer>();
 
         return (bottomRenderer.sprite.rect.width / WorldManager.PixelOffset); 
     }

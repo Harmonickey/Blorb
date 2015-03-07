@@ -52,7 +52,7 @@ public class WaveManager : MonoBehaviour {
             Pathfinder2D.Instance.Create2DMap();
         }
         
-        GameObject.FindObjectOfType<Placement>().StopPlacement();
+        Placement.StopPlacement();
 
 		waveCount++;
 	}

@@ -13,7 +13,7 @@ public class Placement : MonoBehaviour {
 
     public static ArrayList possiblePlacements = new ArrayList();
 
-    private bool selected;
+    private static bool selected;
     private bool preSelected;
     private Center center;
 
@@ -157,7 +157,7 @@ public class Placement : MonoBehaviour {
         this.transform.parent.GetComponent<SpriteRenderer>().color = new Color(0.337f, 0.694f, 1f);
     }
 
-    public void StopPlacement()
+    public static void StopPlacement()
     {
         selected = false;
 
@@ -168,11 +168,10 @@ public class Placement : MonoBehaviour {
         possiblePlacements = new ArrayList();
 
         if (GameObject.FindGameObjectsWithTag("Placement").Length > 0)
-            center.RemoveAllPossiblePlacements();
+            Center.RemoveAllPossiblePlacements();
 
         GUIManager.RefreshTowerGUIColors();
 
-        
     }
 
     void CreatePlacement()

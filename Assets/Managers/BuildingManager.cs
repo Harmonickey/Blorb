@@ -44,7 +44,7 @@ public abstract class BuildingManager
     public static bool DetectOtherObjects(float[] dir, Transform startingFrom)
     {
 
-        float[] localDir = new float[2] { dir[0], dir[1] };
+        float[] localDir = new float[2] { dir[0], dir[1] }; //since we are passing by reference we need to make our own local
         localDir[0] *= 0.9f; //scale the distance
         localDir[1] *= 0.9f;
         RaycastHit2D[] hits = Physics2D.LinecastAll(new Vector2(startingFrom.position.x + localDir[0], startingFrom.position.y + localDir[1]),

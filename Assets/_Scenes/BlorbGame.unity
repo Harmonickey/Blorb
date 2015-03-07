@@ -769,7 +769,6 @@ MonoBehaviour:
   fastForwardButton: {fileID: 1179564016}
   sellWindow: {fileID: 424706199}
   isDay: 1
-  cancelButton: {fileID: 0}
 --- !u!1 &450058442
 GameObject:
   m_ObjectHideFlags: 0
@@ -1869,6 +1868,11 @@ MonoBehaviour:
   HUD: {fileID: 650051451}
   GUI: {fileID: 371103352}
   HUDTutorial: {fileID: 818692804}
+  cancelButton: {fileID: 1639736708}
+  towers: {fileID: 1001461554}
+  skipButton: {fileID: 675487728}
+  moveIndicator: {fileID: 850084180}
+  addHealth: {fileID: 799488309}
   MouseOverUI: 0
 --- !u!4 &870855512
 Transform:

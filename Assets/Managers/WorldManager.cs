@@ -13,8 +13,6 @@ public class WorldManager : MonoBehaviour {
 	private float phaseDuration = 45f;
 	private float startNextPhase, savedTimeScale;
 
-    public SpriteRenderer cancelButton; // need to set dynamically since there are two...
-
 	void GameStart () {
 		enabled = true;
 
@@ -60,7 +58,7 @@ public class WorldManager : MonoBehaviour {
     {
         if (!GUIManager.Instance.OnTutorialScreen)
         {
-            GameObject.FindObjectsOfType<Placement>()[0].StopPlacement();
+            Placement.StopPlacement();
             if (sr != null)
             {
                 // reset here for popup sell window because it gets disabled before OnMouseUp()
@@ -73,7 +71,7 @@ public class WorldManager : MonoBehaviour {
     public void SellButton() {
         // reap the money from towers that are marked and delete them
 
-        int totalSellBackAmount = BaseCohesionManager.DeleteAllMarkedAttachments(true);
+        int totalSellBackAmount = BaseCohesionManager.DeleteUnconnectedAttachments(true);
         sellWindow.gameObject.SetActive(false); //remove the window
 
         //do something with the sell back amount
