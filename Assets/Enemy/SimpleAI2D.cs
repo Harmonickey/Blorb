@@ -75,9 +75,13 @@ public class SimpleAI2D : Pathfinding2D
 
             //First we will create a new vector ignoreing the depth (z-axiz).
             Vector3 ignoreZ = new Vector3(Path[0].x, Path[0].y, transform.position.z);
-            
+			            
             //now move towards the newly created position
-            transform.position = Vector3.MoveTowards(transform.position, ignoreZ, Time.deltaTime * Speed);  
+			//Debug.DrawLine(transform.position, ignoreZ, Color.blue, 1f);
+			//Debug.DrawLine(transform.position, Path[0], Color.green, 1f);
+			//Debug.DrawLine(Path[0], Path[1], Color.red, 1f);
+			//Debug.Log (Vector3.Distance(transform.position, ignoreZ).ToString());
+			transform.position = ignoreZ;//Vector3.MoveTowards(transform.position, ignoreZ, Time.deltaTime * Speed);  
         }
     }
 }

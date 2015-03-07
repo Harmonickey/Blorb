@@ -45,6 +45,13 @@ public class Pathfinding2D : MonoBehaviour
         {
             Path.Clear();
             Path = path;
+
+			Vector3 previous = transform.position;
+			foreach (Vector3 n in Path){
+				Debug.DrawLine(previous, n, Color.red, .5f);
+				previous = n;
+			}
+
             Path[0] = new Vector3(Path[0].x, Path[0].y, Path[0].z);
             Path[Path.Count - 1] = new Vector3(Path[Path.Count - 1].x, Path[Path.Count - 1].y, Path[Path.Count - 1].z);
         }
