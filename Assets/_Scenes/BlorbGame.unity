@@ -239,6 +239,8 @@ MonoBehaviour:
   collector: {fileID: 412608, guid: d4356b1ba8e7a81499458a5f34280549, type: 2}
   placement: {fileID: 476196, guid: d1826f45ce6a68e449bdd09a08bf7b56, type: 2}
   healthbar: {fileID: 239317691}
+  centerTurret: {fileID: 1033810914}
+  playerBottom: {fileID: 713171288}
   speed: 6
 --- !u!1 &132545668
 GameObject:
