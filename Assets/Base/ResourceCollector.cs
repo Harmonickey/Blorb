@@ -10,8 +10,8 @@ public class ResourceCollector : MonoBehaviour {
 
 	public ParticleSystem theParticleSystem;
 	public Transform mountain;
-	public float collectionRate = 1f; //Time in seconds between collections
-	private float power = 10.0f;
+	private float collectionRate = 1f; //Time in seconds between collections
+	private int collectionAmount = 2;
 	private int length;
 	private ParticleSystem.Particle[] particles = new ParticleSystem.Particle[100];
 	
@@ -27,7 +27,7 @@ public class ResourceCollector : MonoBehaviour {
 			if (rp.magnitude < 0.2f) {
 				particles[i].lifetime = -1f;
 				if (myTarget && Time.time > nextCollect) {
-					int amount = myTarget.GetComponent<Resource>().deplete (10);
+					int amount = myTarget.GetComponent<Resource>().deplete (collectionAmount);
 					BlorbManager.Instance.Transaction(amount, myTarget.position);
 					nextCollect = Time.time + collectionRate;
 
@@ -37,7 +37,7 @@ public class ResourceCollector : MonoBehaviour {
 					}
 				}
 			} else {
-				particles[i].position = Vector3.MoveTowards(particles[i].position, -theParticleSystem.transform.localPosition, power * Time.deltaTime);
+				particles[i].position = Vector3.MoveTowards(particles[i].position, -theParticleSystem.transform.localPosition, 10f * Time.deltaTime);
 			}
 		}
 		theParticleSystem.SetParticles(particles, length);

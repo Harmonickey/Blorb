@@ -552,7 +552,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &424706199
 Transform:
   m_ObjectHideFlags: 0
@@ -560,7 +560,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 424706198}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 20, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 381540765}
@@ -1211,7 +1211,7 @@ GameObject:
   - 114: {fileID: 688328904}
   m_Layer: 5
   m_Name: Blorb Collector
-  m_TagString: Untagged
+  m_TagString: Collector
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1230,7 +1230,7 @@ MonoBehaviour:
   player: {fileID: 69281698}
   pictograph: {fileID: 535155564}
   nameText: {fileID: 1921181580}
-  cost: 50
+  cost: 150
   costText: {fileID: 56822548}
 --- !u!61 &688328905
 BoxCollider2D:
@@ -1459,7 +1459,6 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 738463232}
-  - 114: {fileID: 738463233}
   m_Layer: 0
   m_Name: Managers
   m_TagString: Untagged
@@ -1485,20 +1484,6 @@ Transform:
   - {fileID: 1635454648}
   m_Father: {fileID: 0}
   m_RootOrder: 2
---- !u!114 &738463233
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 738463231}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e455378de964b734a89b6f7f7c44c4bd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sellWindow: {fileID: 0}
-  amountTextBox: {fileID: 0}
-  amountText: {fileID: 0}
 --- !u!1 &768650251
 GameObject:
   m_ObjectHideFlags: 0
@@ -1590,7 +1575,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bdee1b9562fd84814b99ae54f66c93e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cost: 10
   nameText: {fileID: 1921181580}
   costText: {fileID: 56822548}
   pictograph: {fileID: 409303009}
@@ -2603,7 +2587,7 @@ GameObject:
   - 114: {fileID: 1432282902}
   m_Layer: 5
   m_Name: Turret
-  m_TagString: Untagged
+  m_TagString: Turret
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2634,7 +2618,7 @@ MonoBehaviour:
   player: {fileID: 69281698}
   pictograph: {fileID: 1554526182}
   nameText: {fileID: 1921181580}
-  cost: 25
+  cost: 50
   costText: {fileID: 56822548}
 --- !u!61 &1432282903
 BoxCollider2D:
@@ -2939,7 +2923,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sellWindow: {fileID: 424706199}
-  amountTextBox: {fileID: 381540765}
   amountText: {fileID: 381540766}
 --- !u!1 &1639736707
 GameObject:
@@ -3400,7 +3383,7 @@ GameObject:
   - 114: {fileID: 1926498493}
   m_Layer: 5
   m_Name: Wall
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3431,7 +3414,7 @@ MonoBehaviour:
   player: {fileID: 69281698}
   pictograph: {fileID: 1087560075}
   nameText: {fileID: 1921181580}
-  cost: 150
+  cost: 15
   costText: {fileID: 56822548}
 --- !u!61 &1926498494
 BoxCollider2D:

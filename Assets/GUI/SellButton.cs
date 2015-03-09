@@ -9,7 +9,7 @@ public class SellButton : MonoBehaviour {
 		// reap the money from towers that are marked and delete them
 		
 		int totalSellBackAmount = BaseCohesionManager.DeleteUnconnectedAttachments(true);
-		sellWindow.gameObject.SetActive(false); //remove the window
+		sellWindow.position = new Vector3(0f, 20f, 0f); //remove the window
 		
 		//do something with the sell back amount
 		BlorbManager.Instance.Transaction(totalSellBackAmount, sellWindow.position);

@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 
 public class Resource : MonoBehaviour {
-	private int initial = 500;
+	private int initial = 200;
 	private int remaining;
 	private SpriteRenderer mountain;
     

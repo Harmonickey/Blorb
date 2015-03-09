@@ -19,11 +19,10 @@ public class Center : MonoBehaviour {
     public Transform playerBottom;
 
     private const float placementOffset = 0.81f;
-	private static float fireDelay = 0.25f;
+	private float turretDamage = 10f;
+	private float fireDelay = 0.25f;
 	private float nextFireTime;
-
-	public static int addHealthCost = 25;
-
+	
 	private float healthInternal;
 
     public float speed;
@@ -137,6 +136,7 @@ public class Center : MonoBehaviour {
 				// set destination
 				float angle = centerTurret.eulerAngles.z * Mathf.Deg2Rad;
 				b.setDirection(new Vector3(Mathf.Cos(angle), Mathf.Sin(angle)));
+				b.setDamage(turretDamage);
 				
 				nextFireTime = fireDelay;
 			}
@@ -253,11 +253,6 @@ public class Center : MonoBehaviour {
         }
         //Debug.Log("No Path To Center");
         return false;
-    }
-
-    public bool HasEnoughResources(int cost)
-    {
-		return BlorbManager.Instance.BlorbAmount >= cost;
     }
 
     void OnCollisionEnter(Collision other)

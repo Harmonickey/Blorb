@@ -71,7 +71,7 @@ public class GUIManager : MonoBehaviour {
 		}
 
 		// add health button
-		if (blorbAmount < Center.addHealthCost || Center.Instance.health > 90f) {
+		if (blorbAmount < AddHealthButton.cost || Center.Instance.health > 90f) {
             addHealthButton.GetComponent<SpriteRenderer>().color = new Color(0.3f, 0f, 0f);
 		} else {
 			addHealthButton.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f);

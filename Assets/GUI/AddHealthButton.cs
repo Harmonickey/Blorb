@@ -2,7 +2,7 @@
 using System.Collections;
 
 public class AddHealthButton : MonoBehaviour {
-	public int cost;
+	public static int cost = 25;
 	public TextMesh nameText;
 	public TextMesh costText;
 	public SpriteRenderer pictograph;

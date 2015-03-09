@@ -60,12 +60,12 @@ public class Placement : MonoBehaviour {
     {
         if (GUIManager.Instance.OnTutorialScreen) return;
 
-        BaseCohesionManager.UnMarkAllAttachments();
-
-        preSelected = true;
+		BaseCohesionManager.UnMarkAllAttachments();
+		
+		preSelected = true;
 
         //only create new ones if we have none
-        if (center.HasEnoughResources(this.cost))
+        if (BlorbManager.Instance.HasEnoughResources(this.cost))
         {
             if (GameObject.FindGameObjectsWithTag("Placement").Length == 0)
             {
@@ -118,8 +118,9 @@ public class Placement : MonoBehaviour {
         placementPiece = new PlacementPiece(this.cost, this.tag);
 
         //remove the placment piece after it's set because now it was replaced by a real tower
-        if (!center.HasEnoughResources(this.cost))
+        if (!BlorbManager.Instance.HasEnoughResources(this.cost)) {
             StopPlacement();
+		}
 
         possiblePlacements = new ArrayList();
 

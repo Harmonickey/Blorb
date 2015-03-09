@@ -14,7 +14,7 @@ public class Enemy : MonoBehaviour {
 	}
 
 	private float hitDamage = 10f;
-	private const int killValue = 10;
+	private const int killValue = 5;
 
 	void Start () {
 		health = 100f;

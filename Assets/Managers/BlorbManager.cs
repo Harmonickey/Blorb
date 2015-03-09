@@ -41,6 +41,11 @@ public class BlorbManager : MonoBehaviour {
 		return Transaction (amount, position);
 	}
 
+	public bool HasEnoughResources(int cost)
+	{
+		return blorbAmount >= cost;
+	}
+
 	public float Transaction(int diff, Vector3 position)
 	{
 		blorbAmount += diff;
