@@ -10,7 +10,7 @@ public class GUIManager : MonoBehaviour {
 
 	private static float easing = 0.05f;
 	public Transform towers, cancelButton, skipButton, moveIndicator, addHealthButton;
-	private Vector3 towersDay, moveIndicatorDay, skipButtonDay, cancelButtonDay,
+	private Vector3 towersDay, moveIndicatorDay, skipButtonDay, cancelButtonActiveDay, cancelButtonInactiveDay,
 		towersNight, moveIndicatorNight, skipButtonNight, cancelButtonNight;
 
     public static GUIManager Instance
@@ -88,9 +88,10 @@ public class GUIManager : MonoBehaviour {
 		towersDay = towersNight = towers.localPosition;
 		skipButtonDay = skipButtonNight = skipButton.localPosition;
 		moveIndicatorDay = moveIndicatorNight = moveIndicator.localPosition;
-        cancelButtonDay = cancelButtonNight = cancelButton.localPosition;
+        cancelButtonActiveDay = cancelButtonInactiveDay = cancelButtonNight = cancelButton.localPosition;
 
 		// magic numbers for how much to move each of the elements to be out of frame
+		cancelButtonInactiveDay.y -= 1.64f;
 		towersNight.x += 5f;
 		skipButtonNight.y -= 1.64f;
 		moveIndicatorNight.y -= 1.64f;
@@ -137,7 +138,12 @@ public class GUIManager : MonoBehaviour {
                 towers.localPosition += (towersDay - towers.localPosition) * easing;
                 skipButton.localPosition += (skipButtonDay - skipButton.localPosition) * easing;
                 moveIndicator.localPosition += (moveIndicatorDay - moveIndicator.localPosition) * easing;
-                cancelButton.localPosition += (cancelButtonDay - cancelButton.localPosition) * easing;
+
+				if (Placement.isPlacingTowers) {
+					cancelButton.localPosition += (cancelButtonActiveDay - cancelButton.localPosition) * easing;
+				} else {
+					cancelButton.localPosition += (cancelButtonInactiveDay - cancelButton.localPosition) * easing;
+				}
             }
             else
             {

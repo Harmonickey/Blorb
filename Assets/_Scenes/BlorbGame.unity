@@ -1923,11 +1923,11 @@ MonoBehaviour:
   HUD: {fileID: 650051451}
   GUI: {fileID: 371103352}
   HUDTutorial: {fileID: 818692804}
-  cancelButton: {fileID: 1639736708}
   towers: {fileID: 1001461554}
+  cancelButton: {fileID: 1639736708}
   skipButton: {fileID: 675487728}
   moveIndicator: {fileID: 850084180}
-  addHealth: {fileID: 799488309}
+  addHealthButton: {fileID: 799488309}
   MouseOverUI: 0
 --- !u!4 &870855512
 Transform:
