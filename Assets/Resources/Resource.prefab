@@ -8,7 +8,6 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 465364}
-  - 50: {fileID: 5065364}
   - 61: {fileID: 6165364}
   m_Layer: 0
   m_Name: 2D Collider
@@ -60,21 +59,6 @@ Transform:
   - {fileID: 465364}
   m_Father: {fileID: 0}
   m_RootOrder: 0
---- !u!50 &5065364
-Rigidbody2D:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 165364}
-  m_Mass: 1
-  m_LinearDrag: 1e+06
-  m_AngularDrag: 1e+06
-  m_GravityScale: 0
-  m_FixedAngle: 0
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
 --- !u!61 &6165364
 BoxCollider2D:
   m_ObjectHideFlags: 1

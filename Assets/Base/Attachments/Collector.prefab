@@ -198,6 +198,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 817b781ff228144428fc78d532cd853b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  HealthBarPrefab: {fileID: 435332, guid: 61f7b5e345164471f8b998321aeb1aa0, type: 2}
   wasFound: 0
   sellBackAmount: 50
 --- !u!114 &11418212

@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Enemy : MonoBehaviour {
 
-	public Transform HealthbarPrefab;
+	public Transform HealthBarPrefab;
 	private HealthBar healthbar;
 	private float health;
 
@@ -18,7 +18,7 @@ public class Enemy : MonoBehaviour {
 
 	void Start () {
 		health = 100f;
-		Transform tmp = Instantiate (HealthbarPrefab, transform.position, transform.rotation) as Transform;
+		Transform tmp = Instantiate (HealthBarPrefab, transform.position, transform.rotation) as Transform;
 
 		tmp.parent = this.transform;
 		healthbar = tmp.GetComponent<HealthBar> ();

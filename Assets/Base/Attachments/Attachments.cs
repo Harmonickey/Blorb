@@ -2,7 +2,8 @@
 using System.Collections;
 
 public class Attachments : MonoBehaviour {
-
+	public Transform HealthBarPrefab;
+	private HealthBar healthbar;
     private float health = 100F;
 
     public bool wasFound = false; // for base cohesion checking
@@ -15,8 +16,11 @@ public class Attachments : MonoBehaviour {
     {
         health -= accumulatedHitDamage;
 
+		healthbar.Set (health / 100f);
+
         if (health <= 0f)
         {
+			CancelInvoke();
             //find all neighbors if possible (starting from center), skipping this particular attachment
             BaseCohesionManager.FindAllNeighbors(this.transform);
             BaseCohesionManager.DeleteUnconnectedAttachments(false); //delete all that were not found
@@ -28,6 +32,13 @@ public class Attachments : MonoBehaviour {
     {
         GameEventManager.DayStart += DayStart;
         GameEventManager.GameOver += GameOver;
+
+		Transform tmp = Instantiate (HealthBarPrefab, transform.position, transform.rotation) as Transform;
+		
+		tmp.parent = this.transform;
+		healthbar = tmp.GetComponent<HealthBar> ();
+		healthbar.HideWhenFull ();
+		healthbar.Reset ();
     }
 
     void GameOver()
