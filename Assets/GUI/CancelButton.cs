@@ -2,18 +2,43 @@
 using System.Collections;
 
 public class CancelButton : MonoBehaviour {
+	public Transform sellWindow;
+	private SpriteRenderer sr;
+
+	void Start ()
+	{
+		sr = this.GetComponent<SpriteRenderer> ();
+	}
+
+	void Update ()
+	{
+		if (Input.GetKeyDown(KeyCode.Escape)) {
+			Press ();
+		}
+	}
+
+	void Press()
+	{
+		if (!GUIManager.Instance.OnTutorialScreen)
+		{
+			Placement.StopPlacement();
+			
+			// reset here for popup sell window because it gets disabled before OnMouseUp()
+			sr.color = new Color(1f, 1f, 1f, 1f);
+			sellWindow.gameObject.SetActive(false);
+		}
+		
+		sr.color = new Color(1f, 1f, 1f, 0.5f);
+	}
 
     void OnMouseDown()
     {
-        //may need to pass the sprite renderer through so that I can make the color change back opaque
-        WorldManager.instance.CancelButton(this.GetComponent<SpriteRenderer>());
-
-        this.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 0.5f);
+		Press ();
     }
 
     void OnMouseUp()
     {
-        this.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 1f);
+        sr.color = new Color(1f, 1f, 1f, 1f);
     }
 
     void OnMouseEnter()
@@ -26,6 +51,6 @@ public class CancelButton : MonoBehaviour {
         GUIManager.Instance.MouseOverUI = false;
 
         // just in case the mouse up event is not over the button
-        this.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 1f);
+        sr.color = new Color(1f, 1f, 1f, 1f);
     }
 }

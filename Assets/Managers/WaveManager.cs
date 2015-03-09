@@ -27,7 +27,7 @@ public class WaveManager : MonoBehaviour {
 	void DayStart() {
         player.GetComponent<Center>().IsActive = true;
 
-        GUIManager.RefreshTowerGUIColors();
+//        GUIManager.Instance.RefreshTowerGUIColors();
 	}
 
 	void NightStart() {

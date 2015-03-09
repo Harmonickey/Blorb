@@ -7,11 +7,9 @@ public class GUIManager : MonoBehaviour {
 	public GameObject HUD;
 	public Transform GUI;
 	public SpriteRenderer HUDTutorial;
-    public Transform cancelButton;
 
 	private static float easing = 0.05f;
-	public Transform towers, skipButton, moveIndicator;
-    public Transform addHealth;
+	public Transform towers, cancelButton, skipButton, moveIndicator, addHealthButton;
 	private Vector3 towersDay, moveIndicatorDay, skipButtonDay, cancelButtonDay,
 		towersNight, moveIndicatorNight, skipButtonNight, cancelButtonNight;
 
@@ -26,6 +24,11 @@ public class GUIManager : MonoBehaviour {
     {
         get { return (viewStage == 1); }
     }
+
+	public int ViewStage
+	{
+		get { return viewStage; }
+	}
 
 	private int viewStage = 0; // 0- title screen, 1- tutorial screen, 2- main game, 3- game over screen
 	private bool shownTutorial = false; // skip stage 1 after seeing it once
@@ -49,27 +52,34 @@ public class GUIManager : MonoBehaviour {
 		}
 	}
 
-	public static void UpdateTowerGUI(float blorbAmount)
+	public void UpdateTowerGUI()
 	{
+		Color col;
+		float blorbAmount = BlorbManager.Instance.BlorbAmount;
 		Placement[] placements = GUIManager.instance.towers.gameObject.GetComponentsInChildren<Placement>();
 		foreach (Placement placement in placements)
 		{
 			if (placement.cost > blorbAmount)
 			{
-				placement.GetComponent<SpriteRenderer>().color = new Color(0.3f, 0f, 0f);
-				placement.transform.parent.GetComponent<SpriteRenderer>().color = new Color(0.3f, 0f, 0f);
+				col = new Color(0.3f, 0f, 0f);
+			} else {
+				col = new Color(1f, 1f, 1f);
 			}
+
+			placement.GetComponent<SpriteRenderer>().color = col;
+			placement.transform.parent.GetComponent<SpriteRenderer>().color = col;
 		}
 
 		// add health button
+		Debug.Log (blorbAmount);
 		if (blorbAmount < Center.addHealthCost) {
-            GUIManager.instance.addHealth.GetComponent<SpriteRenderer>().color = new Color(0.3f, 0f, 0f);
+            addHealthButton.GetComponent<SpriteRenderer>().color = new Color(0.3f, 0f, 0f);
 		}
 	}
 
-    public static void RefreshTowerGUIColors()
+    public void RefreshTowerGUIColors()
     {
-		SpriteRenderer[] srs = GUIManager.instance.towers.gameObject.GetComponentsInChildren<SpriteRenderer>();
+		SpriteRenderer[] srs = towers.gameObject.GetComponentsInChildren<SpriteRenderer>();
         foreach (SpriteRenderer sr in srs)
         {
             if (sr.GetComponent<Placement>() != null)

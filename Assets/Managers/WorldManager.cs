@@ -6,7 +6,6 @@ public class WorldManager : MonoBehaviour {
 	public Light worldLight;
 	public Transform dayNightDial;
 	public SpriteRenderer pauseButton, fastForwardButton;
-    public Transform sellWindow;
     public static float PixelOffset = 750.0f;
 	public bool isDay = true;
 
@@ -54,30 +53,6 @@ public class WorldManager : MonoBehaviour {
 		}
 	}
 
-    public void CancelButton(SpriteRenderer sr)
-    {
-        if (!GUIManager.Instance.OnTutorialScreen)
-        {
-            Placement.StopPlacement();
-            if (sr != null)
-            {
-                // reset here for popup sell window because it gets disabled before OnMouseUp()
-                sr.color = new Color(1f, 1f, 1f, 1f);
-            }
-            sellWindow.gameObject.SetActive(false);
-        }
-    }
-
-    public void SellButton() {
-        // reap the money from towers that are marked and delete them
-
-        int totalSellBackAmount = BaseCohesionManager.DeleteUnconnectedAttachments(true);
-        sellWindow.gameObject.SetActive(false); //remove the window
-
-        //do something with the sell back amount
-        BlorbManager.Instance.Transaction(totalSellBackAmount, sellWindow.position);
-    }
-
 	public void SkipButton () {
 		if (Time.timeScale != 0f) {
 			if (isDay) {
@@ -118,10 +93,5 @@ public class WorldManager : MonoBehaviour {
 		} else {
 			worldLight.intensity += (0.4f - worldLight.intensity) * 0.01f;
 		}
-
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            CancelButton(null);
-        }
 	}
 }

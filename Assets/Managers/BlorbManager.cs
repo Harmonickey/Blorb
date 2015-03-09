@@ -45,7 +45,7 @@ public class BlorbManager : MonoBehaviour {
 	{
 		blorbAmount += diff;
 		blorbAmountText.text = ((int)blorbAmount).ToString();
-		GUIManager.UpdateTowerGUI(blorbAmount);
+		GUIManager.Instance.UpdateTowerGUI();
 		
 		if (Mathf.Abs(diff) > 0f) {
 			// Add blorb indicator

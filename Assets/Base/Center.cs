@@ -79,15 +79,6 @@ public class Center : MonoBehaviour {
 		centerTurret.renderer.enabled = false;
 	}
 
-	public void AddHealthButton()
-	{
-		if (!GUIManager.Instance.OnTutorialScreen && Time.timeScale != 0f &&
-		    BlorbManager.Instance.BlorbAmount >= addHealthCost && health <= 90f) {
-			BlorbManager.Instance.Transaction(-addHealthCost, transform.position);
-			health += 10f;
-		}
-	}
-
     public void FindAllPossiblePlacements()
     {
         //start with the center

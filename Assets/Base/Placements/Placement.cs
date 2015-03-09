@@ -39,7 +39,7 @@ public class Placement : MonoBehaviour {
 	void OnMouseEnter ()
 	{
 		GUIManager.Instance.MouseOverUI = true;
-		if (!GUIManager.Instance.OnTutorialScreen) {
+		if (GUIManager.Instance.ViewStage == 2) {
 			setTowerDetail (true);
 		}
 	}
@@ -94,7 +94,9 @@ public class Placement : MonoBehaviour {
         {
             if (Input.GetMouseButtonDown(0) && placementPiece.positionToSnap != Vector3.zero) //for now, drop with mouse-button "0" which is left-click
             {
-                PlacePiece();
+				if (BlorbManager.Instance.BlorbAmount >= this.cost) {
+                	PlacePiece();
+				}
             }
             else if (possiblePlacements.Count > 0)
             {
@@ -154,7 +156,7 @@ public class Placement : MonoBehaviour {
 
     private void UpdateGUIColors()
     {
-        GUIManager.RefreshTowerGUIColors();
+        GUIManager.Instance.RefreshTowerGUIColors();
 
         this.GetComponent<SpriteRenderer>().color = new Color(0.337f, 0.694f, 1f);
         this.transform.parent.GetComponent<SpriteRenderer>().color = new Color(0.337f, 0.694f, 1f);
@@ -173,7 +175,7 @@ public class Placement : MonoBehaviour {
         if (GameObject.FindGameObjectsWithTag("Placement").Length > 0)
             Center.RemoveAllPossiblePlacements();
 
-        GUIManager.RefreshTowerGUIColors();
+        GUIManager.Instance.RefreshTowerGUIColors();
 
     }
 
