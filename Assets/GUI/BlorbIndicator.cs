@@ -14,7 +14,7 @@ public class BlorbIndicator : MonoBehaviour {
 
 		textMesh = this.GetComponent<TextMesh>();
 		textMesh.renderer.sortingLayerName = "UI";
-		textMesh.renderer.sortingOrder = 2;
+		textMesh.renderer.sortingOrder = -1;
 
 		if (d > 0) {
 			textMesh.text = "+" + d.ToString();

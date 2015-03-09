@@ -67,6 +67,8 @@ public class ResourceCollector : MonoBehaviour {
 			if (!theParticleSystem.isPlaying) {
 				theParticleSystem.Play();
 			}
+		} else {
+			theParticleSystem.Stop ();
 		}
 	}
 

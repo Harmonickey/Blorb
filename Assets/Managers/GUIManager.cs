@@ -71,31 +71,12 @@ public class GUIManager : MonoBehaviour {
 		}
 
 		// add health button
-		Debug.Log (blorbAmount);
-		if (blorbAmount < Center.addHealthCost) {
+		if (blorbAmount < Center.addHealthCost || Center.Instance.health > 90f) {
             addHealthButton.GetComponent<SpriteRenderer>().color = new Color(0.3f, 0f, 0f);
+		} else {
+			addHealthButton.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f);
 		}
 	}
-
-    public void RefreshTowerGUIColors()
-    {
-		SpriteRenderer[] srs = towers.gameObject.GetComponentsInChildren<SpriteRenderer>();
-        foreach (SpriteRenderer sr in srs)
-        {
-            if (sr.GetComponent<Placement>() != null)
-            {
-                if (!Center.Instance.HasEnoughResources(sr.GetComponent<Placement>().cost))
-                    continue;
-            }
-            if (sr.GetComponentInChildren<Placement>() != null)
-            {
-                if (!Center.Instance.HasEnoughResources(sr.GetComponentInChildren<Placement>().cost))
-                    continue;
-            }
-
-            sr.color = new Color(1f, 1f, 1f);
-        }
-    }
 
 	void Start () {
 		instance = this;

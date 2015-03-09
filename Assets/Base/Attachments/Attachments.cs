@@ -37,7 +37,9 @@ public class Attachments : MonoBehaviour {
 
     void DayStart()
     {
-        CancelInvoke();
+		if (this.gameObject != null) {
+			CancelInvoke();
+		}
     }
 
     public void FindAllPossiblePlacements(Center center)

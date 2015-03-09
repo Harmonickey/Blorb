@@ -156,7 +156,7 @@ public class Placement : MonoBehaviour {
 
     private void UpdateGUIColors()
     {
-        GUIManager.Instance.RefreshTowerGUIColors();
+        GUIManager.Instance.UpdateTowerGUI();
 
         this.GetComponent<SpriteRenderer>().color = new Color(0.337f, 0.694f, 1f);
         this.transform.parent.GetComponent<SpriteRenderer>().color = new Color(0.337f, 0.694f, 1f);
@@ -175,7 +175,7 @@ public class Placement : MonoBehaviour {
         if (GameObject.FindGameObjectsWithTag("Placement").Length > 0)
             Center.RemoveAllPossiblePlacements();
 
-        GUIManager.Instance.RefreshTowerGUIColors();
+        GUIManager.Instance.UpdateTowerGUI();
 
     }
 
