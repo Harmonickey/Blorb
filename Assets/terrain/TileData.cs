@@ -6,15 +6,23 @@ public class TileData {
 
 	public int width;
 	public int height;
-	public enum TileType {None, Grass, Stone, Water, Resource, Orange, Purple, Teal};
+	public enum TileType {None, Grass, Stone, Resource};
 
 	private TileType[,] tiles; //Change to Tile sometime?
 	private Vector2 cIndex;
+	private float mountainDistanceFactor;
+	private float mountainBaseDensity;
+	private float resourceDistanceFactor;
+	private float resourceBaseDensity;
 
-	public TileData(int width, int height, Vector2 chunkIndex){
+	public TileData(int width, int height, float mountainDistanceFactor, float mountainBaseDensity, float resourceDistanceFactor, float resourceBaseDensity, Vector2 chunkIndex){
 		tiles = new TileType[width, height]; //change to Tile sometime?
 		this.width = width;
 		this.height = height;
+		this.mountainDistanceFactor = mountainDistanceFactor;
+		this.mountainBaseDensity = mountainBaseDensity;
+		this.resourceDistanceFactor = resourceDistanceFactor;
+		this.resourceBaseDensity = resourceBaseDensity;
 		cIndex = chunkIndex;
 
 		GenerateMap(cIndex);
@@ -30,7 +38,7 @@ public class TileData {
 	}
 
 	public static bool isPassable(TileType t){
-		if (t == TileType.Stone || t == TileType.Water || t == TileType.None){
+		if (t == TileType.Stone || t == TileType.None){
 			return false;
 		}
 		else{
@@ -103,10 +111,11 @@ public class TileData {
 			for(int y = 0; y < height; y++){
 				float seed = Random.Range(0f, 1f);
 				float distance = ManhattanDistance(chunkIndex, Vector2.zero);
-				float mountainChance = 0.05f * distance + 0.05f; //set arbitrarily, might want to set a cap
-				float resourceChance = Mathf.Min (-0.01f * distance + 0.2f, 0.01f);
+				float mountainChance = mountainDistanceFactor * distance + mountainBaseDensity;
+				float resourceChance = Mathf.Min (resourceDistanceFactor * distance + resourceBaseDensity, 0.01f);
 
-				if (seed < resourceChance){
+				if (seed < resourceChance && 
+				    x > 0 && y > 0 && x < width-1 && y < height-1){ //not on an edge
 					SetTileType(x, y, TileType.Resource);
 					//other resource placing stuff
 				}
@@ -123,10 +132,13 @@ public class TileData {
 		}
 
 
-		int edgeWidth = (int) ManhattanDistance(chunkIndex, Vector2.zero) + 5; //5 chosen arbitrarily
-		int edgeHeight = (int) ManhattanDistance(chunkIndex, Vector2.zero) + 5;
-		FillRange(TileType.Grass, edgeHeight, 0,  height - edgeHeight, width);
-		FillRange(TileType.Grass, 0, edgeWidth, height, width - edgeWidth);
+		int edgeWidth = 5 - (int) ManhattanDistance(chunkIndex, Vector2.zero); //constant chosen arbitrarily
+		int edgeHeight = 5 - (int) ManhattanDistance(chunkIndex, Vector2.zero);
+		
+		FillRange(TileType.Grass, 0, 0,  edgeHeight, width);
+		FillRange(TileType.Grass, height - edgeHeight, 0,  height, width);
+		FillRange(TileType.Grass, 0, 0, height, edgeWidth);
+		FillRange(TileType.Grass, 0, height - edgeWidth, height, width);
 		//FillRange(TileType.Grass, corridorSize, corridorSize, (int) (width - distance), (int) (height - distance));
         //mountains should be denser and resources should be sparser the further away from the center you are
 		//also the size of the corridor should also be smaller (min 3?)

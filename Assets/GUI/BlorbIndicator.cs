@@ -1,35 +1,51 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class BlorbIndicator : MonoBehaviour {
 	private Vector3 pos;
 	private Color color;
+	private float startFade;
 
 	private TextMesh textMesh;
 
-	public void setDiff (float d) {
-		textMesh = this.GetComponent<TextMesh>();
+	public void SetDiff (int d) {
+		startFade = 0.5f;
 		pos = transform.position;
 
+		textMesh = this.GetComponent<TextMesh>();
+		textMesh.renderer.sortingLayerName = "UI";
+		textMesh.renderer.sortingOrder = -1;
+
 		if (d > 0) {
-			textMesh.text = "+" + ((int)d).ToString();
+			textMesh.text = "+" + d.ToString();
 			color = new Color(0f, 1f, 0f, 1f);
 		} else {
-			textMesh.text = ((int)d).ToString();
+			textMesh.text = d.ToString();
 			color = new Color(1f, 0f, 0f, 1f);
 		}
 
+		if (GUIManager.Instance.OnTutorialScreen) {
+			textMesh.renderer.enabled = false;
+		}
 	}
 	
 	void Update () {
-		color.a -= Time.deltaTime / 2f;
-		pos.y -= Time.deltaTime * 2f;
+		startFade -= Time.deltaTime;
+		pos.y += Time.deltaTime * 2f;
+
+		if (startFade <= 0f) {
+			color.a -= Time.deltaTime / 2f;
+		}
 
 		if (color.a <= 0f) {
-			Object.Destroy(gameObject);
+			ObjectPool.instance.PoolObject(gameObject);
 		}
 
 		textMesh.color = color;
 		transform.position = pos;
+
+		if (!textMesh.renderer.enabled) {
+			textMesh.renderer.enabled = true;
+		}
 	}
 }

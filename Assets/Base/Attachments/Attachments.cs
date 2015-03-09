@@ -5,78 +5,65 @@ public class Attachments : MonoBehaviour {
 
     private float health = 100F;
 
-    public bool[] TakenSpot
+    public bool wasFound = false; // for base cohesion checking
+
+    public int sellBackAmount;
+
+    private float accumulatedHitDamage = 0.0f;
+
+    public void takeDamage()
     {
-        get { return takenSpots; }
-        set { takenSpots = value; }
-    }
+        health -= accumulatedHitDamage;
 
-    private bool[] takenSpots = new bool[16];
-
-    public int Spot
-    {
-        get { return spot; }
-        set { spot = value; }
-    }
-
-    private int spot;
-
-    public void takeDamage(float damage)
-    {
-        health -= damage;
-    }
-
-    public void FindAllPossiblePlacements(Center centralController)
-    {
-        for (int i = 0; i < takenSpots.Length; i++)
+        if (health <= 0f)
         {
-            if (!takenSpots[i])
-            {
-                //check to make sure it's not going to place on another branch of the structure that
-                //  isn't necessarily a parent or child
-                if (!DetectOtherObjects(BuildDirection.ToDirFromSpot(i)))
-                    centralController.SetPlacement(BuildDirection.ToDirFromSpot(i), this.transform);
-                
-            }
-        }
-
-        foreach (Transform child in this.transform)
-        {
-            if (child.GetComponent<Attachments>() != null)
-            {
-                child.GetComponent<Attachments>().FindAllPossiblePlacements(centralController);
-            }
+            //find all neighbors if possible (starting from center), skipping this particular attachment
+            BaseCohesionManager.FindAllNeighbors(this.transform);
+            BaseCohesionManager.DeleteUnconnectedAttachments(false); //delete all that were not found
+            BaseCohesionManager.UnMarkAllAttachments();
         }
     }
 
-    private bool DetectOtherObjects(float[] dir)
+    void Start()
     {
-        //raycast to find objects
-        RaycastHit2D[] hits;
-        hits = Physics2D.LinecastAll(new Vector2(this.transform.position.x + dir[0], this.transform.position.y + dir[1]),
-                                     new Vector2(this.transform.position.x + (dir[0] * 1.3f), this.transform.position.y + (dir[1] * 1.3f)));
+        GameEventManager.DayStart += DayStart;
+        GameEventManager.GameOver += GameOver;
+    }
 
-        //blacklist children, self, and placement pieces
-        ArrayList blackList = new ArrayList();
-        foreach (Transform child in this.transform) //iterate only immediate children
+    void GameOver()
+    {
+        Destroy(this.gameObject);
+    }
+
+    void DayStart()
+    {
+		if (this.gameObject != null) {
+			CancelInvoke();
+		}
+    }
+
+    public void FindAllPossiblePlacements(Center center)
+    {
+        for (int i = 0; i < BuildingManager.Directions.Count; i++)
         {
-            for (int j = 0; j < hits.Length; j++)
-            {
-                if (hits[j].collider.gameObject == child.gameObject ||
-                    hits[j].collider.gameObject == this.gameObject)
-                {
-                    blackList.Add(j);
-                }
-            }
+            //check to make sure it's not going to place on another branch of the structure that
+            //  isn't necessarily a parent or child
+            if (!BuildingManager.DetectOtherObjects(BuildingManager.ToDirFromSpot(i), this.transform))
+                center.SetPlacement(BuildingManager.ToDirFromSpot(i), this.transform);
         }
 
-        for (int j = 0; j < hits.Length; j++)
+    }
+
+    void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.tag == "Enemy")
         {
-            if (blackList.Contains(j)) continue; //skip children and placement pieces
+            Enemy enemy = other.gameObject.GetComponent<Enemy>();
 
-            return true;
+            if (accumulatedHitDamage == 0)
+                InvokeRepeating("takeDamage", 0, 1.0f); //start hitting every second
+        
+            accumulatedHitDamage += enemy.HitDamage;
         }
-
-        return false;
     }
 }

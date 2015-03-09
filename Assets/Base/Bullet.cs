@@ -2,38 +2,44 @@
 using System.Collections;
 
 public class Bullet : MonoBehaviour {
-	private float speed = 10.0f;
-	private float damage = 10.0f;
-	private Transform target;
+	private float speed = 30.0f;
+	private static float damageDefault = 10f;
+	private float damage = damageDefault;
+	private Vector3 velocity;
+	private float TTL = 2f;
 
-	// Use this for initialization
-	void Start () {
-	
+	// called before the object is returned to the ObjectPool
+	void Reset () {
+		TTL = 2f;
+		damage = damageDefault;
+	}
+
+	void OnTriggerEnter (Collider other) {
+		if (other.gameObject.tag == "Enemy" && other.gameObject != null) {
+
+			other.gameObject.GetComponent<Enemy>().takeDamage(damage);
+			Reset ();
+			ObjectPool.instance.PoolObject(gameObject);
+		}
 	}
 	
-	void Update () {
+	void FixedUpdate () {
+		TTL -= Time.fixedDeltaTime;
 		// destroy bullet if destination does not exist anymore
-		if (target == null) {
-			Destroy(gameObject);
+		if (TTL <= 0f) {
+			Reset ();
+			ObjectPool.instance.PoolObject(gameObject);
 			return;
 		}
-		
-		// fly towards the destination
-		float stepSize = Time.deltaTime * speed;
-		transform.position = Vector3.MoveTowards(transform.position, target.position, stepSize);
-		
-		// reached?
-		if (transform.position.Equals(target.position)) {
-			// decrease teddy health
-			Enemy e = target.GetComponent<Enemy>();
-			e.takeDamage(damage);          
-			
-			// destroy bullet
-			Destroy(gameObject);
-		}
+
+		transform.Translate (velocity * Time.fixedDeltaTime);
 	}
-	
-	public void setTarget(Transform v) {
-		target = v;
+
+	public void setDamage(float d) {
+		damage = d;
+	}
+
+	public void setDirection(Vector3 d) {
+		velocity = speed * Vector3.Normalize(d);
 	}
 }

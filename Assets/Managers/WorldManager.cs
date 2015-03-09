@@ -1,15 +1,16 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class WorldManager : MonoBehaviour {
 	public static WorldManager instance;
-	public Light light;
+	public Light worldLight;
 	public Transform dayNightDial;
+	public SpriteRenderer pauseButton, fastForwardButton;
     public static float PixelOffset = 750.0f;
 	public bool isDay = true;
 
 	private float phaseDuration = 45f;
-	private float startNextPhase;
+	private float startNextPhase, savedTimeScale;
 
 	void GameStart () {
 		enabled = true;
@@ -27,21 +28,40 @@ public class WorldManager : MonoBehaviour {
 		dayNightDial.Rotate (0, 0, -180f * Time.deltaTime / phaseDuration);
 	}
 
-	public void PauseGame () {
-		Time.timeScale = 0f;
+	public void PauseButton () {
+		if (!GUIManager.Instance.OnTutorialScreen) {
+			if (Time.timeScale == 0f) {
+				Time.timeScale = savedTimeScale;
+				pauseButton.color = new Color(1f, 1f, 1f, 1f);
+			} else {
+				savedTimeScale = Time.timeScale;
+				Time.timeScale = 0f;
+				pauseButton.color = new Color(1f, 1f, 1f, 0.5f);
+			}
+		}
 	}
 
-	public void UnpauseGame () {
-		Time.timeScale = 1f;
+	public void FastForwardButton () {
+		if (!GUIManager.Instance.OnTutorialScreen && Time.timeScale != 0f) {
+			if (Time.timeScale == 1f) {
+				Time.timeScale = 2f;
+				fastForwardButton.color = new Color(1f, 1f, 1f, 0.5f);
+			} else {
+				Time.timeScale = 1f;
+				fastForwardButton.color = new Color(1f, 1f, 1f, 1f);
+			}
+		}
 	}
 
 	public void SkipButton () {
-		if (isDay) {
-			startNextPhase = 0f;
-			dayNightDial.localEulerAngles = new Vector3(0, 0, -90);
-		} else if (WaveManager.instance.waveEnded) {
-			startNextPhase = 0f;
-			dayNightDial.localEulerAngles = new Vector3(0, 0, 90);
+		if (Time.timeScale != 0f) {
+			if (isDay) {
+				startNextPhase = 0f;
+				dayNightDial.localEulerAngles = new Vector3(0, 0, -90);
+			} else if (WaveManager.instance.waveEnded) {
+				startNextPhase = 0f;
+				dayNightDial.localEulerAngles = new Vector3(0, 0, 90);
+			}
 		}
 	}
 
@@ -69,9 +89,9 @@ public class WorldManager : MonoBehaviour {
 		}
 
 		if (isDay) {
-			light.intensity += (1f - light.intensity) * 0.01f;
+			worldLight.intensity += (1f - worldLight.intensity) * 0.01f;
 		} else {
-			light.intensity += (0.4f - light.intensity) * 0.01f;
+			worldLight.intensity += (0.4f - worldLight.intensity) * 0.01f;
 		}
 	}
 }

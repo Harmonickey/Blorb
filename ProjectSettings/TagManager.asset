@@ -20,6 +20,10 @@ TagManager:
   - Center
   - Skip
   - Movement Indicator
+  - Bullet
+  - Towers
+  - Tower Detail
+  - Sell Window
   - 
   Builtin Layer 0: Default
   Builtin Layer 1: TransparentFX
@@ -30,7 +34,7 @@ TagManager:
   Builtin Layer 6: 
   Builtin Layer 7: 
   User Layer 8: Terrain
-  User Layer 9: 
+  User Layer 9: Towers
   User Layer 10: 
   User Layer 11: 
   User Layer 12: 

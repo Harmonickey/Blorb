@@ -4,61 +4,75 @@ using System.Collections;
 public class Placement : MonoBehaviour {
 
     public Transform player;
-    public Transform turretPlacement;
-    public Transform collectorPlacement;
-    public Transform wallPlacement;
+	public SpriteRenderer pictograph;
 
+    public static PlacementPiece placementPiece;
+
+	public TextMesh nameText;
     public int cost;
+	public TextMesh costText;
 
-    private bool selected;
+    public static ArrayList possiblePlacements = new ArrayList();
+
+    private static bool selected;
     private bool preSelected;
-    private Transform placementPiece;
     private Center center;
-    private string type = null;
 
-    // TODO: these three items could be created into an abstraction object
-    public static int spot = -1;
-    public static Transform parent = null;
-    public static Vector3 positionToSnap = Vector3.zero;
+    public static bool isPlacingTowers = false;
 
     void Start()
     {
         selected = false;
         center = player.GetComponent<Center>();
+
+		nameText.renderer.sortingLayerName = "UI";
+		nameText.renderer.sortingOrder = 2;
+		costText.renderer.sortingLayerName = "UI";
+		costText.renderer.sortingOrder = 2;
     }
+
+	void setTowerDetail (bool enabled)
+	{
+		pictograph.renderer.enabled = enabled;
+		pictograph.transform.parent.renderer.enabled = enabled;
+		nameText.text = gameObject.name;
+		nameText.renderer.enabled = enabled;
+		costText.text = cost.ToString ();
+		costText.renderer.enabled = enabled;
+	}
+
+	void OnMouseEnter ()
+	{
+		GUIManager.Instance.MouseOverUI = true;
+		if (GUIManager.Instance.ViewStage == 2) {
+			setTowerDetail (true);
+		}
+	}
+	
+	void OnMouseExit ()
+	{
+		GUIManager.Instance.MouseOverUI = false;
+		setTowerDetail (false);
+	}
 
 	// Use this for initialization
 	void OnMouseDown()
     {
         if (GUIManager.Instance.OnTutorialScreen) return;
 
-        preSelected = true;
+		BaseCohesionManager.UnMarkAllAttachments();
+		
+		preSelected = true;
 
         //only create new ones if we have none
-        if (center.HasEnoughResources(this.cost))
+        if (BlorbManager.Instance.HasEnoughResources(this.cost))
         {
             if (GameObject.FindGameObjectsWithTag("Placement").Length == 0)
-                center.FindAllPossiblePlacements();
-
-            SpriteRenderer[] srs = GameObject.FindGameObjectsWithTag("Towers")[0].GetComponentsInChildren<SpriteRenderer>();
-            foreach (SpriteRenderer sr in srs)
             {
-                if (sr.GetComponent<Placement>() != null)
-                {
-                    if (!center.HasEnoughResources(sr.GetComponent<Placement>().cost))
-                        continue;
-                }
-                else if (sr.GetComponentInChildren<Placement>() != null)
-                {
-                    if (!center.HasEnoughResources(sr.GetComponentInChildren<Placement>().cost))
-                        continue;
-                }
-
-                sr.color = new Color(1f, 1f, 1f);
+                center.FindAllPossiblePlacements();
             }
 
-            this.GetComponent<SpriteRenderer>().color = new Color(0.337f, 0.694f, 1f);
-            this.transform.parent.GetComponent<SpriteRenderer>().color = new Color(0.337f, 0.694f, 1f);
+            UpdateGUIColors();
 
             CreatePlacement();
         }
@@ -71,98 +85,109 @@ public class Placement : MonoBehaviour {
         if (preSelected == true)
         {
             selected = true;
-            preSelected = false;
+            isPlacingTowers = true;
+            BaseCohesionManager.UnMarkAllAttachments();
         }
+
+        preSelected = false;
     }
 
     void Update()
     {
-        if (selected && placementPiece != null)
+        
+        if (selected)
         {
-            Vector3 hit = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0));
-            placementPiece.position = new Vector3(hit.x, hit.y, 0.0f); //drag the placment piece with the mouse
-            
-            if (placementPiece.renderer.enabled == false)
-                placementPiece.renderer.enabled = true;
-
-            if (Input.GetMouseButtonDown(0)) //for now, drop with mouse-button "0" which is left-click
+            if (Input.GetMouseButtonDown(0) && placementPiece.positionToSnap != Vector3.zero) //for now, drop with mouse-button "0" which is left-click
             {
-                //selected = false;
-                
-                if (positionToSnap != Vector3.zero && parent != null && spot != -1)
-                {
-                    placementPiece.position = positionToSnap;
-                    center.PlacePiece(type, BuildDirection.ToDirFromSpot(spot), parent, this.cost);
-
-                    //reset all placement tile variables
-                    positionToSnap = Vector3.zero;
-                    spot = -1;
-                    parent = null;
-
-                    //make sure there aren't any hanging Update processes
-                    GameObject[] placements = GameObject.FindGameObjectsWithTag("Placement");
-                    foreach (GameObject placement in placements)
-                        placement.GetComponent<PlacementBottom>().CheckDistance = false;
-                    
-                    //remove the placment piece after it's set because now it was replaced by a real tower
-                    if (!center.HasEnoughResources(this.cost))
-                        StopPlacement();
-
-                    //reinit building process
-                    Pathfinder2D.Instance.Create2DMap();
-                    player.GetComponent<Center>().RecalculateAllPossiblePlacements();
-                    
-                }
+				if (BlorbManager.Instance.BlorbAmount >= this.cost) {
+                	PlacePiece();
+				}
             }
-        }
-
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            StopPlacement();
+            else if (possiblePlacements.Count > 0)
+            {
+                FindClosestPlacement();
+            }
         }
     }
 
-    public void StopPlacement()
+    private void PlacePiece()
     {
-        RemoveHangingObjects();
+        center.PlacePiece(placementPiece);
+
+        //reset our placement piece
+        placementPiece = new PlacementPiece(this.cost, this.tag);
+
+        //remove the placment piece after it's set because now it was replaced by a real tower
+        if (!BlorbManager.Instance.HasEnoughResources(this.cost)) {
+            StopPlacement();
+		}
+
+        possiblePlacements = new ArrayList();
+
+        //reinit building process
+        center.RecalculateAllPossiblePlacements();
+    }
+
+    private void FindClosestPlacement()
+    {
+        Vector3 mouse = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0));
+        mouse = new Vector3(mouse.x, mouse.y, 0);
+
+        PlacementBottom closest = possiblePlacements[0] as PlacementBottom;
+        float selectionThreshold = (((this.GetComponent<SpriteRenderer>().sprite.rect.width * 2) / WorldManager.PixelOffset) / 2) + 0.1f;
+        float closestDistance = Mathf.Infinity;
+        foreach (PlacementBottom possiblePlacement in possiblePlacements)
+        {
+            float distance = Vector2.Distance(mouse, possiblePlacement.transform.position);
+            if (distance < closestDistance)
+            {
+                closestDistance = distance;
+                closest = possiblePlacement;
+            }
+            possiblePlacement.GetComponent<SpriteRenderer>().color = PlacementBottom.unSelectedColor;
+            possiblePlacement.GetComponent<SpriteRenderer>().sortingOrder = 1;
+        }
+
+        if (closestDistance <= selectionThreshold)
+        {
+            placementPiece.positionToSnap = closest.transform.localPosition;
+            closest.GetComponent<SpriteRenderer>().color = PlacementBottom.selectedColor;
+            closest.GetComponent<SpriteRenderer>().sortingOrder = 2;
+        }
+        else
+        {
+            placementPiece.positionToSnap = Vector3.zero;
+        }
+    }
+
+    private void UpdateGUIColors()
+    {
+        GUIManager.Instance.UpdateTowerGUI();
+
+        this.GetComponent<SpriteRenderer>().color = new Color(0.337f, 0.694f, 1f);
+        this.transform.parent.GetComponent<SpriteRenderer>().color = new Color(0.337f, 0.694f, 1f);
+    }
+
+    public static void StopPlacement()
+    {
+        selected = false;
+
+        isPlacingTowers = false;
+
+        BaseCohesionManager.UnMarkAllAttachments();
+
+        possiblePlacements = new ArrayList();
 
         if (GameObject.FindGameObjectsWithTag("Placement").Length > 0)
-            center.RemoveAllPossiblePlacements();
+            Center.RemoveAllPossiblePlacements();
+
+        GUIManager.Instance.UpdateTowerGUI();
+
     }
 
     void CreatePlacement()
-    {  
-        RemoveHangingObjects();
-
-        switch (this.tag)
-        {
-            case "Turret":
-                placementPiece = Instantiate(turretPlacement) as Transform;
-                break;
-            case "Collector":
-                placementPiece = Instantiate(collectorPlacement) as Transform;
-                break;
-            case "Wall":
-                placementPiece = Instantiate(wallPlacement) as Transform;
-                break;
-        }
-
-        placementPiece.localScale = Vector2.one;
-        placementPiece.transform.position = this.transform.position; //fixes render bug
-        placementPiece.renderer.enabled = false; //don't show it yet, until the frame where the mouse is detected happens
-        type = this.tag;
-    }
-
-    private void RemoveHangingObjects()
     {
-        //look for all the placement objects that could have been instantiated
-        GameObject t = GameObject.FindGameObjectWithTag("Turret Placement");
-        GameObject c = GameObject.FindGameObjectWithTag("Collector Placement");
-        GameObject w = GameObject.FindGameObjectWithTag("Wall Placement");
-
-        //remove the one that's out
-        foreach (GameObject obj in new GameObject[] {t, c, w})
-            if (obj != null)
-                Destroy(obj.transform.parent.gameObject);
+        placementPiece = new PlacementPiece(this.cost, this.tag);
     }
+
 }

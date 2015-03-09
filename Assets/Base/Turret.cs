@@ -23,13 +23,15 @@ public class Turret : MonoBehaviour {
 		if (nextFireTime < 0f) {
 			if (myTarget) {
 				// spawn bullet
-				GameObject g = (GameObject)Instantiate(bullet, transform.position, Quaternion.identity);
-				
+				GameObject g = ObjectPool.instance.GetObjectForType("Bullet", false);
+
+				g.transform.position = transform.position;
+
 				// get access to bullet component
 				Bullet b = g.GetComponent<Bullet>();
 				
 				// set destination        
-				b.setTarget(myTarget.transform);
+				b.setDirection(myTarget.position - transform.position);
 			}
 
 			myTarget = GetNearestTaggedObject();
@@ -47,7 +49,7 @@ public class Turret : MonoBehaviour {
 		}
 	}
 
-	Transform GetNearestTaggedObject() {
+	private Transform GetNearestTaggedObject() {
 		
 		float nearestDistanceSqr = Mathf.Infinity;
 		GameObject[] taggedGameObjects = GameObject.FindGameObjectsWithTag("Enemy"); 

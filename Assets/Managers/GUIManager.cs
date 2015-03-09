@@ -3,15 +3,15 @@
 public class GUIManager : MonoBehaviour {
 	
 	public GUIText gameOverText, instructionsText, titleText;
-	public Camera minimap, maincamera;
+	public Camera maincamera;
 	public GameObject HUD;
 	public Transform GUI;
 	public SpriteRenderer HUDTutorial;
 
 	private static float easing = 0.05f;
-	private Transform towers, skipButton, moveIndicator;
-	private Vector3 towersDay, moveIndicatorDay, skipButtonDay,
-		towersNight, moveIndicatorNight, skipButtonNight;
+	public Transform towers, cancelButton, skipButton, moveIndicator, addHealthButton;
+	private Vector3 towersDay, moveIndicatorDay, skipButtonDay, cancelButtonActiveDay, cancelButtonInactiveDay,
+		towersNight, moveIndicatorNight, skipButtonNight, cancelButtonNight;
 
     public static GUIManager Instance
     {
@@ -25,41 +25,56 @@ public class GUIManager : MonoBehaviour {
         get { return (viewStage == 1); }
     }
 
+	public int ViewStage
+	{
+		get { return viewStage; }
+	}
+
 	private int viewStage = 0; // 0- title screen, 1- tutorial screen, 2- main game, 3- game over screen
 	private bool shownTutorial = false; // skip stage 1 after seeing it once
+
+	public bool MouseOverUI = false;
 
 	void setHUD (bool enabled) {
 		SpriteRenderer[] renderers = HUD.GetComponentsInChildren<SpriteRenderer>();
 		TextMesh[] texts = HUD.GetComponentsInChildren<TextMesh> ();
 
 		foreach (SpriteRenderer renderer in renderers) {
-			if (renderer.sprite.name != "hud_4") {
+			if (renderer.sprite.name != "hud_4" && renderer.gameObject.tag != "Tower Detail") {
 				renderer.enabled = enabled;
 			}
 		}
 
 		foreach (TextMesh text in texts) {
-			text.renderer.enabled = enabled;
+			if (text.gameObject.tag != "Tower Detail") {
+				text.renderer.enabled = enabled;
+			}
 		}
-
-		minimap.enabled = enabled;
 	}
 
-	public static void UpdateTowerGUI(float blorbAmount)
+	public void UpdateTowerGUI()
 	{
-		Placement[] placements = GameObject.FindGameObjectWithTag("Towers").GetComponentsInChildren<Placement>();
+		Color col;
+		float blorbAmount = BlorbManager.Instance.BlorbAmount;
+		Placement[] placements = GUIManager.instance.towers.gameObject.GetComponentsInChildren<Placement>();
 		foreach (Placement placement in placements)
 		{
 			if (placement.cost > blorbAmount)
 			{
-				placement.GetComponent<SpriteRenderer>().color = new Color(0.3f, 0f, 0f);
-				placement.transform.parent.GetComponent<SpriteRenderer>().color = new Color(0.3f, 0f, 0f);
+				col = new Color(0.3f, 0f, 0f);
+			} else {
+				col = new Color(1f, 1f, 1f);
 			}
-			else
-			{
-				//placement.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f);
-				//placement.transform.parent.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f);
-			}
+
+			placement.GetComponent<SpriteRenderer>().color = col;
+			placement.transform.parent.GetComponent<SpriteRenderer>().color = col;
+		}
+
+		// add health button
+		if (blorbAmount < AddHealthButton.cost || Center.Instance.health > 90f) {
+            addHealthButton.GetComponent<SpriteRenderer>().color = new Color(0.3f, 0f, 0f);
+		} else {
+			addHealthButton.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f);
 		}
 	}
 
@@ -70,21 +85,22 @@ public class GUIManager : MonoBehaviour {
 		gameOverText.enabled = false;
 		instance.setHUD (false);
 
-		towers = GameObject.FindGameObjectWithTag ("Towers").transform;
-		skipButton = GameObject.FindGameObjectWithTag ("Skip").transform;
-		moveIndicator = GameObject.FindGameObjectWithTag ("Movement Indicator").transform;
-
 		towersDay = towersNight = towers.localPosition;
 		skipButtonDay = skipButtonNight = skipButton.localPosition;
 		moveIndicatorDay = moveIndicatorNight = moveIndicator.localPosition;
+        cancelButtonActiveDay = cancelButtonInactiveDay = cancelButtonNight = cancelButton.localPosition;
 
-		towersNight.x += 3.2f;
+		// magic numbers for how much to move each of the elements to be out of frame
+		cancelButtonInactiveDay.y -= 1.64f;
+		towersNight.x += 5f;
 		skipButtonNight.y -= 1.64f;
 		moveIndicatorNight.y -= 1.64f;
+        cancelButtonNight.x += 5f;
 	}
 
 	private void GameOver () {
 		gameOverText.enabled = true;
+        instructionsText.text = "Try Again! \n\n Press space to start";
 		instructionsText.enabled = true;
 		instance.setHUD (false);
 		viewStage = 3;
@@ -115,20 +131,36 @@ public class GUIManager : MonoBehaviour {
 			GUI.localScale = new Vector2(scale, scale);
 		}
 
-		if (WorldManager.instance.isDay) {
-			towers.localPosition += (towersDay - towers.localPosition) * easing;
-			skipButton.localPosition += (skipButtonDay - skipButton.localPosition) * easing;
-			moveIndicator.localPosition += (moveIndicatorDay - moveIndicator.localPosition) * easing;
-		} else {
-			towers.localPosition += (towersNight - towers.localPosition) * easing;
-			moveIndicator.localPosition += (moveIndicatorNight - moveIndicator.localPosition) * easing;
+        if (WorldManager.instance != null) // on GameOver WorldManager is unenabled, so need to check null here...
+        {
+            if (WorldManager.instance.isDay)
+            {
+                towers.localPosition += (towersDay - towers.localPosition) * easing;
+                skipButton.localPosition += (skipButtonDay - skipButton.localPosition) * easing;
+                moveIndicator.localPosition += (moveIndicatorDay - moveIndicator.localPosition) * easing;
 
-			if (!WaveManager.instance.waveEnded) {
-				skipButton.localPosition += (skipButtonNight - skipButton.localPosition) * easing;
-			} else {
-				skipButton.localPosition += (skipButtonDay - skipButton.localPosition) * easing;
-			}
-		}
+				if (Placement.isPlacingTowers) {
+					cancelButton.localPosition += (cancelButtonActiveDay - cancelButton.localPosition) * easing;
+				} else {
+					cancelButton.localPosition += (cancelButtonInactiveDay - cancelButton.localPosition) * easing;
+				}
+            }
+            else
+            {
+                towers.localPosition += (towersNight - towers.localPosition) * easing;
+                moveIndicator.localPosition += (moveIndicatorNight - moveIndicator.localPosition) * easing;
+                cancelButton.localPosition += (cancelButtonNight - cancelButton.localPosition) * easing;
+
+                if (!WaveManager.instance.waveEnded)
+                {
+                    skipButton.localPosition += (skipButtonNight - skipButton.localPosition) * easing;
+                }
+                else
+                {
+                    skipButton.localPosition += (skipButtonDay - skipButton.localPosition) * easing;
+                }
+            }
+        }
 	}
 	
 	private void GameStart () {

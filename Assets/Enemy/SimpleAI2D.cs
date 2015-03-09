@@ -39,7 +39,10 @@ public class SimpleAI2D : Pathfinding2D
                 //Now check the distance to the player, if it is within the distance it will search for a new path
                 if (tempDistance < SearchDistance)
                 {
-                    FindPath(transform.position, Player.position);
+                    if (Path.Count == 0)
+                    {
+                        FindPath(transform.position, Player.position);
+                    }
                 }
             }
 
@@ -68,16 +71,25 @@ public class SimpleAI2D : Pathfinding2D
             if (Vector3.Distance(transform.position, Path[0]) < 0.2F || tempDistance < Vector3.Distance(Path[0], Player.position)) 
             {
                 Path.RemoveAt(0);
-            }   
-
+            } 
+            /*
+			if (Path.Count > 2){
+				Path.RemoveAt(1);
+				Path.RemoveAt(0);
+			}
+            */
             if(Path.Count < 1)
                 return;
 
             //First we will create a new vector ignoreing the depth (z-axiz).
             Vector3 ignoreZ = new Vector3(Path[0].x, Path[0].y, transform.position.z);
-            
+			            
             //now move towards the newly created position
-            transform.position = Vector3.MoveTowards(transform.position, ignoreZ, Time.deltaTime * Speed);  
+			//Debug.DrawLine(transform.position, ignoreZ, Color.blue, 1f);
+			//Debug.DrawLine(transform.position, Path[0], Color.green, 1f);
+			//Debug.DrawLine(Path[0], Path[1], Color.red, 1f);
+			//Debug.Log (Vector3.Distance(transform.position, ignoreZ).ToString());
+			transform.position = Vector3.MoveTowards(transform.position, ignoreZ, Time.deltaTime * Speed);  
         }
     }
 }

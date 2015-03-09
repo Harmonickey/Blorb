@@ -2,37 +2,29 @@ using UnityEngine;
 using System.Collections;
 
 public class Resource : MonoBehaviour {
-    
-	public int value = 1000;
-    public int depletionRate = 0;
+	private int initial = 200;
+	private int remaining;
+	private SpriteRenderer mountain;
     
 	void Start(){
-
+		remaining = initial;
+		mountain = transform.GetComponent<SpriteRenderer> ();
 	}
-    
-	public int collectBlorb(){
-		if (value > depletionRate){ //if can remove depletionRate amount 
-	        value -= depletionRate;
-	        return depletionRate;
-		}
-		else if (value > 0){
-			Debug.Log ("Case B");
-			int remainder = value;
-			value = 0;
-			return remainder;
-		}
-		else{
-			Debug.Log ("Case C");
-			return 0;
-		}
-    }
-    
-    public void EmptyResource(){
-        value = 0;
-    }
 
-	public void SetResource(int x){
-		value = x;
+	public int deplete(int amount)
+	{
+		int give;
+
+		if (amount > remaining) {
+			give = remaining;
+			remaining = 0;
+		} else {
+			give = amount;
+			remaining -= amount;
+		}
+
+		mountain.material.color = new Color (1f, 1f, 1f, (initial - remaining) / (float)initial);
+
+		return give;
 	}
-    
 }

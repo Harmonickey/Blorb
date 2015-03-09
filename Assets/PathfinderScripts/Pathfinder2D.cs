@@ -53,7 +53,7 @@ public class Pathfinder2D : MonoBehaviour
             Tilesize = 1;
         }
 
-        Pathfinder2D.Instance.Create2DMap();
+        //Pathfinder2D.Instance.Create2DMap();
     }
 
 
@@ -334,7 +334,14 @@ public class Pathfinder2D : MonoBehaviour
         int x = (MapStartPosition.x < 0F) ? Mathf.FloorToInt(((pos.x + Mathf.Abs(MapStartPosition.x)) / Tilesize)) : Mathf.FloorToInt((pos.x - MapStartPosition.x) / Tilesize);
         int y = (MapStartPosition.y < 0F) ? Mathf.FloorToInt(((pos.y + Mathf.Abs(MapStartPosition.y)) / Tilesize)) : Mathf.FloorToInt((pos.y - MapStartPosition.y) / Tilesize);
 
-        Node n = Map[x, y];
+		Node n;
+		try {
+			n = Map[x, y];
+		} 
+		catch (IndexOutOfRangeException e) {
+			UnityEngine.Debug.Log(String.Format("x = {0}, y = {1}, Map.x = {2}, Map.y = {3}", x, y, Map.GetLength(0), Map.GetLength(1)));
+			throw;
+		}
 
         if (n.walkable)
         {

@@ -52,7 +52,7 @@ MonoBehaviour:
   - Collector
   IgnoreTags:
   - Enemy
-  MoveDiagonal: 1
+  MoveDiagonal: 0
   DrawMapInEditor: 1
 --- !u!1001 &100100000
 Prefab:
