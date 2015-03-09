@@ -32,15 +32,8 @@ public class ResourceCollector : MonoBehaviour {
 					nextCollect = Time.time + collectionRate;
 
 					if (amount == 0) {
-						// Turn resource into mountain
-						Transform targetParent = myTarget.parent;
-						Vector3 targetPosition = myTarget.position;
-						Destroy(myTarget.gameObject);
-
-						Transform newMountain = Instantiate(mountain) as Transform;
-						newMountain.position = targetPosition;
-						newMountain.tag = "Mountain";
-						newMountain.parent = targetParent;
+						myTarget.gameObject.tag = "Mountain";
+						theParticleSystem.Stop();
 					}
 				}
 			} else {
@@ -70,7 +63,6 @@ public class ResourceCollector : MonoBehaviour {
 			}
 
 			theParticleSystem.transform.position = myTarget.position;
-			Resource r = myTarget.GetComponent<Resource>();
             
 			if (!theParticleSystem.isPlaying) {
 				theParticleSystem.Play();

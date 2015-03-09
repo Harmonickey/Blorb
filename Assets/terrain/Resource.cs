@@ -23,7 +23,7 @@ public class Resource : MonoBehaviour {
 			remaining -= amount;
 		}
 
-		mountain.color = new Color (1f, 1f, 1f, (initial - remaining) / initial);
+		mountain.material.color = new Color (1f, 1f, 1f, (initial - remaining) / (float)initial);
 
 		return give;
 	}

@@ -23,6 +23,9 @@ public class Placement : MonoBehaviour {
     {
         selected = false;
         center = player.GetComponent<Center>();
+
+		costText.renderer.sortingLayerName = "UI";
+		costText.renderer.sortingOrder = 2;
     }
 
 	void setTowerDetail (bool enabled)
