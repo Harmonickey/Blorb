@@ -10,6 +10,7 @@ public class ResourceCollector : MonoBehaviour {
 
 	public ParticleSystem theParticleSystem;
 	public Transform mountain;
+	public float collectionRate = 1f; //Time in seconds between collections
 	private float power = 10.0f;
 	private int length;
 	private ParticleSystem.Particle[] particles = new ParticleSystem.Particle[100];
@@ -25,9 +26,10 @@ public class ResourceCollector : MonoBehaviour {
 
 			if (rp.magnitude < 0.2f) {
 				particles[i].lifetime = -1f;
-				if (myTarget) {
+				if (myTarget && Time.time > nextCollect) {
 					int amount = myTarget.GetComponent<Resource>().deplete (10);
 					BlorbManager.Instance.Transaction(amount, myTarget.position);
+					nextCollect = Time.time + collectionRate;
 
 					if (amount == 0) {
 						// Turn resource into mountain
