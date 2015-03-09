@@ -3,6 +3,7 @@ using System.Collections;
 
 public class AddHealthButton : MonoBehaviour {
 	public int cost;
+	public TextMesh nameText;
 	public TextMesh costText;
 	public SpriteRenderer pictograph;
 
@@ -10,6 +11,8 @@ public class AddHealthButton : MonoBehaviour {
 	{
 		pictograph.renderer.enabled = enabled;
 		pictograph.transform.parent.renderer.enabled = enabled;
+		nameText.text = "Add Health";
+		nameText.renderer.enabled = enabled;
 		costText.text = cost.ToString ();
 		costText.renderer.enabled = enabled;
 	}

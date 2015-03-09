@@ -22,6 +22,7 @@ public class CancelButton : MonoBehaviour {
 		if (!GUIManager.Instance.OnTutorialScreen)
 		{
 			Placement.StopPlacement();
+			GUIManager.Instance.MouseOverUI = false;
 			
 			// reset here for popup sell window because it gets disabled before OnMouseUp()
 			sr.color = new Color(1f, 1f, 1f, 1f);

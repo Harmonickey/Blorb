@@ -8,6 +8,7 @@ public class Placement : MonoBehaviour {
 
     public static PlacementPiece placementPiece;
 
+	public TextMesh nameText;
     public int cost;
 	public TextMesh costText;
 
@@ -24,6 +25,8 @@ public class Placement : MonoBehaviour {
         selected = false;
         center = player.GetComponent<Center>();
 
+		nameText.renderer.sortingLayerName = "UI";
+		nameText.renderer.sortingOrder = 2;
 		costText.renderer.sortingLayerName = "UI";
 		costText.renderer.sortingOrder = 2;
     }
@@ -32,6 +35,8 @@ public class Placement : MonoBehaviour {
 	{
 		pictograph.renderer.enabled = enabled;
 		pictograph.transform.parent.renderer.enabled = enabled;
+		nameText.text = gameObject.name;
+		nameText.renderer.enabled = enabled;
 		costText.text = cost.ToString ();
 		costText.renderer.enabled = enabled;
 	}

@@ -116,9 +116,9 @@ TextureImporter:
     - name: towers_2
       rect:
         serializedVersion: 2
-        x: 5962
+        x: 6000
         y: 0
-        width: 770
+        width: 750
         height: 750
       alignment: 0
       pivot: {x: .5, y: .5}

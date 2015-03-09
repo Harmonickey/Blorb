@@ -27,11 +27,11 @@ public class SellingManager : MonoBehaviour {
                     if (sellWindow != null)
                     {
                         sellWindow.gameObject.SetActive(true);
-                        amountText.text = ((int)attachment.sellBackAmount).ToString();
+                        amountText.text = "+" + ((int)attachment.sellBackAmount).ToString();
                         sellWindow.FindChild("Amount").renderer.sortingOrder = 1;
                         amountTextBox.renderer.sortingLayerName = "UI";
                         amountTextBox.renderer.sortingOrder = 2;
-                        sellWindow.transform.position = new Vector3(attachment.transform.position.x, attachment.transform.position.y + 1.7f);
+                        sellWindow.transform.position = new Vector3(attachment.transform.position.x, attachment.transform.position.y + 2.5f);
                     }
                 }
             }
