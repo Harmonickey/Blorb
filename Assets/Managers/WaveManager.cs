@@ -13,6 +13,7 @@ public class WaveManager : MonoBehaviour {
 	private float spawnNextEnemy;
 	private int enemiesSpawned;
 	public bool waveEnded = true;
+    private bool waveStart = false;
 
     public bool enemyAgro = false;
 
@@ -35,7 +36,7 @@ public class WaveManager : MonoBehaviour {
 	void NightStart() {
 		waveEnded = false;
 		enemiesSpawned = 0;
-		spawnNextEnemy = enemySpawnDelay;
+        spawnNextEnemy = enemySpawnDelay;
         player.GetComponent<Center>().IsActive = false;
 
         Pathfinder2D.Instance.MapStartPosition = new Vector2(-25 + player.position.x, -25 + player.position.y);
@@ -64,6 +65,7 @@ public class WaveManager : MonoBehaviour {
         }
 
         waveCount++;
+        waveStart = true;
     }
 
 
@@ -88,7 +90,7 @@ public class WaveManager : MonoBehaviour {
 	void Update () {
 		spawnNextEnemy -= Time.deltaTime;
 
-		if (!WorldManager.instance.isDay && spawnNextEnemy < 0f && enemiesSpawned < enemiesPerWave) {
+		if (!WorldManager.instance.isDay && spawnNextEnemy < 0f && enemiesSpawned < enemiesPerWave && waveStart) {
 			GameObject newEnemy = ObjectPool.instance.GetObjectForType("Enemy", true);
 			float randAngle = Random.Range(0f, 2 * Mathf.PI);
 
@@ -101,6 +103,7 @@ public class WaveManager : MonoBehaviour {
 
 		if (enemiesSpawned == enemiesPerWave && GameObject.FindGameObjectWithTag("Enemy") == null) {
 			waveEnded = true;
+            waveStart = false;
             enemyAgro = false;
 		}
 	}

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Attachments : MonoBehaviour {
 	public Transform HealthBarPrefab;
@@ -10,11 +11,17 @@ public class Attachments : MonoBehaviour {
 
     public int sellBackAmount;
 
-    private float accumulatedHitDamage = 0.0f;
+    private List<Enemy> attackingEnemies = new List<Enemy>();
 
     public void takeDamage()
     {
-        health -= accumulatedHitDamage;
+        attackingEnemies.RemoveAll(e => e.gameObject == null); //remove all dead enemies
+
+        float totalDamage = 0f;
+        foreach (Enemy enemy in attackingEnemies)
+            totalDamage += enemy.HitDamage;
+
+        health -= totalDamage;
 
 		healthbar.Set (health / 100f);
 
@@ -43,14 +50,14 @@ public class Attachments : MonoBehaviour {
 
     void GameOver()
     {
-        Destroy(this.gameObject);
+        if (this.gameObject != null)
+            Destroy(this.gameObject);
     }
 
     void DayStart()
     {
-		if (this.gameObject != null) {
-			CancelInvoke();
-		}
+        if (this.gameObject != null)
+            CancelInvoke();
     }
 
     public void FindAllPossiblePlacements(Center center)
@@ -71,21 +78,20 @@ public class Attachments : MonoBehaviour {
         {
             Enemy enemy = other.gameObject.GetComponent<Enemy>();
 
-            if (accumulatedHitDamage == 0 && WaveManager.instance.enemyAgro) // only damage is enemy is in agro
+            if (attackingEnemies.Count == 0 && WaveManager.instance.enemyAgro) // only damage is enemy is in agro
                 InvokeRepeating("takeDamage", 0, 1.0f); //start hitting every second
 
-            accumulatedHitDamage += enemy.HitDamage;
+            attackingEnemies.Add(enemy);
         }
     }
-    
+
     void OnCollisionExit(Collision other)
     {
         if (other.gameObject.tag == "Enemy")
         {
             Enemy enemy = other.gameObject.GetComponent<Enemy>();
 
-            if (accumulatedHitDamage > 0)
-                accumulatedHitDamage -= enemy.HitDamage;
+            attackingEnemies.Remove(enemy);
         }
     }
 }

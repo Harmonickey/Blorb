@@ -242,6 +242,8 @@ MonoBehaviour:
   centerTurret: {fileID: 1033810914}
   playerBottom: {fileID: 713171288}
   speed: 6
+  HasPath: 0
+  PathIsSet: 0
 --- !u!1 &147699497
 GameObject:
   m_ObjectHideFlags: 0
@@ -1445,7 +1447,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 241d6d8df6309a446abcdbb017256636, type: 2}
       propertyPath: HeuristicAggression
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 241d6d8df6309a446abcdbb017256636, type: 2}
@@ -1991,6 +1993,7 @@ MonoBehaviour:
   enemy: {fileID: 442294, guid: 64941476ad224584198e7145f228cc9d, type: 2}
   player: {fileID: 69281698}
   waveEnded: 1
+  enemyAgro: 0
 --- !u!1 &1087560073
 GameObject:
   m_ObjectHideFlags: 0
@@ -3277,7 +3280,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Tilesize: .400000006
-  HeuristicAggression: 1
+  HeuristicAggression: 0
   zStart: -10
   zEnd: 10
   MapStartPosition: {x: -25, y: -25}

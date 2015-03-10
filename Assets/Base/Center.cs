@@ -30,8 +30,6 @@ public class Center : MonoBehaviour {
     public bool HasPath;
     public bool PathIsSet;
 
-    private GameObject tempEnemy;
-
 	public float health
 	{
 		get { return healthInternal;}
@@ -152,11 +150,8 @@ public class Center : MonoBehaviour {
 
         if (PathIsSet)
         {
-            Debug.Log(HasPath);
             WaveManager.instance.PreWaveInit(HasPath);
             
-            ObjectPool.instance.PoolObject(tempEnemy);
-
             HasPath = false;
             PathIsSet = false;
         }
@@ -251,40 +246,22 @@ public class Center : MonoBehaviour {
 		}
     }
 
+    public void HasPathToCenter()
+    {
+        //spawn an enemy
+        Pathfinding2D finder = this.GetComponent<Pathfinding2D>();
+        float randAngle = Random.Range(0f, 2 * Mathf.PI);
+        Vector3 endPos = this.transform.position + 10f * new Vector3(Mathf.Cos(randAngle), Mathf.Sin(randAngle));
+        finder.FindPath(this.transform.position, endPos, true);
+
+        //asynchronous, need to wait for message...
+    }
+
     public void SetHasPath(bool hasPath)
     {
         this.HasPath = hasPath;
 
         PathIsSet = true;
-    }
-
-    public void HasPathToCenter()
-    {
-        //spawn an enemy
-        GameObject newEnemy = ObjectPool.instance.GetObjectForType("Enemy", true);
-        float randAngle = Random.Range(0f, 2 * Mathf.PI);
-        SimpleAI2D AI = newEnemy.GetComponent<SimpleAI2D>();
-        newEnemy.transform.position = this.transform.position + 10f * new Vector3(Mathf.Cos(randAngle), Mathf.Sin(randAngle));
-        AI.FindPath(AI.transform.position, this.transform.position, true);
-
-        tempEnemy = newEnemy;
-        /*
-        Pathfinding2D finder = this.gameObject.GetComponent<Pathfinding2D>();
-        finder.FindPath(new Vector3(10.0f + this.transform.position.x, 10.0f + this.transform.position.y, 0.0f), this.transform.position);
-        Debug.DrawLine(new Vector3(10.0f + this.transform.position.x, 10.0f + this.transform.position.y, 0.0f),
-                       this.transform.position, Color.red, 100.0f, false);
-        
-        //Debug.Log("PATH LENGTH: " + finder.Path.Count);
-        if (finder.Path.Count > 0)
-        {
-            //Debug.Log("Found Path");
-            finder.Path.Clear();
-            return true;
-        }
-        
-        //Debug.Log("No Path To Center");
-        return false;
-        */ 
     }
 
     void OnCollisionEnter(Collision other)

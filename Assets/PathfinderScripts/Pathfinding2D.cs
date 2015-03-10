@@ -44,6 +44,9 @@ public class Pathfinding2D : MonoBehaviour
     {
         if (path == null || path.Count == 0)
         {
+            if (testing)
+                GameObject.FindObjectOfType<Center>().SendMessage("SetHasPath", false);
+
             return;
         }
 
@@ -61,7 +64,7 @@ public class Pathfinding2D : MonoBehaviour
             Path[0] = new Vector3(Path[0].x, Path[0].y, Path[0].z);
             Path[Path.Count - 1] = new Vector3(Path[Path.Count - 1].x, Path[Path.Count - 1].y, Path[Path.Count - 1].z);
 
-            if (testing && Path.Count > 0)
+            if (testing)
                 GameObject.FindObjectOfType<Center>().SendMessage("SetHasPath", true);
 
         }
