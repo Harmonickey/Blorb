@@ -117,7 +117,7 @@ public class Center : MonoBehaviour {
 
 	void Update()
 	{
-		if (!WorldManager.instance.isDay) {
+		if (!WorldManager.instance.isDay && !GUIManager.Instance.OnTutorialScreen) {
 			Vector3 mouse = new Vector3(Input.mousePosition.x - Screen.width / 2f,
 			                            Input.mousePosition.y - Screen.height / 2f,
 			                            0f);

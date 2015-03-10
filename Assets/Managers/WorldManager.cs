@@ -9,12 +9,15 @@ public class WorldManager : MonoBehaviour {
     public static float PixelOffset = 750.0f;
 	public bool isDay = true;
 
+	private int daysPassed = 0;
+
 	private float phaseDuration = 45f;
 	private float startNextPhase, savedTimeScale;
 
 	void GameStart () {
 		enabled = true;
 
+		daysPassed = 0;
 		startNextPhase = phaseDuration;
 		isDay = true;
 		dayNightDial.rotation = Quaternion.Euler (0f, 0f, 90f);
@@ -80,6 +83,7 @@ public class WorldManager : MonoBehaviour {
 		if (startNextPhase < 0f) {
 			if (isDay) {
 				GameEventManager.TriggerNightStart();
+				daysPassed++;
 			} else {
 				GameEventManager.TriggerDayStart();
 			}

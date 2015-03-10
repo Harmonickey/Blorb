@@ -6,7 +6,7 @@ public class GUIManager : MonoBehaviour {
 	public Camera maincamera;
 	public GameObject HUD;
 	public Transform GUI;
-	public SpriteRenderer HUDTutorial;
+	public SpriteRenderer HUDTutorial, NightTutorial;
 
 	private static float easing = 0.05f;
 	public Transform towers, cancelButton, skipButton, moveIndicator, addHealthButton;
@@ -32,6 +32,7 @@ public class GUIManager : MonoBehaviour {
 
 	private int viewStage = 0; // 0- title screen, 1- tutorial screen, 2- main game, 3- game over screen
 	private bool shownTutorial = false; // skip stage 1 after seeing it once
+	private bool firstNight = true;
 
 	public bool MouseOverUI = false;
 
@@ -112,6 +113,7 @@ public class GUIManager : MonoBehaviour {
 				GameEventManager.TriggerGameStart();
 			} else if (viewStage == 1) {
 				HUDTutorial.enabled = false;
+				NightTutorial.enabled = false;
 				Time.timeScale = 1;
 				viewStage = 2;
 			}
@@ -147,6 +149,13 @@ public class GUIManager : MonoBehaviour {
             }
             else
             {
+				if (firstNight) {
+					NightTutorial.enabled = true;
+					Time.timeScale = 0;
+					viewStage = 1;
+					firstNight = false;
+				}
+
                 towers.localPosition += (towersNight - towers.localPosition) * easing;
                 moveIndicator.localPosition += (moveIndicatorNight - moveIndicator.localPosition) * easing;
                 cancelButton.localPosition += (cancelButtonNight - cancelButton.localPosition) * easing;
