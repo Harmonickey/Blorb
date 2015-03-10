@@ -362,6 +362,7 @@ Transform:
   - {fileID: 1609933699}
   - {fileID: 668932813}
   - {fileID: 818692803}
+  - {fileID: 1854437976}
   - {fileID: 650051452}
   - {fileID: 424706199}
   m_Father: {fileID: 69281698}
@@ -567,7 +568,7 @@ Transform:
   - {fileID: 1576406526}
   - {fileID: 2142604419}
   m_Father: {fileID: 371103352}
-  m_RootOrder: 5
+  m_RootOrder: 6
 --- !u!212 &424706200
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -974,7 +975,7 @@ Transform:
   - {fileID: 1639736708}
   - {fileID: 1001461554}
   m_Father: {fileID: 371103352}
-  m_RootOrder: 4
+  m_RootOrder: 5
 --- !u!212 &650051453
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1824,6 +1825,7 @@ MonoBehaviour:
   HUD: {fileID: 650051451}
   GUI: {fileID: 371103352}
   HUDTutorial: {fileID: 818692804}
+  NightTutorial: {fileID: 1854437977}
   towers: {fileID: 1001461554}
   cancelButton: {fileID: 1639736708}
   skipButton: {fileID: 675487728}
@@ -3300,6 +3302,56 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 1
+--- !u!1 &1854437975
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 1854437976}
+  - 212: {fileID: 1854437977}
+  m_Layer: 5
+  m_Name: Night Tutorial
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1854437976
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1854437975}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 371103352}
+  m_RootOrder: 4
+--- !u!212 &1854437977
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1854437975}
+  m_Enabled: 0
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_LightmapIndex: 255
+  m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
+  m_Materials:
+  - {fileID: 10754, guid: 0000000000000000e000000000000000, type: 0}
+  m_SubsetIndices: 
+  m_StaticBatchRoot: {fileID: 0}
+  m_UseLightProbes: 0
+  m_LightProbeAnchor: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_SortingLayerID: 70031809
+  m_SortingOrder: -1
+  m_Sprite: {fileID: 21300036, guid: 59d3b66d55ed647738262e136efca103, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &1921181579
 GameObject:
   m_ObjectHideFlags: 0
