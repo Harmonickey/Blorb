@@ -298,7 +298,7 @@ public class Pathfinder2D : MonoBehaviour
             {
                 returnPath.Add(endPos);
             }
-
+           
             if (returnPath.Count > 2 && endPosValid)
             {
                 //Now make sure we do not go backwards or go to long

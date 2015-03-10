@@ -4,6 +4,16 @@ using System.Collections;
 public class SellButton : MonoBehaviour {
 	public Transform sellWindow;
 
+    void Start()
+    {
+        GameEventManager.NightStart += NightStart;
+    }
+
+    void NightStart()
+    {
+        sellWindow.position = new Vector3(0f, 20f, 0f); //remove the window
+    }
+
     void OnMouseDown()
     {
 		// reap the money from towers that are marked and delete them
@@ -25,6 +35,7 @@ public class SellButton : MonoBehaviour {
     void OnMouseEnter()
     {
         GUIManager.Instance.MouseOverUI = true;
+        this.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 1f);
     }
 
     void OnMouseExit()

@@ -6,6 +6,8 @@ public class SellingManager : MonoBehaviour {
     public Transform sellWindow;
     public TextMesh amountText;
 
+    public SpriteRenderer sellButton, cancelButton;
+
 	void Start ()
 	{
 		amountText.renderer.sortingLayerName = "UI";
@@ -29,7 +31,9 @@ public class SellingManager : MonoBehaviour {
 
                     //load up the selling GUI
 	                amountText.text = "+" + ((int)attachment.sellBackAmount).ToString();
-	                
+
+                    cancelButton.color = new Color(1f, 1f, 1f, 1f);
+                    sellButton.color = new Color(1f, 1f, 1f, 1f);
 	                sellWindow.transform.position = new Vector3(attachment.transform.position.x, attachment.transform.position.y + 2.5f);
                 }
             }

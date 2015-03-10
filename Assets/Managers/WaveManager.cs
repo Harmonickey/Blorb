@@ -14,6 +14,8 @@ public class WaveManager : MonoBehaviour {
 	private int enemiesSpawned;
 	public bool waveEnded = true;
 
+    public bool enemyAgro = false;
+
 	void Start() {
 		instance = this;
 
@@ -44,18 +46,25 @@ public class WaveManager : MonoBehaviour {
         
         //should check here if there is a path to the player
         //if not, then change the disallowed tags
-        
-        if (!player.GetComponent<Center>().HasPathToCenter())
+
+        player.GetComponent<Center>().HasPathToCenter();
+
+        Placement.StopPlacement();
+
+	}
+
+    public void PreWaveInit(bool hasPath)
+    {
+        if (!hasPath)
         {
+            enemyAgro = true;
             Pathfinder2D.Instance.DisallowedTags.Clear();
             Pathfinder2D.Instance.DisallowedTags.AddRange(new string[2] { "Mountain", "Resource" });
             Pathfinder2D.Instance.Create2DMap();
         }
-        
-        Placement.StopPlacement();
 
-		waveCount++;
-	}
+        waveCount++;
+    }
 
 
 	void GameStart() {
@@ -92,6 +101,7 @@ public class WaveManager : MonoBehaviour {
 
 		if (enemiesSpawned == enemiesPerWave && GameObject.FindGameObjectWithTag("Enemy") == null) {
 			waveEnded = true;
+            enemyAgro = false;
 		}
 	}
 }

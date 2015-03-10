@@ -141,6 +141,7 @@ public class GUIManager : MonoBehaviour {
                 skipButton.localPosition += (skipButtonDay - skipButton.localPosition) * easing;
                 moveIndicator.localPosition += (moveIndicatorDay - moveIndicator.localPosition) * easing;
 
+                cancelButton.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 1f);
 				if (Placement.isPlacingTowers) {
 					cancelButton.localPosition += (cancelButtonActiveDay - cancelButton.localPosition) * easing;
 				} else {

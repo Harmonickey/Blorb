@@ -71,10 +71,21 @@ public class Attachments : MonoBehaviour {
         {
             Enemy enemy = other.gameObject.GetComponent<Enemy>();
 
-            if (accumulatedHitDamage == 0)
+            if (accumulatedHitDamage == 0 && WaveManager.instance.enemyAgro) // only damage is enemy is in agro
                 InvokeRepeating("takeDamage", 0, 1.0f); //start hitting every second
-        
+
             accumulatedHitDamage += enemy.HitDamage;
+        }
+    }
+    
+    void OnCollisionExit(Collision other)
+    {
+        if (other.gameObject.tag == "Enemy")
+        {
+            Enemy enemy = other.gameObject.GetComponent<Enemy>();
+
+            if (accumulatedHitDamage > 0)
+                accumulatedHitDamage -= enemy.HitDamage;
         }
     }
 }

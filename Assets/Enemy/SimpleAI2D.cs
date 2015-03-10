@@ -41,7 +41,7 @@ public class SimpleAI2D : Pathfinding2D
                 {
                     if (Path.Count == 0)
                     {
-                        FindPath(transform.position, Player.position);
+                        FindPath(transform.position, Player.position, false);
                     }
                 }
             }

@@ -172,7 +172,7 @@ public class Placement : MonoBehaviour {
     {
         selected = false;
 
-        isPlacingTowers = false;
+        Center.Instance.DelayPlacementStopping();
 
         BaseCohesionManager.UnMarkAllAttachments();
 

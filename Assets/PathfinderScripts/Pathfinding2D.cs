@@ -7,9 +7,15 @@ public class Pathfinding2D : MonoBehaviour
     public List<Vector3> Path = new List<Vector3>();
     public bool JS = false;
 
-    public void FindPath(Vector3 startPosition, Vector3 endPosition)
+    private bool testing = false;
+
+    public static bool hasPath = false;
+
+    public void FindPath(Vector3 startPosition, Vector3 endPosition, bool isTesting)
     {
         //Debug.Log("Has Instance: " + (Pathfinder2D.Instance != null));
+        testing = isTesting;
+        hasPath = false;
         Pathfinder2D.Instance.InsertInQueue(startPosition, endPosition, SetList);
     }
 
@@ -54,6 +60,10 @@ public class Pathfinding2D : MonoBehaviour
 
             Path[0] = new Vector3(Path[0].x, Path[0].y, Path[0].z);
             Path[Path.Count - 1] = new Vector3(Path[Path.Count - 1].x, Path[Path.Count - 1].y, Path[Path.Count - 1].z);
+
+            if (testing && Path.Count > 0)
+                GameObject.FindObjectOfType<Center>().SendMessage("SetHasPath", true);
+
         }
         else
         {           

@@ -27,6 +27,11 @@ public class Center : MonoBehaviour {
 
     public float speed;
 
+    public bool HasPath;
+    public bool PathIsSet;
+
+    private GameObject tempEnemy;
+
 	public float health
 	{
 		get { return healthInternal;}
@@ -76,6 +81,9 @@ public class Center : MonoBehaviour {
 		enabled = false;
         playerBottom.renderer.enabled = false;
 		centerTurret.renderer.enabled = false;
+
+        HasPath = false;
+        PathIsSet = false;
 	}
 
     public void FindAllPossiblePlacements()
@@ -141,6 +149,17 @@ public class Center : MonoBehaviour {
 				nextFireTime = fireDelay;
 			}
 		}
+
+        if (PathIsSet)
+        {
+            Debug.Log(HasPath);
+            WaveManager.instance.PreWaveInit(HasPath);
+            
+            ObjectPool.instance.PoolObject(tempEnemy);
+
+            HasPath = false;
+            PathIsSet = false;
+        }
 	}
 
     void FixedUpdate()
@@ -216,11 +235,6 @@ public class Center : MonoBehaviour {
         }
     }
 
-    void RemovePiece(float[] dir, Transform parent)
-    {
-        return;
-    }
-
     private float GetPixelOffset()
     {
         SpriteRenderer bottomRenderer = playerBottom.GetComponent<SpriteRenderer>();
@@ -237,13 +251,29 @@ public class Center : MonoBehaviour {
 		}
     }
 
-    public bool HasPathToCenter()
+    public void SetHasPath(bool hasPath)
     {
-        Pathfinding2D finder = this.gameObject.GetComponent<Pathfinding2D>();
-        finder.FindPath(new Vector3(20.0f + this.transform.position.x, 20.0f + this.transform.position.y, 0.0f), this.transform.position);
-        //Debug.DrawLine(new Vector3(20.0f + this.transform.position.x, 20.0f + this.transform.position.y, 0.0f),
-        //               this.transform.position, Color.red, 100.0f, false);
+        this.HasPath = hasPath;
 
+        PathIsSet = true;
+    }
+
+    public void HasPathToCenter()
+    {
+        //spawn an enemy
+        GameObject newEnemy = ObjectPool.instance.GetObjectForType("Enemy", true);
+        float randAngle = Random.Range(0f, 2 * Mathf.PI);
+        SimpleAI2D AI = newEnemy.GetComponent<SimpleAI2D>();
+        newEnemy.transform.position = this.transform.position + 10f * new Vector3(Mathf.Cos(randAngle), Mathf.Sin(randAngle));
+        AI.FindPath(AI.transform.position, this.transform.position, true);
+
+        tempEnemy = newEnemy;
+        /*
+        Pathfinding2D finder = this.gameObject.GetComponent<Pathfinding2D>();
+        finder.FindPath(new Vector3(10.0f + this.transform.position.x, 10.0f + this.transform.position.y, 0.0f), this.transform.position);
+        Debug.DrawLine(new Vector3(10.0f + this.transform.position.x, 10.0f + this.transform.position.y, 0.0f),
+                       this.transform.position, Color.red, 100.0f, false);
+        
         //Debug.Log("PATH LENGTH: " + finder.Path.Count);
         if (finder.Path.Count > 0)
         {
@@ -251,8 +281,10 @@ public class Center : MonoBehaviour {
             finder.Path.Clear();
             return true;
         }
+        
         //Debug.Log("No Path To Center");
         return false;
+        */ 
     }
 
     void OnCollisionEnter(Collision other)
@@ -262,5 +294,16 @@ public class Center : MonoBehaviour {
 			takeDamage(enemy.HitDamage);
 			ObjectPool.instance.PoolObject(enemy.gameObject);
 		}
+    }
+
+    static IEnumerator DelayAfterStoppingPlacement()
+    {
+        yield return new WaitForSeconds(0.01f);
+        Placement.isPlacingTowers = false;
+    }
+
+    public void DelayPlacementStopping()
+    {
+        StartCoroutine(DelayAfterStoppingPlacement());
     }
 }
