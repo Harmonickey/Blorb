@@ -207,7 +207,9 @@ public class Center : MonoBehaviour {
             tower.GetComponent<SpriteRenderer>().color = color;
             tower.GetComponent<PlacementBottom>().pseudoParent = placementPiece.parent;
             tower.GetComponent<SpriteRenderer>().receiveShadows = false;
-        }
+        } else {
+			tower.GetComponent<Attachments>().cost = placementPiece.cost;
+		}
 
         float xOffset = (placementPiece.type == "Placement"
             ? (placementPiece.parent.transform.localPosition.x  //get offset from nearest parent

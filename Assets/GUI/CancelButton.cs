@@ -24,7 +24,7 @@ public class CancelButton : MonoBehaviour {
 			Placement.StopPlacement();
 			GUIManager.Instance.MouseOverUI = false;
 			
-			sellWindow.position = new Vector3(0f, 20f, 0f);
+			sellWindow.position = new Vector3(0f, 30f, 0f);
 		}
 		
 		sr.color = new Color(1f, 1f, 1f, 0.5f);

@@ -9,7 +9,7 @@ public class Attachments : MonoBehaviour {
 
     public bool wasFound = false; // for base cohesion checking
 
-    public int sellBackAmount;
+    public int cost;
 
     private List<Enemy> attackingEnemies = new List<Enemy>();
 

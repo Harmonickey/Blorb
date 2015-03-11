@@ -61,13 +61,13 @@ public abstract class BaseCohesionManager {
         {
             if (!attachment.wasFound)
             {
-                totalSellBack += attachment.sellBackAmount;
+                totalSellBack += attachment.cost;
                 TurnRed(attachment.transform, true);
                 markedAttachments.Add(attachment);
             }
         }
 
-        return totalSellBack;
+        return totalSellBack * 7 / 10;
     }
 
     public static void UnMarkAllAttachments()
@@ -100,7 +100,7 @@ public abstract class BaseCohesionManager {
         {
             foreach (Attachments attachment in markedAttachments)
             {
-                totalSellBack += attachment.sellBackAmount;
+                totalSellBack += attachment.cost;
                 Object.Destroy(attachment.gameObject);
             }
 
@@ -110,14 +110,14 @@ public abstract class BaseCohesionManager {
         {
             foreach (Attachments attachment in GameObject.FindObjectsOfType<Attachments>())
             {
-                if (!attachment.wasFound)
+                if (!attachment.wasFound && attachment.gameObject != null)
                 {
                     Object.Destroy(attachment.gameObject);
                 }
             }
         }
 
-        return totalSellBack;
+        return totalSellBack * 7 / 10;
     }
 
     private static void TurnRed(Transform targetPiece, bool red)
