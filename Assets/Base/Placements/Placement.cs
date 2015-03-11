@@ -175,8 +175,6 @@ public class Placement : MonoBehaviour {
 
     public static void StopPlacement()
     {
-        Debug.Log("stop placement called");
-
         UnSelectAllPlacements();
         
         Center.Instance.DelayPlacementStopping();
@@ -194,7 +192,7 @@ public class Placement : MonoBehaviour {
 
     static void UnSelectAllPlacements()
     {
-        Debug.Log("unselecting");
+        
         Placement[] placements = GameObject.FindObjectsOfType<Placement>();
         foreach (Placement placement in placements)
         {

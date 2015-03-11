@@ -43,8 +43,8 @@ public class BlorbManager : MonoBehaviour {
 
 	public bool HasEnoughResources(int cost)
 	{
-        Debug.Log("Blorb Amount: " + blorbAmount);
-		return blorbAmount >= cost;
+        
+        return blorbAmount >= cost;
 	}
 
 	public float Transaction(int diff, Vector3 position, Placement selectedTower = null)
