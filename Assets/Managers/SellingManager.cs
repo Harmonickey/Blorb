@@ -42,10 +42,10 @@ public class SellingManager : MonoBehaviour {
                 {
                     BaseCohesionManager.UnMarkAllAttachments();
                     BaseCohesionManager.FindAllNeighbors(attachment.transform); // find out our base cohesion network
-                    BaseCohesionManager.MarkAllAttachments(attachment.transform);
+                    int totalSellBack = BaseCohesionManager.MarkAllAttachments(attachment.transform);
 
                     //load up the selling GUI
-	                amountText.text = "+" + ((int)attachment.sellBackAmount).ToString();
+                    amountText.text = "+" + ((int)totalSellBack).ToString();
 
                     cancelButton.color = new Color(1f, 1f, 1f, 1f);
                     sellButton.color = new Color(1f, 1f, 1f, 1f);

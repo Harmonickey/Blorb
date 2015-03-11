@@ -50,8 +50,10 @@ public abstract class BaseCohesionManager {
 
     //mark all the attachments that are not attached to the main body
     //     this is so the user knows which are going to be deleted, for example
-    public static void MarkAllAttachments(Transform deletingAttachment)
+    public static int MarkAllAttachments(Transform deletingAttachment)
     {
+        int totalSellBack = 0;
+
         Attachments[] attachments = GameObject.FindObjectsOfType<Attachments>();
         TurnRed(deletingAttachment, true);
 
@@ -59,10 +61,13 @@ public abstract class BaseCohesionManager {
         {
             if (!attachment.wasFound)
             {
+                totalSellBack += attachment.sellBackAmount;
                 TurnRed(attachment.transform, true);
                 markedAttachments.Add(attachment);
             }
         }
+
+        return totalSellBack;
     }
 
     public static void UnMarkAllAttachments()
