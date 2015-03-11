@@ -53,19 +53,23 @@ public class GUIManager : MonoBehaviour {
 		}
 	}
 
-	public void UpdateTowerGUI()
+	public void UpdateTowerGUI(Placement selectedTower = null)
 	{
+
 		Color col;
 		float blorbAmount = BlorbManager.Instance.BlorbAmount;
 		Placement[] placements = GUIManager.instance.towers.gameObject.GetComponentsInChildren<Placement>();
 		foreach (Placement placement in placements)
 		{
-			if (placement.cost > blorbAmount)
-			{
-				col = new Color(0.3f, 0f, 0f);
-			} else {
-				col = new Color(1f, 1f, 1f);
-			}
+            if (placement.cost > blorbAmount) {
+                col = new Color(0.3f, 0f, 0f);
+            }
+            else if (placement == selectedTower) {
+                continue;
+            }
+            else  {
+                col = new Color(1f, 1f, 1f);
+            }
 
 			placement.GetComponent<SpriteRenderer>().color = col;
 			placement.transform.parent.GetComponent<SpriteRenderer>().color = col;

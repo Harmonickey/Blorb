@@ -14,15 +14,18 @@ public class Placement : MonoBehaviour {
 
     public static ArrayList possiblePlacements = new ArrayList();
 
-    private static bool selected;
+    public bool selected;
     private bool preSelected;
     private Center center;
 
     public static bool isPlacingTowers = false;
 
+    public bool userSelected = false;
+
     void Start()
     {
         selected = false;
+        userSelected = false;
         center = player.GetComponent<Center>();
 
 		nameText.renderer.sortingLayerName = "UI";
@@ -84,6 +87,8 @@ public class Placement : MonoBehaviour {
 
         if (preSelected == true)
         {
+            UnSelectAllPlacements();
+
             selected = true;
             isPlacingTowers = true;
             BaseCohesionManager.UnMarkAllAttachments();
@@ -94,7 +99,6 @@ public class Placement : MonoBehaviour {
 
     void Update()
     {
-        
         if (selected)
         {
             if (Input.GetMouseButtonDown(0) && placementPiece.positionToSnap != Vector3.zero) //for now, drop with mouse-button "0" which is left-click
@@ -112,13 +116,14 @@ public class Placement : MonoBehaviour {
 
     private void PlacePiece()
     {
-        center.PlacePiece(placementPiece);
+        center.PlacePiece(placementPiece, this);
 
         //reset our placement piece
         placementPiece = new PlacementPiece(this.cost, this.tag);
 
         //remove the placment piece after it's set because now it was replaced by a real tower
         if (!BlorbManager.Instance.HasEnoughResources(this.cost)) {
+
             StopPlacement();
 		}
 
@@ -162,7 +167,7 @@ public class Placement : MonoBehaviour {
 
     private void UpdateGUIColors()
     {
-        GUIManager.Instance.UpdateTowerGUI();
+        GUIManager.Instance.UpdateTowerGUI(this);
 
         this.GetComponent<SpriteRenderer>().color = new Color(0.337f, 0.694f, 1f);
         this.transform.parent.GetComponent<SpriteRenderer>().color = new Color(0.337f, 0.694f, 1f);
@@ -170,8 +175,10 @@ public class Placement : MonoBehaviour {
 
     public static void StopPlacement()
     {
-        selected = false;
+        Debug.Log("stop placement called");
 
+        UnSelectAllPlacements();
+        
         Center.Instance.DelayPlacementStopping();
 
         BaseCohesionManager.UnMarkAllAttachments();
@@ -183,6 +190,17 @@ public class Placement : MonoBehaviour {
 
         GUIManager.Instance.UpdateTowerGUI();
 
+    }
+
+    static void UnSelectAllPlacements()
+    {
+        Debug.Log("unselecting");
+        Placement[] placements = GameObject.FindObjectsOfType<Placement>();
+        foreach (Placement placement in placements)
+        {
+            placement.selected = false;
+            placement.preSelected = false;
+        }
     }
 
     void CreatePlacement()

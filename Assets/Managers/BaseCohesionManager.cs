@@ -90,7 +90,7 @@ public abstract class BaseCohesionManager {
     public static int DeleteUnconnectedAttachments(bool useMarked)
     {
         int totalSellBack = 0;
-
+        
         if (useMarked)
         {
             foreach (Attachments attachment in markedAttachments)

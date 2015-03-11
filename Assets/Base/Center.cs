@@ -172,7 +172,7 @@ public class Center : MonoBehaviour {
             Placement.StopPlacement(); //quick hack to access from here...
     }
 
-    public void PlacePiece(PlacementPiece placementPiece)
+    public void PlacePiece(PlacementPiece placementPiece, Placement selectedTower = null)
     {
         if (!isActive) return;
 
@@ -226,7 +226,7 @@ public class Center : MonoBehaviour {
         if (placementPiece.type != "Placement")
         {
             tower.GetComponent<FixedJoint>().connectedBody = this.GetComponent<Rigidbody>();
-			BlorbManager.Instance.Transaction(-placementPiece.cost, tower.transform.position);
+			BlorbManager.Instance.Transaction(-placementPiece.cost, tower.transform.position, selectedTower);
         }
     }
 
