@@ -15,6 +15,8 @@ public class SellingManager : MonoBehaviour {
 		amountText.renderer.sortingLayerName = "UI";
 		amountText.renderer.sortingOrder = 2;
 
+        isNight = false;
+
         GameEventManager.NightStart += NightStart;
 	}
 
@@ -24,11 +26,13 @@ public class SellingManager : MonoBehaviour {
     }
 
 	void Update () {
+
         if (Input.GetMouseButtonDown(0) &&  //check if we clicked a tower
             !Placement.isPlacingTowers && 
             !GUIManager.Instance.MouseOverUI &&
             !isNight) 
         {
+            Debug.Log("is clicking");
             Attachments[] attachments = GameObject.FindObjectsOfType<Attachments>();
             Vector3 mouse = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0));
             mouse = new Vector3(mouse.x, mouse.y, 0);
