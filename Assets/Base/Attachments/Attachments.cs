@@ -15,7 +15,7 @@ public class Attachments : MonoBehaviour {
 
     public void takeDamage()
     {
-        attackingEnemies.RemoveAll(e => e.gameObject == null); //remove all dead enemies
+        attackingEnemies.RemoveAll(e => (e.gameObject == null || !e.gameObject.activeSelf)); //remove all dead enemies
 
         float totalDamage = 0f;
         foreach (Enemy enemy in attackingEnemies)
@@ -50,13 +50,13 @@ public class Attachments : MonoBehaviour {
 
     void GameOver()
     {
-        if (this.gameObject != null)
+        if (this != null && this.gameObject != null)
             Destroy(this.gameObject);
     }
 
     void DayStart()
     {
-        if (this.gameObject != null)
+        if (this != null && this.gameObject != null)
             CancelInvoke();
     }
 
