@@ -10,8 +10,8 @@ public class GUIManager : MonoBehaviour {
 
 	private static float easing = 0.05f;
 	public Transform towers, cancelButton, skipButton, moveIndicator, addHealthButton;
-	private Vector3 towersDay, moveIndicatorDay, skipButtonDay, cancelButtonActiveDay, cancelButtonInactiveDay,
-		towersNight, moveIndicatorNight, skipButtonNight, cancelButtonNight;
+	private Vector3 towersDay, moveIndicatorDay, skipButtonDay, cancelButtonActive, cancelButtonInactive,
+		towersNight, moveIndicatorNight, skipButtonNight;
 
     public static GUIManager Instance
     {
@@ -93,14 +93,13 @@ public class GUIManager : MonoBehaviour {
 		towersDay = towersNight = towers.localPosition;
 		skipButtonDay = skipButtonNight = skipButton.localPosition;
 		moveIndicatorDay = moveIndicatorNight = moveIndicator.localPosition;
-        cancelButtonActiveDay = cancelButtonInactiveDay = cancelButtonNight = cancelButton.localPosition;
+        cancelButtonActive = cancelButtonInactive = cancelButton.localPosition;
 
 		// magic numbers for how much to move each of the elements to be out of frame
-		cancelButtonInactiveDay.y -= 1.64f;
+		cancelButtonInactive.y -= 1.64f;
 		towersNight.x += 5f;
 		skipButtonNight.y -= 1.64f;
 		moveIndicatorNight.y -= 1.64f;
-        cancelButtonNight.x += 5f;
 	}
 
 	private void GameOver () {
@@ -147,9 +146,9 @@ public class GUIManager : MonoBehaviour {
 
                 cancelButton.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 1f);
 				if (Placement.isPlacingTowers) {
-					cancelButton.localPosition += (cancelButtonActiveDay - cancelButton.localPosition) * easing;
+					cancelButton.localPosition += (cancelButtonActive - cancelButton.localPosition) * easing;
 				} else {
-					cancelButton.localPosition += (cancelButtonInactiveDay - cancelButton.localPosition) * easing;
+					cancelButton.localPosition += (cancelButtonInactive - cancelButton.localPosition) * easing;
 				}
             }
             else
@@ -163,7 +162,7 @@ public class GUIManager : MonoBehaviour {
 
                 towers.localPosition += (towersNight - towers.localPosition) * easing;
                 moveIndicator.localPosition += (moveIndicatorNight - moveIndicator.localPosition) * easing;
-                cancelButton.localPosition += (cancelButtonNight - cancelButton.localPosition) * easing;
+                cancelButton.localPosition += (cancelButtonInactive - cancelButton.localPosition) * easing;
 
                 if (!WaveManager.instance.waveEnded)
                 {

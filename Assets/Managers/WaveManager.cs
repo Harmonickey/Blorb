@@ -29,8 +29,6 @@ public class WaveManager : MonoBehaviour {
 
 	void DayStart() {
         player.GetComponent<Center>().IsActive = true;
-
-//        GUIManager.Instance.RefreshTowerGUIColors();
 	}
 
 	void NightStart() {
@@ -72,6 +70,7 @@ public class WaveManager : MonoBehaviour {
 	void GameStart() {
 		enabled = true;
 
+		waveCount = 0;
 		waveEnded = true;
 		enemiesSpawned = 0;
 		spawnNextEnemy = 0f;
@@ -96,6 +95,10 @@ public class WaveManager : MonoBehaviour {
 
 			newEnemy.transform.position = player.position + 10f * new Vector3(Mathf.Cos(randAngle), Mathf.Sin(randAngle));
             newEnemy.GetComponent<SimpleAI2D>().Player = player; //set the target as the player
+
+			if (enemyAgro) {
+				newEnemy.GetComponent<SpriteRenderer>().color = new Color(0.874f, 0.56f, 0.525f);
+			}
 
             enemiesSpawned++;
             spawnNextEnemy = enemySpawnDelay;

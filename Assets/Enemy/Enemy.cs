@@ -29,6 +29,7 @@ public class Enemy : MonoBehaviour {
 	void Reset () {
 		health = 100f;
 		healthbar.Reset ();
+		gameObject.GetComponent<SpriteRenderer>().color = new Color(0.874f, 0.914f, 0.525f);
 	}
 
 	public void takeDamage (float amount) {
