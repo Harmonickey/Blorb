@@ -8,7 +8,7 @@ public class SellingManager : MonoBehaviour {
 
     public SpriteRenderer sellButton, cancelButton;
 
-    public bool isNight = true;
+    public bool isNight = false;
 
 	void Start ()
 	{
