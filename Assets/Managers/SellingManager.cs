@@ -8,14 +8,26 @@ public class SellingManager : MonoBehaviour {
 
     public SpriteRenderer sellButton, cancelButton;
 
+    public bool isNight = true;
+
 	void Start ()
 	{
 		amountText.renderer.sortingLayerName = "UI";
 		amountText.renderer.sortingOrder = 2;
+
+        GameEventManager.NightStart += NightStart;
 	}
 
+    void NightStart()
+    {
+        isNight = true;
+    }
+
 	void Update () {
-        if (Input.GetMouseButtonDown(0) && !Placement.isPlacingTowers && !GUIManager.Instance.MouseOverUI) //check if we clicked a tower
+        if (Input.GetMouseButtonDown(0) &&  //check if we clicked a tower
+            !Placement.isPlacingTowers && 
+            !GUIManager.Instance.MouseOverUI &&
+            !isNight) 
         {
             Attachments[] attachments = GameObject.FindObjectsOfType<Attachments>();
             Vector3 mouse = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0));
