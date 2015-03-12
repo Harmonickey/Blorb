@@ -38,7 +38,7 @@ public class Enemy : MonoBehaviour {
 		}
 
 		if (daylightDamage < 0f) {
-			takeDamage(10f);
+			takeDamage(10f, true);
 			daylightDamage = daylightDamageDelay;
 		}
 	}
@@ -57,14 +57,17 @@ public class Enemy : MonoBehaviour {
 		gameObject.GetComponent<SpriteRenderer>().color = new Color(0.874f, 0.914f, 0.525f);
 	}
 
-	public void takeDamage (float amount) {
+	// If an enemy is killed by sunlight, player doesn't receive blorb.
+	public void takeDamage (float amount, bool killedByDaylight = false) {
 		currentHealth -= amount;
 		healthbar.Set (currentHealth / maxHealth);
 
 		if (currentHealth <= 0f) {
 			ObjectPool.instance.PoolObject(this.gameObject);
 
-			BlorbManager.Instance.Transaction(killValue, transform.position);
+			if (!killedByDaylight) {
+				BlorbManager.Instance.Transaction(killValue, transform.position);
+			}
 		}
 	}
 }
