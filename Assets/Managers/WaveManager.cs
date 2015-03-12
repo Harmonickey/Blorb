@@ -95,8 +95,10 @@ public class WaveManager : MonoBehaviour {
 
 			newEnemy.transform.position = player.position + 10f * new Vector3(Mathf.Cos(randAngle), Mathf.Sin(randAngle));
             newEnemy.GetComponent<SimpleAI2D>().Player = player; //set the target as the player
+			newEnemy.GetComponent<Enemy>().Reset(100f + 10f * waveCount);
 
 			if (enemyAgro) {
+				newEnemy.GetComponent<SimpleAI2D>().Speed = 2f;
 				newEnemy.GetComponent<SpriteRenderer>().color = new Color(0.874f, 0.56f, 0.525f);
 			}
 

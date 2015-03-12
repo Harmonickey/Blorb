@@ -20,7 +20,7 @@ public class Center : MonoBehaviour {
 
     private const float placementOffset = 0.81f;
 	private float turretDamage = 10f;
-	private float fireDelay = 0.25f;
+	private float fireDelay = 0.2f;
 	private float nextFireTime;
 	
 	private float healthInternal;

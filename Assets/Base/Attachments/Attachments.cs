@@ -56,8 +56,11 @@ public class Attachments : MonoBehaviour {
 
     void DayStart()
     {
-        if (this != null && this.gameObject != null)
+        if (this != null && this.gameObject != null) {
+			health = 100f;
+			healthbar.Reset ();
             CancelInvoke();
+		}
     }
 
     public void FindAllPossiblePlacements(Center center)

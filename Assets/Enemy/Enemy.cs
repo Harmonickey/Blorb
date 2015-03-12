@@ -5,7 +5,7 @@ public class Enemy : MonoBehaviour {
 
 	public Transform HealthBarPrefab;
 	private HealthBar healthbar;
-	private float health;
+	private float currentHealth, maxHealth;
 
     public float HitDamage {
 		get {
@@ -15,9 +15,16 @@ public class Enemy : MonoBehaviour {
 
 	private float hitDamage = 10f;
 	private const int killValue = 5;
+	private const float daylightDamageDelay = 1f;
+	private float daylightDamage;
+
+	private void DayStart() {
+		daylightDamage = daylightDamageDelay;
+	}
 
 	void Start () {
-		health = 100f;
+		currentHealth = 100f;
+		maxHealth = 100f;
 		Transform tmp = Instantiate (HealthBarPrefab, transform.position, transform.rotation) as Transform;
 
 		tmp.parent = this.transform;
@@ -25,19 +32,36 @@ public class Enemy : MonoBehaviour {
 		healthbar.Reset ();
 	}
 
+	void Update () {
+		if (WorldManager.instance.isDay) {
+			daylightDamage -= Time.deltaTime;
+		}
+
+		if (daylightDamage < 0f) {
+			takeDamage(10f);
+			daylightDamage = daylightDamageDelay;
+		}
+	}
+
 	// called before the object is returned to the ObjectPool
-	void Reset () {
-		health = 100f;
-		healthbar.Reset ();
+	public void Reset (float newMaxHealth) {
+		currentHealth = newMaxHealth;
+		maxHealth = newMaxHealth;
+
+		// Reset gets executed before Start on initialization...
+		if (healthbar != null) {
+			healthbar.Reset ();
+		}
+
+		gameObject.GetComponent<SimpleAI2D>().Speed = 1f;
 		gameObject.GetComponent<SpriteRenderer>().color = new Color(0.874f, 0.914f, 0.525f);
 	}
 
 	public void takeDamage (float amount) {
-		health -= amount;
-		healthbar.Set (health / 100f);
+		currentHealth -= amount;
+		healthbar.Set (currentHealth / maxHealth);
 
-		if (health <= 0f) {
-			Reset ();
+		if (currentHealth <= 0f) {
 			ObjectPool.instance.PoolObject(this.gameObject);
 
 			BlorbManager.Instance.Transaction(killValue, transform.position);
