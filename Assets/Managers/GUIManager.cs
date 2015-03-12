@@ -33,6 +33,7 @@ public class GUIManager : MonoBehaviour {
 	private int viewStage = 0; // 0- title screen, 1- tutorial screen, 2- main game, 3- game over screen
 	private bool shownTutorial = false; // skip stage 1 after seeing it once
 	private bool firstNight = true;
+	private float originalTimeScale = -1;
 
 	public bool MouseOverUI = false;
 
@@ -117,8 +118,14 @@ public class GUIManager : MonoBehaviour {
 			} else if (viewStage == 1) {
 				HUDTutorial.enabled = false;
 				NightTutorial.enabled = false;
-				Time.timeScale = 1;
 				viewStage = 2;
+
+				if (originalTimeScale != -1) {
+					Time.timeScale = originalTimeScale;
+					originalTimeScale = -1;
+				} else {
+					Time.timeScale = 1;
+				}
 			}
 		}
 
@@ -155,6 +162,7 @@ public class GUIManager : MonoBehaviour {
             {
 				if (firstNight) {
 					NightTutorial.enabled = true;
+					originalTimeScale = Time.timeScale;
 					Time.timeScale = 0;
 					viewStage = 1;
 					firstNight = false;
