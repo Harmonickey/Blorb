@@ -64,12 +64,12 @@ public class Placement : MonoBehaviour {
         if (GUIManager.Instance.OnTutorialScreen) return;
 
 		BaseCohesionManager.UnMarkAllAttachments();
-		
-		preSelected = true;
 
         //only create new ones if we have none
         if (BlorbManager.Instance.HasEnoughResources(this.cost))
         {
+            preSelected = true;
+
             if (GameObject.FindGameObjectsWithTag("Placement").Length == 0)
             {
                 center.FindAllPossiblePlacements();
