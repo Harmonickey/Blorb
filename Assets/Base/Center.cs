@@ -186,7 +186,6 @@ public class Center : MonoBehaviour {
                 color = PlacementBottom.unSelectedColor;
                 break;
             case "Turret":
-            case "TestPiece":
                 placementPiece.piece = turret;
                 break;
             case "Wall":
@@ -207,6 +206,7 @@ public class Center : MonoBehaviour {
             tower.GetComponent<SpriteRenderer>().color = color;
             tower.GetComponent<PlacementBottom>().pseudoParent = placementPiece.parent;
             tower.GetComponent<SpriteRenderer>().receiveShadows = false;
+
         } else {
 			tower.GetComponent<Attachments>().cost = placementPiece.cost;
 		}

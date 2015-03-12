@@ -200,7 +200,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HealthBarPrefab: {fileID: 435332, guid: 61f7b5e345164471f8b998321aeb1aa0, type: 2}
   wasFound: 0
-  sellBackAmount: 50
+  cost: 0
+  spotsTaken: 000000000000000000000000
 --- !u!114 &11418212
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -61,7 +61,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 479760}
   - 61: {fileID: 6179760}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: 2D Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -170,7 +170,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HealthBarPrefab: {fileID: 435332, guid: 61f7b5e345164471f8b998321aeb1aa0, type: 2}
   wasFound: 0
-  sellBackAmount: 25
+  cost: 0
+  spotsTaken: 000000000000000000000000
 --- !u!114 &11437514
 MonoBehaviour:
   m_ObjectHideFlags: 1
