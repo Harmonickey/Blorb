@@ -32,6 +32,7 @@ public class Turret : MonoBehaviour {
 				
 				// set destination        
 				b.setDirection(myTarget.position - transform.position);
+                this.audio.Play();
 			}
 
 			myTarget = GetNearestTaggedObject();

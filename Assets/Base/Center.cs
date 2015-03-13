@@ -143,7 +143,8 @@ public class Center : MonoBehaviour {
 				float angle = centerTurret.eulerAngles.z * Mathf.Deg2Rad;
 				b.setDirection(new Vector3(Mathf.Cos(angle), Mathf.Sin(angle)));
 				b.setDamage(turretDamage);
-                audio.Play();
+                Debug.Log("bullet sound");
+                this.audio.Play(); //make a bullet sound
 				
 				nextFireTime = fireDelay;
 			}
