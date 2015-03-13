@@ -169,7 +169,7 @@ public class Center : MonoBehaviour {
 		basePiece.position += movement * speed * Time.fixedDeltaTime;
 
         if (inputHorizontal != 0 || inputVertical != 0)
-            Placement.StopPlacement(); //quick hack to access from here...
+            Placement.StopPlacement();
     }
 
     public void PlacePiece(PlacementPiece placementPiece, Placement selectedTower = null)
@@ -227,6 +227,8 @@ public class Center : MonoBehaviour {
 
         if (placementPiece.type != "Placement")
         {
+            tower.GetComponent<FixedJoint>().anchor = tower.transform.localPosition;
+            tower.GetComponent<FixedJoint>().connectedAnchor = tower.transform.localPosition;
             tower.GetComponent<FixedJoint>().connectedBody = this.GetComponent<Rigidbody>();
 			BlorbManager.Instance.Transaction(-placementPiece.cost, tower.transform.position, selectedTower);
         }
