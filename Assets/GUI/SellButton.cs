@@ -11,7 +11,7 @@ public class SellButton : MonoBehaviour {
 
     void NightStart()
     {
-        sellWindow.position = new Vector3(0f, 30f, 0f); //remove the window
+		SellingManager.Instance.SetVisibility(false); //remove the window
     }
 
     void OnMouseDown()
@@ -19,7 +19,7 @@ public class SellButton : MonoBehaviour {
 		// reap the money from towers that are marked and delete them
 		
 		int totalSellBackAmount = BaseCohesionManager.DeleteUnconnectedAttachments(true);
-		sellWindow.position = new Vector3(0f, 30f, 0f); //remove the window
+		SellingManager.Instance.SetVisibility(false); //remove the window
 		
 		//do something with the sell back amount
 		BlorbManager.Instance.Transaction(totalSellBackAmount, sellWindow.position);

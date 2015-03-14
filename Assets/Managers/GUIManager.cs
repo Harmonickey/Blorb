@@ -6,9 +6,9 @@ public class GUIManager : MonoBehaviour {
 	public Camera maincamera;
 	public GameObject HUD;
 	public Transform GUI;
-	public SpriteRenderer HUDTutorial, NightTutorial;
+	public SpriteRenderer IntroTutorial, HUDTutorial, NightTutorial;
 
-	private static float easing = 0.05f;
+	private static float easing = 2f;
 	public Transform towers, cancelButton, skipButton, moveIndicator, addHealthButton;
 	private Vector3 towersDay, moveIndicatorDay, skipButtonDay, cancelButtonActive, cancelButtonInactive,
 		towersNight, moveIndicatorNight, skipButtonNight;
@@ -30,8 +30,9 @@ public class GUIManager : MonoBehaviour {
 		get { return viewStage; }
 	}
 
-	private int viewStage = 0; // 0- title screen, 1- tutorial screen, 2- main game, 3- game over screen
-	private bool shownTutorial = false; // skip stage 1 after seeing it once
+	private int viewStage = 0; // 0- title screen, 1- tutorial screens, 2- main game, 3- game over screen
+	private bool shownIntroTutorial = false;
+	private bool shownHUDTutorial = false; // skip stage 1 after seeing it once
 	private bool firstNight = true;
 	private float originalTimeScale = -1;
 
@@ -84,6 +85,13 @@ public class GUIManager : MonoBehaviour {
 		}
 	}
 
+	public void HelpButton() {
+		IntroTutorial.enabled = true;
+		originalTimeScale = Time.timeScale;
+		Time.timeScale = 0;
+		viewStage = 1;
+	}
+
 	void Start () {
 		instance = this;
 		GameEventManager.GameStart += GameStart;
@@ -116,15 +124,22 @@ public class GUIManager : MonoBehaviour {
 			if (viewStage == 0 || viewStage == 3) {
 				GameEventManager.TriggerGameStart();
 			} else if (viewStage == 1) {
+				IntroTutorial.enabled = false;
 				HUDTutorial.enabled = false;
 				NightTutorial.enabled = false;
-				viewStage = 2;
 
-				if (originalTimeScale != -1) {
-					Time.timeScale = originalTimeScale;
-					originalTimeScale = -1;
+				if (!shownHUDTutorial) {
+					HUDTutorial.enabled = true;
+					shownHUDTutorial = true;
 				} else {
-					Time.timeScale = 1;
+					viewStage = 2;
+
+					if (originalTimeScale != -1) {
+						Time.timeScale = originalTimeScale;
+						originalTimeScale = -1;
+					} else {
+						Time.timeScale = 1;
+					}
 				}
 			}
 		}
@@ -147,15 +162,15 @@ public class GUIManager : MonoBehaviour {
         {
             if (WorldManager.instance.isDay)
             {
-                towers.localPosition += (towersDay - towers.localPosition) * easing;
-                skipButton.localPosition += (skipButtonDay - skipButton.localPosition) * easing;
-                moveIndicator.localPosition += (moveIndicatorDay - moveIndicator.localPosition) * easing;
+                towers.localPosition += (towersDay - towers.localPosition) * easing * Time.deltaTime;
+				skipButton.localPosition += (skipButtonDay - skipButton.localPosition) * easing * Time.deltaTime;
+				moveIndicator.localPosition += (moveIndicatorDay - moveIndicator.localPosition) * easing * Time.deltaTime;
 
                 cancelButton.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 1f);
 				if (Placement.isPlacingTowers) {
-					cancelButton.localPosition += (cancelButtonActive - cancelButton.localPosition) * easing;
+					cancelButton.localPosition += (cancelButtonActive - cancelButton.localPosition) * easing * Time.deltaTime;
 				} else {
-					cancelButton.localPosition += (cancelButtonInactive - cancelButton.localPosition) * easing;
+					cancelButton.localPosition += (cancelButtonInactive - cancelButton.localPosition) * easing * Time.deltaTime;
 				}
             }
             else
@@ -168,17 +183,17 @@ public class GUIManager : MonoBehaviour {
 					firstNight = false;
 				}
 
-                towers.localPosition += (towersNight - towers.localPosition) * easing;
-                moveIndicator.localPosition += (moveIndicatorNight - moveIndicator.localPosition) * easing;
-                cancelButton.localPosition += (cancelButtonInactive - cancelButton.localPosition) * easing;
+				towers.localPosition += (towersNight - towers.localPosition) * easing * Time.deltaTime;
+				moveIndicator.localPosition += (moveIndicatorNight - moveIndicator.localPosition) * easing * Time.deltaTime;
+				cancelButton.localPosition += (cancelButtonInactive - cancelButton.localPosition) * easing * Time.deltaTime;
 
                 if (!WaveManager.instance.waveEnded)
                 {
-                    skipButton.localPosition += (skipButtonNight - skipButton.localPosition) * easing;
+					skipButton.localPosition += (skipButtonNight - skipButton.localPosition) * easing * Time.deltaTime;
                 }
                 else
                 {
-                    skipButton.localPosition += (skipButtonDay - skipButton.localPosition) * easing;
+					skipButton.localPosition += (skipButtonDay - skipButton.localPosition) * easing * Time.deltaTime;
                 }
             }
         }
@@ -191,10 +206,10 @@ public class GUIManager : MonoBehaviour {
 		instance.setHUD (true);
 		viewStage = 2;
 
-		if (!shownTutorial) {
-			HUDTutorial.enabled = true;
+		if (!shownIntroTutorial) {
+			IntroTutorial.enabled = true;
 			Time.timeScale = 0; // pause time
-			shownTutorial = true;
+			shownIntroTutorial = true;
 			viewStage = 1;
 		}
 	}

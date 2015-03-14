@@ -23,6 +23,9 @@ TextureImporter:
     21300036: hud_18
     21300038: hud_19
     21300040: hud_20
+    21300042: hud_21
+    21300044: hud_22
+    21300046: hud_23
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -267,10 +270,40 @@ TextureImporter:
     - name: hud_20
       rect:
         serializedVersion: 2
-        x: 1659
-        y: 852
-        width: 75
-        height: 75
+        x: 1608
+        y: 960
+        width: 65
+        height: 25
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: hud_21
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 3650
+        width: 1600
+        height: 1200
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: hud_22
+      rect:
+        serializedVersion: 2
+        x: 1628
+        y: 2512
+        width: 610
+        height: 610
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: hud_23
+      rect:
+        serializedVersion: 2
+        x: 1610
+        y: 1762
+        width: 80
+        height: 78
       alignment: 0
       pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}

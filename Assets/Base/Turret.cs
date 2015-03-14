@@ -3,7 +3,6 @@ using System.Collections;
 
 public class Turret : MonoBehaviour {
 	public GameObject bullet;
-
 	public static float fireDelay = 0.25f;
 	public static float range = 50f;
 	private Transform myTarget;
@@ -36,7 +35,7 @@ public class Turret : MonoBehaviour {
 			}
 
 			myTarget = GetNearestTaggedObject();
-			nextFireTime = fireDelay;
+			nextFireTime = fireDelay + Random.Range (-0.05f, 0.05f);
 		}
 
 		if (myTarget) {
