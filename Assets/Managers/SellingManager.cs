@@ -39,6 +39,7 @@ public class SellingManager : MonoBehaviour {
                     cancelButton.color = new Color(1f, 1f, 1f, 1f);
                     sellButton.color = new Color(1f, 1f, 1f, 1f);
 	                sellWindow.transform.position = new Vector3(attachment.transform.position.x, attachment.transform.position.y + 2.5f);
+                    sellWindow.gameObject.SetActive(true);
                 }
             }
         }
