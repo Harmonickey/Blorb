@@ -95,8 +95,14 @@ public class Center : MonoBehaviour {
         }
 
         foreach (Transform child in basePiece)
-            if (child.GetComponent<Attachments>() != null)
+        {
+            if (child != null && child.gameObject.activeSelf && child.GetComponent<Attachments>() != null)
+            {
+                Debug.Log("found an attachment");
+                Debug.Log("child: " + child.gameObject.activeSelf);
                 child.GetComponent<Attachments>().FindAllPossiblePlacements(this);
+            }
+        }
 
     }
 
@@ -112,7 +118,9 @@ public class Center : MonoBehaviour {
 
     public void RecalculateAllPossiblePlacements()
     {
+        Debug.Log("removing");
         RemoveAllPossiblePlacements();
+        Debug.Log("finding again");
         FindAllPossiblePlacements();
     }
 
@@ -143,7 +151,6 @@ public class Center : MonoBehaviour {
 				float angle = centerTurret.eulerAngles.z * Mathf.Deg2Rad;
 				b.setDirection(new Vector3(Mathf.Cos(angle), Mathf.Sin(angle)));
 				b.setDamage(turretDamage);
-                Debug.Log("bullet sound");
                 this.audio.Play(); //make a bullet sound
 				
 				nextFireTime = fireDelay;

@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public abstract class BaseCohesionManager {
+public abstract class BaseCohesionManager : MonoBehaviour {
 
     public static List<int> visitedNodes = new List<int>();
     private static List<Attachments> markedAttachments = new List<Attachments>();
@@ -101,7 +101,8 @@ public abstract class BaseCohesionManager {
             foreach (Attachments attachment in markedAttachments)
             {
                 totalSellBack += attachment.cost;
-                Object.Destroy(attachment.gameObject);
+                attachment.gameObject.SetActive(false);
+                Destroy(attachment.gameObject);
             }
 
             ResetAttachmentCohesionChecker();
@@ -112,7 +113,7 @@ public abstract class BaseCohesionManager {
             {
                 if (!attachment.wasFound && attachment.gameObject != null)
                 {
-                    Object.Destroy(attachment.gameObject);
+                    Destroy(attachment.gameObject);
                 }
             }
         }

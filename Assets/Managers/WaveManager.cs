@@ -37,8 +37,8 @@ public class WaveManager : MonoBehaviour {
         spawnNextEnemy = enemySpawnDelay;
         player.GetComponent<Center>().IsActive = false;
 
-        Pathfinder2D.Instance.MapStartPosition = new Vector2(-25 + player.position.x, -25 + player.position.y);
-        Pathfinder2D.Instance.MapEndPosition = new Vector2(25 + player.position.x, 25 + player.position.y);
+        Pathfinder2D.Instance.MapStartPosition = new Vector2(-15 + player.position.x, -15 + player.position.y);
+        Pathfinder2D.Instance.MapEndPosition = new Vector2(15 + player.position.x, 15 + player.position.y);
         Pathfinder2D.Instance.DisallowedTags.Clear();
         Pathfinder2D.Instance.DisallowedTags.AddRange(new string[5] { "Turret", "Collector", "Wall", "Mountain", "Resource" });
         Pathfinder2D.Instance.Create2DMap();

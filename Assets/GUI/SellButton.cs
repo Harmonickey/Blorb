@@ -3,10 +3,13 @@ using System.Collections;
 
 public class SellButton : MonoBehaviour {
 	public Transform sellWindow;
+    private Center center;
+    public Transform player;
 
     void Start()
     {
         GameEventManager.NightStart += NightStart;
+        center = player.GetComponent<Center>();
     }
 
     void NightStart()
@@ -25,6 +28,12 @@ public class SellButton : MonoBehaviour {
 		BlorbManager.Instance.Transaction(totalSellBackAmount, sellWindow.position);
 
         this.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 0.5f);
+
+        //reconfigure placement spots if they are already there...
+        if (GameObject.FindGameObjectsWithTag("Placement").Length > 0)
+        {
+            center.RecalculateAllPossiblePlacements();
+        }
     }
 
     void OnMouseUp()

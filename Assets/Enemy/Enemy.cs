@@ -18,6 +18,8 @@ public class Enemy : MonoBehaviour {
 	private const float daylightDamageDelay = 1f;
 	private float daylightDamage;
 
+    private float pathCheckCounter;
+
 	private void DayStart() {
 		daylightDamage = daylightDamageDelay;
 	}
@@ -41,6 +43,14 @@ public class Enemy : MonoBehaviour {
 			takeDamage(10f, true);
 			daylightDamage = daylightDamageDelay;
 		}
+
+        //catch all
+        if (pathCheckCounter == 300)
+        {
+            ObjectPool.instance.PoolObject(this.gameObject);
+        }
+
+        pathCheckCounter++;
 	}
 
 	// called before the object is returned to the ObjectPool
@@ -55,6 +65,8 @@ public class Enemy : MonoBehaviour {
 
 		gameObject.GetComponent<SimpleAI2D>().Speed = 1f;
 		gameObject.GetComponent<SpriteRenderer>().color = new Color(0.874f, 0.914f, 0.525f);
+
+        pathCheckCounter = 0;
 	}
 
 	// If an enemy is killed by sunlight, player doesn't receive blorb.

@@ -31,6 +31,10 @@ public class Placement : MonoBehaviour {
 
     public bool userSelected = false;
 
+    bool hasEntered = false;
+
+    bool rendererDisabled = false;
+
     void Start()
     {
         selected = false;
@@ -59,6 +63,8 @@ public class Placement : MonoBehaviour {
 		if (GUIManager.Instance.ViewStage == 2) {
 			setTowerDetail (true);
 		}
+
+        hasEntered = true;
 	}
 	
 	void OnMouseExit ()
@@ -66,8 +72,9 @@ public class Placement : MonoBehaviour {
         Vector3 mouse = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0));
         mouse = new Vector3(mouse.x, mouse.y, 0);
 
-        if (this.collider2D.bounds.Contains(mouse)) return;
+        if (this.collider2D.bounds.Contains(mouse) && hasEntered) return;
 
+        hasEntered = false;
 		GUIManager.Instance.MouseOverUI = false;
 		setTowerDetail (false);
 	}
@@ -125,6 +132,24 @@ public class Placement : MonoBehaviour {
             {
                 Vector3 mouse = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0));
                 mouse = new Vector3(mouse.x, mouse.y, 0);
+
+                if (rendererDisabled)
+                {
+                    if (this.tag != "Wall")
+                    {
+                        rangeIndicator.renderer.enabled = true;
+                    }
+
+                    foreach (Transform child in tempPlacement)
+                    {
+                        if (child.GetComponent<SpriteRenderer>() != null)
+                        {
+                            child.renderer.enabled = true;
+                        }
+                    }
+
+                    rendererDisabled = false;
+                }
 
                 tempPlacement.transform.position = mouse;
 
@@ -253,14 +278,22 @@ public class Placement : MonoBehaviour {
                 break;
         }
 
+        if (this.tag != "Wall")
+        {
+            rangeIndicator.renderer.enabled = false;
+        }
+
         foreach (Transform child in tempPlacement)
         {
             if (child.GetComponent<SpriteRenderer>() != null)
             {
+                child.renderer.enabled = false;
                 child.GetComponent<SpriteRenderer>().sortingOrder -= 4;
                 child.GetComponent<SpriteRenderer>().sortingLayerName = "UI";
             }
         }
+
+        rendererDisabled = true;
 
     }
 }
