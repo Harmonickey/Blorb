@@ -45,6 +45,15 @@ public class Placement : MonoBehaviour {
 		nameText.renderer.sortingOrder = 2;
 		costText.renderer.sortingLayerName = "UI";
 		costText.renderer.sortingOrder = 2;
+
+        GameEventManager.NightStart += NightStart;
+    }
+
+    void NightStart()
+    {
+        //just to double check, weird corner case where tower details stay up at night
+        GUIManager.Instance.MouseOverUI = false;
+        setTowerDetail(false);
     }
 
 	void setTowerDetail (bool enabled)

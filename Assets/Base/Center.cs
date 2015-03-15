@@ -255,7 +255,14 @@ public class Center : MonoBehaviour {
         //spawn an enemy
         Pathfinding2D finder = this.GetComponent<Pathfinding2D>();
         float randAngle = Random.Range(0f, 2 * Mathf.PI);
-        Vector3 endPos = this.transform.position + 10f * new Vector3(Mathf.Cos(randAngle), Mathf.Sin(randAngle));
+        Vector3 endPos;
+
+        //make sure we're not on a disallowed piece, we want to be able to find a valid path
+        do {
+            endPos = this.transform.position + 10f * new Vector3(Mathf.Cos(randAngle), Mathf.Sin(randAngle));
+        } while (IsWithinDisallowedObject(endPos));
+
+
         finder.FindPath(this.transform.position, endPos, true);
 
         //asynchronous, need to wait for message...
@@ -286,5 +293,29 @@ public class Center : MonoBehaviour {
     public void DelayPlacementStopping()
     {
         StartCoroutine(DelayAfterStoppingPlacement());
+    }
+
+    private bool IsWithinDisallowedObject(Vector3 endPos)
+    {
+        GameObject[] mountains = GameObject.FindGameObjectsWithTag("Mountain");
+        GameObject[] resources = GameObject.FindGameObjectsWithTag("Resource");
+
+        foreach (GameObject mountain in mountains)
+        {
+            if (mountain.collider.bounds.Contains(endPos))
+            {
+                return true;
+            }
+        }
+
+        foreach (GameObject resource in resources)
+        {
+            if (resource.collider.bounds.Contains(endPos))
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
