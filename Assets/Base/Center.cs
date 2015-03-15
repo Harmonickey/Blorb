@@ -252,17 +252,14 @@ public class Center : MonoBehaviour {
 
     public void HasPathToCenter()
     {
-        //spawn an enemy
-        Pathfinding2D finder = this.GetComponent<Pathfinding2D>();
-        float randAngle = Random.Range(0f, 2 * Mathf.PI);
         Vector3 endPos;
-
         //make sure we're not on a disallowed piece, we want to be able to find a valid path
         do {
+            float randAngle = Random.Range(0f, 2 * Mathf.PI);
             endPos = this.transform.position + 10f * new Vector3(Mathf.Cos(randAngle), Mathf.Sin(randAngle));
         } while (IsWithinDisallowedObject(endPos));
 
-
+        Pathfinding2D finder = this.GetComponent<Pathfinding2D>();
         finder.FindPath(this.transform.position, endPos, true);
 
         //asynchronous, need to wait for message...

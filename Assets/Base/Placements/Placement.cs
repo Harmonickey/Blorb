@@ -276,6 +276,7 @@ public class Placement : MonoBehaviour {
 
             case "Collector":
                 tempPlacement = Instantiate(collector) as Transform;
+                tempPlacement.GetComponentInChildren<ResourceCollector>().enabled = false;
                 rangeIndicator = Instantiate(range) as Transform;
                 rangeIndicator.transform.parent = tempPlacement;
                 break;
