@@ -1531,7 +1531,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 241d6d8df6309a446abcdbb017256636, type: 2}
       propertyPath: Tilesize
-      value: .400000006
+      value: .5
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 241d6d8df6309a446abcdbb017256636, type: 2}
       propertyPath: DrawMapInEditor
@@ -3514,7 +3514,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14266809804e9d844b379cd95d26e5e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Tilesize: .400000006
+  Tilesize: .5
   HeuristicAggression: 0
   zStart: -10
   zEnd: 10

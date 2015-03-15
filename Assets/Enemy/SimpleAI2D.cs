@@ -94,7 +94,15 @@ public class SimpleAI2D : Pathfinding2D
 			//Debug.DrawLine(transform.position, Path[0], Color.green, 1f);
 			//Debug.DrawLine(Path[0], Path[1], Color.red, 1f);
 			//Debug.Log (Vector3.Distance(transform.position, ignoreZ).ToString());
-			transform.position = Vector3.MoveTowards(transform.position, ignoreZ, Time.deltaTime * Speed);  
+			Vector3 oldPosition = transform.position;
+			transform.position = Vector3.MoveTowards(transform.position, ignoreZ, Time.deltaTime * Speed);
+
+			//if no movement, recalcuate path
+			if (Vector3.Distance(oldPosition, transform.position) <= 0.01){
+				Path.Clear();
+				FindPath(transform.position, Player.position, false);
+				Debug.LogWarning("Recalculating Path!");
+			}
         }
     }
 }
