@@ -63,6 +63,11 @@ public class Placement : MonoBehaviour {
 	
 	void OnMouseExit ()
 	{
+        Vector3 mouse = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0));
+        mouse = new Vector3(mouse.x, mouse.y, 0);
+
+        if (this.collider2D.bounds.Contains(mouse)) return;
+
 		GUIManager.Instance.MouseOverUI = false;
 		setTowerDetail (false);
 	}
@@ -221,6 +226,11 @@ public class Placement : MonoBehaviour {
     {
         placementPiece = new PlacementPiece(this.cost, this.tag);
 
+        if (tempPlacement != null)
+            Destroy(tempPlacement.gameObject);
+        if (rangeIndicator != null)
+            Destroy(rangeIndicator.gameObject);
+
         //create a piece that is shown to the user, a fake kinematic object
         switch (this.tag)
         {
@@ -232,18 +242,25 @@ public class Placement : MonoBehaviour {
 
             case "Collector":
                 tempPlacement = Instantiate(collector) as Transform;
+                rangeIndicator = Instantiate(range) as Transform;
+                rangeIndicator.transform.parent = tempPlacement;
                 break;
 
             case "Wall":
                 tempPlacement = Instantiate(wall) as Transform;
+                if (rangeIndicator != null)
+                    Destroy(rangeIndicator.gameObject);
                 break;
         }
+
         foreach (Transform child in tempPlacement)
         {
             if (child.GetComponent<SpriteRenderer>() != null)
             {
-                child.GetComponent<SpriteRenderer>().sortingOrder += 3;
+                child.GetComponent<SpriteRenderer>().sortingOrder -= 4;
+                child.GetComponent<SpriteRenderer>().sortingLayerName = "UI";
             }
         }
+
     }
 }
