@@ -8,6 +8,15 @@ public class Placement : MonoBehaviour {
 
     public static PlacementPiece placementPiece;
 
+    public Transform turret;
+    public Transform collector;
+    public Transform wall;
+
+    public Transform range;
+
+    public static Transform tempPlacement;
+    public static Transform rangeIndicator;
+
 	public TextMesh nameText;
     public int cost;
 	public TextMesh costText;
@@ -109,7 +118,12 @@ public class Placement : MonoBehaviour {
             }
             else if (possiblePlacements.Count > 0)
             {
-                FindClosestPlacement();
+                Vector3 mouse = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0));
+                mouse = new Vector3(mouse.x, mouse.y, 0);
+
+                tempPlacement.transform.position = mouse;
+
+                FindClosestPlacement(mouse);
             }
         }
     }
@@ -133,11 +147,8 @@ public class Placement : MonoBehaviour {
         center.RecalculateAllPossiblePlacements();
     }
 
-    private void FindClosestPlacement()
+    private void FindClosestPlacement(Vector3 mouse)
     {
-        Vector3 mouse = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0));
-        mouse = new Vector3(mouse.x, mouse.y, 0);
-
         PlacementBottom closest = possiblePlacements[0] as PlacementBottom;
         float selectionThreshold = (((this.GetComponent<SpriteRenderer>().sprite.rect.width * 2) / WorldManager.PixelOffset) / 2) + 0.1f;
         float closestDistance = Mathf.Infinity;
@@ -188,6 +199,11 @@ public class Placement : MonoBehaviour {
 
         GUIManager.Instance.UpdateTowerGUI();
 
+        if (tempPlacement != null)
+            Destroy(tempPlacement.gameObject);
+        if (rangeIndicator != null)
+            Destroy(rangeIndicator.gameObject);
+
     }
 
     static void UnSelectAllPlacements()
@@ -204,6 +220,30 @@ public class Placement : MonoBehaviour {
     void CreatePlacement()
     {
         placementPiece = new PlacementPiece(this.cost, this.tag);
-    }
 
+        //create a piece that is shown to the user, a fake kinematic object
+        switch (this.tag)
+        {
+            case "Turret":
+                tempPlacement = Instantiate(turret) as Transform;
+                rangeIndicator = Instantiate(range) as Transform;
+                rangeIndicator.transform.parent = tempPlacement;
+                break;
+
+            case "Collector":
+                tempPlacement = Instantiate(collector) as Transform;
+                break;
+
+            case "Wall":
+                tempPlacement = Instantiate(wall) as Transform;
+                break;
+        }
+        foreach (Transform child in tempPlacement)
+        {
+            if (child.GetComponent<SpriteRenderer>() != null)
+            {
+                child.GetComponent<SpriteRenderer>().sortingOrder += 3;
+            }
+        }
+    }
 }

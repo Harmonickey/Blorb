@@ -1378,6 +1378,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 69281698}
   pictograph: {fileID: 535155564}
+  turret: {fileID: 0}
+  collector: {fileID: 412608, guid: d4356b1ba8e7a81499458a5f34280549, type: 2}
+  wall: {fileID: 0}
+  range: {fileID: 0}
   nameText: {fileID: 1921181580}
   cost: 150
   costText: {fileID: 56822548}
@@ -2772,6 +2776,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 69281698}
   pictograph: {fileID: 1554526182}
+  turret: {fileID: 437516, guid: e72a9ce88ec4a8348b9080deb6fc74bb, type: 2}
+  collector: {fileID: 0}
+  wall: {fileID: 0}
+  range: {fileID: 450342, guid: 42cd2581a0661e0489c0a93b8baf5796, type: 2}
   nameText: {fileID: 1921181580}
   cost: 50
   costText: {fileID: 56822548}
@@ -3696,6 +3704,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 69281698}
   pictograph: {fileID: 1087560075}
+  turret: {fileID: 0}
+  collector: {fileID: 0}
+  wall: {fileID: 446076, guid: 031934ff20a40f241ac6550ac66b40dd, type: 2}
+  range: {fileID: 0}
   nameText: {fileID: 1921181580}
   cost: 15
   costText: {fileID: 56822548}

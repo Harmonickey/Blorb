@@ -198,6 +198,28 @@ public class GUIManager : MonoBehaviour {
             }
         }
 	}
+
+    void OnGUI()
+    {
+        //catch trackpad scrolling
+        if (viewStage == 2 && Event.current.type == EventType.ScrollWheel)
+        {
+            maincamera.orthographicSize += (Event.current.delta.y / 100) * 5f;
+
+            if (maincamera.orthographicSize < 4f)
+            {
+                maincamera.orthographicSize = 4f;
+            }
+            else if (maincamera.orthographicSize > 24f)
+            {
+                maincamera.orthographicSize = 24f;
+            }
+
+            float scale = maincamera.orthographicSize / 12f;
+
+            GUI.localScale = new Vector2(scale, scale);
+        }
+    }
 	
 	private void GameStart () {
 		gameOverText.enabled = false;
