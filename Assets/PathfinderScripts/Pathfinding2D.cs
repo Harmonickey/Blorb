@@ -57,7 +57,7 @@ public class Pathfinding2D : MonoBehaviour
 
 			Vector3 previous = transform.position;
 			foreach (Vector3 n in Path){
-				Debug.DrawLine(previous, n, Color.red, .5f);
+				Debug.DrawLine(previous, n, Color.red, 5f);
 				previous = n;
 			}
 

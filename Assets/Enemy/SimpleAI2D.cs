@@ -34,7 +34,7 @@ public class SimpleAI2D : Pathfinding2D
             if (search == true)
             {
                 //Start the time
-                StartCoroutine(SearchTimer());
+                //StartCoroutine(SearchTimer()); //actually for debug purposes let's not
 
                 //Now check the distance to the player, if it is within the distance it will search for a new path
                 if (tempDistance < SearchDistance)
@@ -51,6 +51,10 @@ public class SimpleAI2D : Pathfinding2D
             {
                 MoveAI();
             }
+			else
+			{
+				//Debug.Log(string.Format("search: {0} and tempDistance: {1} >= searchDistance: {2} so no path!", search, tempDistance, SearchDistance));
+			}
         }
 	}
 
@@ -58,7 +62,8 @@ public class SimpleAI2D : Pathfinding2D
     {
         //Set search to false for an amount of time, and then true again.
         search = false;
-        yield return new WaitForSeconds(1 / SearchPerSecond);
+		//Debug.Log ((1 / SearchPerSecond).ToString());
+        yield return new WaitForSeconds(0.2f); //magic number as debug
         search = true;
     }
 
