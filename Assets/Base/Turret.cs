@@ -3,6 +3,7 @@ using System.Collections;
 
 public class Turret : MonoBehaviour {
 	public GameObject bullet;
+	public AudioClip fireSound;
 	public static float fireDelay = 0.25f;
 	public static float range = 50f;
 	private Transform myTarget;
@@ -31,7 +32,8 @@ public class Turret : MonoBehaviour {
 				
 				// set destination        
 				b.setDirection(myTarget.position - transform.position);
-                this.audio.Play();
+				float vol = Random.Range(0.5f, 1f);
+				audio.PlayOneShot(fireSound, vol);
 			}
 
 			myTarget = GetNearestTaggedObject();

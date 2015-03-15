@@ -8,7 +8,7 @@ public class WorldManager : MonoBehaviour {
 	public SpriteRenderer pauseButton, fastForwardButton;
     public static float PixelOffset = 750.0f;
 	public bool isDay = true;
-	
+
 	private float phaseDuration = 45f;
 	private float startNextPhase, savedTimeScale;
 
@@ -82,21 +82,17 @@ public class WorldManager : MonoBehaviour {
 		if (startNextPhase < 0f) {
 			if (isDay) {
 				GameEventManager.TriggerNightStart();
+				worldLight.intensity = 0.4f;
 			} else {
 				GameEventManager.TriggerDayStart();
+				worldLight.intensity = 1f;
 			}
 			
 			isDay = !isDay;
 			startNextPhase = phaseDuration;
 		}
 
-		if (startNextPhase < 0f) {
-			if (isDay) {
-				worldLight.intensity = 1f;
-			} else {
-				worldLight.intensity = 0.4f;
-			}
-		} else if (startNextPhase < 10f) {
+		if (startNextPhase < 10f) {
 			if (isDay) {
 				worldLight.intensity = 0.4f + 0.06f * startNextPhase;
 			} else {

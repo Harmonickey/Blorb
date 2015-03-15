@@ -180,6 +180,7 @@ Transform:
   - {fileID: 371103352}
   - {fileID: 1196908570}
   - {fileID: 1140173634}
+  - {fileID: 895311325}
   m_Father: {fileID: 768650252}
   m_RootOrder: 0
 --- !u!54 &69281699
@@ -242,6 +243,7 @@ MonoBehaviour:
   healthbar: {fileID: 239317691}
   centerTurret: {fileID: 1033810914}
   playerBottom: {fileID: 713171288}
+  fireSound: {fileID: 8300000, guid: eb412c956e17d494c8b400f4c7b19441, type: 3}
   speed: 6
   HasPath: 0
   PathIsSet: 0
@@ -253,7 +255,7 @@ AudioSource:
   m_GameObject: {fileID: 69281697}
   m_Enabled: 1
   serializedVersion: 3
-  m_audioClip: {fileID: 8300000, guid: e68e65b115f865c48b940ddd8ef35911, type: 3}
+  m_audioClip: {fileID: 8300000, guid: eb412c956e17d494c8b400f4c7b19441, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -781,7 +783,7 @@ GameObject:
   - 4: {fileID: 530899832}
   - 82: {fileID: 530899831}
   m_Layer: 0
-  m_Name: When Late Becomes Early
+  m_Name: Background Music
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -855,8 +857,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_Father: {fileID: 895311325}
+  m_RootOrder: 0
 --- !u!1 &535155562
 GameObject:
   m_ObjectHideFlags: 0
@@ -1999,6 +2001,121 @@ Transform:
   m_Children: []
   m_Father: {fileID: 738463232}
   m_RootOrder: 0
+--- !u!1 &889300999
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 889301000}
+  - 82: {fileID: 889301001}
+  m_Layer: 9
+  m_Name: Enemy Death Source
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &889301000
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 889300999}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 895311325}
+  m_RootOrder: 1
+--- !u!82 &889301001
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 889300999}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_audioClip: {fileID: 8300000, guid: d554ac66dc5174ceb90784f7ee7d1608, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+--- !u!1 &895311324
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 895311325}
+  m_Layer: 9
+  m_Name: Audio
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &895311325
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 895311324}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 530899832}
+  - {fileID: 889301000}
+  m_Father: {fileID: 69281698}
+  m_RootOrder: 6
 --- !u!1 &1001461553
 GameObject:
   m_ObjectHideFlags: 0
@@ -2146,6 +2263,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemy: {fileID: 442294, guid: 64941476ad224584198e7145f228cc9d, type: 2}
   player: {fileID: 69281698}
+  enemyDeathAudioSource: {fileID: 889301001}
+  enemyDeath: {fileID: 8300000, guid: d554ac66dc5174ceb90784f7ee7d1608, type: 3}
   waveEnded: 1
   enemyAgro: 0
 --- !u!1 &1087560073

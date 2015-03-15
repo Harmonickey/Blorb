@@ -96,6 +96,7 @@ public class GUIManager : MonoBehaviour {
 		instance = this;
 		GameEventManager.GameStart += GameStart;
 		GameEventManager.GameOver += GameOver;
+		GameEventManager.NightStart += OnNightStart;
 		gameOverText.enabled = false;
 		instance.setHUD (false);
 
@@ -175,14 +176,6 @@ public class GUIManager : MonoBehaviour {
             }
             else
             {
-				if (firstNight) {
-					NightTutorial.enabled = true;
-					originalTimeScale = Time.timeScale;
-					Time.timeScale = 0;
-					viewStage = 1;
-					firstNight = false;
-				}
-
 				towers.localPosition += (towersNight - towers.localPosition) * easing * Time.deltaTime;
 				moveIndicator.localPosition += (moveIndicatorNight - moveIndicator.localPosition) * easing * Time.deltaTime;
 				cancelButton.localPosition += (cancelButtonInactive - cancelButton.localPosition) * easing * Time.deltaTime;
@@ -220,6 +213,16 @@ public class GUIManager : MonoBehaviour {
             GUI.localScale = new Vector2(scale, scale);
         }
     }
+
+	void OnNightStart () {
+		if (firstNight) {
+			NightTutorial.enabled = true;
+			originalTimeScale = Time.timeScale;
+			Time.timeScale = 0;
+			viewStage = 1;
+			firstNight = false;
+		}
+	}
 	
 	private void GameStart () {
 		gameOverText.enabled = false;

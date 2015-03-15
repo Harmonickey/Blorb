@@ -166,7 +166,7 @@ AudioSource:
   m_GameObject: {fileID: 137512}
   m_Enabled: 1
   serializedVersion: 3
-  m_audioClip: {fileID: 8300000, guid: ccd37e21031f18b4f8032c750d738773, type: 3}
+  m_audioClip: {fileID: 8300000, guid: eb412c956e17d494c8b400f4c7b19441, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -242,6 +242,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bullet: {fileID: 103078, guid: dc751d600c38a471c82bc52f386f623b, type: 2}
+  fireSound: {fileID: 8300000, guid: eb412c956e17d494c8b400f4c7b19441, type: 3}
   publicAngle: 0
 --- !u!138 &13815668
 FixedJoint:

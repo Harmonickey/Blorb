@@ -63,6 +63,7 @@ public class Enemy : MonoBehaviour {
 		healthbar.Set (currentHealth / maxHealth);
 
 		if (currentHealth <= 0f) {
+			WaveManager.instance.PlayEnemyDeathSound();
 			ObjectPool.instance.PoolObject(this.gameObject);
 
 			if (!killedByDaylight) {

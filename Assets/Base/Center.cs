@@ -22,6 +22,7 @@ public class Center : MonoBehaviour {
 	private float turretDamage = 10f;
 	private float fireDelay = 0.2f;
 	private float nextFireTime;
+	public AudioClip fireSound;
 	
 	private float healthInternal;
 
@@ -142,7 +143,9 @@ public class Center : MonoBehaviour {
 				float angle = centerTurret.eulerAngles.z * Mathf.Deg2Rad;
 				b.setDirection(new Vector3(Mathf.Cos(angle), Mathf.Sin(angle)));
 				b.setDamage(turretDamage);
-                this.audio.Play(); //make a bullet sound
+
+				float vol = Random.Range (0.5f, 1f);
+				audio.PlayOneShot(fireSound, vol);
 				
 				nextFireTime = fireDelay;
 			}

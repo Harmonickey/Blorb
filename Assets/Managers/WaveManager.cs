@@ -5,6 +5,8 @@ public class WaveManager : MonoBehaviour {
 	public static WaveManager instance;
 	public Transform enemy;
     public Transform player;
+	public AudioSource enemyDeathAudioSource;
+	public AudioClip enemyDeath;
 	private float enemySpawnDelay = 2.0f;
 	private int enemiesPerWave = 10;
 
@@ -16,6 +18,11 @@ public class WaveManager : MonoBehaviour {
     private bool waveStart = false;
 
     public bool enemyAgro = false;
+
+	public void PlayEnemyDeathSound() {
+		float vol = Random.Range (0.5f, 1f);
+		enemyDeathAudioSource.PlayOneShot (enemyDeath, vol);
+	}
 
 	void Start() {
 		instance = this;
