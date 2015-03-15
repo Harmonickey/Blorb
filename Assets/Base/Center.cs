@@ -88,39 +88,30 @@ public class Center : MonoBehaviour {
     {
         //start with the center
         for (int i = 0; i < BuildingManager.Directions.Count; i++)
-        {
-            //place down a placement spot, don't have to worry about 
             if (!BuildingManager.DetectOtherObjects(BuildingManager.ToDirFromSpot(i), this.transform))
                 SetPlacement(BuildingManager.ToDirFromSpot(i), this.transform);
-        }
 
+        //go through all the children
         foreach (Transform child in basePiece)
-        {
             if (child != null && child.gameObject.activeSelf && child.GetComponent<Attachments>() != null)
-            {
-                Debug.Log("found an attachment");
-                Debug.Log("child: " + child.gameObject.activeSelf);
                 child.GetComponent<Attachments>().FindAllPossiblePlacements(this);
-            }
-        }
 
     }
 
     public static void RemoveAllPossiblePlacements()
     {
         GameObject[] placements = GameObject.FindGameObjectsWithTag("Placement");
-
+        //just destroying all placements is fine for now
         foreach (GameObject placement in placements)
         {
             Destroy(placement);
         }
     }
 
+    //simply function to do both tasks at once
     public void RecalculateAllPossiblePlacements()
     {
-        Debug.Log("removing");
         RemoveAllPossiblePlacements();
-        Debug.Log("finding again");
         FindAllPossiblePlacements();
     }
 
