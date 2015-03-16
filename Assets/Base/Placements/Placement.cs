@@ -91,7 +91,7 @@ public class Placement : MonoBehaviour {
 	// Use this for initialization
 	void OnMouseDown()
     {
-        if (GUIManager.Instance.OnTutorialScreen) return;
+        if (GUIManager.Instance.OnTutorialScreen || Time.timeScale == 0) return;
 
 		BaseCohesionManager.UnMarkAllAttachments();
 
