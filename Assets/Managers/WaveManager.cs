@@ -9,6 +9,7 @@ public class WaveManager : MonoBehaviour {
 	public AudioClip enemyDeath;
 	private float enemySpawnDelay = 2.0f;
 	private int enemiesPerWave = 10;
+	private float healthIncreaseEachWave = 15f;
 
 	private int waveCount = 0;
 	
@@ -102,7 +103,7 @@ public class WaveManager : MonoBehaviour {
 
 			newEnemy.transform.position = player.position + 10f * new Vector3(Mathf.Cos(randAngle), Mathf.Sin(randAngle));
             newEnemy.GetComponent<SimpleAI2D>().Player = player; //set the target as the player
-			newEnemy.GetComponent<Enemy>().Reset(100f + 10f * waveCount);
+			newEnemy.GetComponent<Enemy>().Reset(100f + healthIncreaseEachWave * waveCount);
 
 			if (enemyAgro) {
 				newEnemy.GetComponent<SimpleAI2D>().Speed = 2f;

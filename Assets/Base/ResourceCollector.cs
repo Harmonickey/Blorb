@@ -10,7 +10,7 @@ public class ResourceCollector : MonoBehaviour {
 
 	public ParticleSystem theParticleSystem;
 	public Transform mountain;
-	private float collectionRate = 1f; //Time in seconds between collections
+	private float collectionRate = 2f; //Time in seconds between collections
 	private int collectionAmount = 2;
 	private int length;
 	private ParticleSystem.Particle[] particles = new ParticleSystem.Particle[100];
