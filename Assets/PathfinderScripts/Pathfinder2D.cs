@@ -99,7 +99,6 @@ public class Pathfinder2D : MonoBehaviour
 
     /// <summary>
     /// Modified by Alex Ayerdi 2/12/2015 to adapt to 2D
-    /// Note: Must use Collider and RigidBody (not the 2D versions) for best effect
     /// </summary>
     public void Create2DMap()
     {
@@ -220,7 +219,7 @@ public class Pathfinder2D : MonoBehaviour
         bool endPosValid = true;
         //Find start and end nodes, if we cant return null and stop!
         SetStartAndEndNode(startPos, endPos);
-
+        
         if (startNode != null)
         {
             if (endNode == null)

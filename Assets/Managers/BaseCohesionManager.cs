@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public abstract class BaseCohesionManager {
+public abstract class BaseCohesionManager : MonoBehaviour {
 
     public static List<int> visitedNodes = new List<int>();
     private static List<Attachments> markedAttachments = new List<Attachments>();
@@ -50,8 +50,10 @@ public abstract class BaseCohesionManager {
 
     //mark all the attachments that are not attached to the main body
     //     this is so the user knows which are going to be deleted, for example
-    public static void MarkAllAttachments(Transform deletingAttachment)
+    public static int MarkAllAttachments(Transform deletingAttachment)
     {
+        int totalSellBack = 0;
+
         Attachments[] attachments = GameObject.FindObjectsOfType<Attachments>();
         TurnRed(deletingAttachment, true);
 
@@ -59,10 +61,13 @@ public abstract class BaseCohesionManager {
         {
             if (!attachment.wasFound)
             {
+                totalSellBack += attachment.cost;
                 TurnRed(attachment.transform, true);
                 markedAttachments.Add(attachment);
             }
         }
+
+        return totalSellBack * 7 / 10;
     }
 
     public static void UnMarkAllAttachments()
@@ -90,13 +95,14 @@ public abstract class BaseCohesionManager {
     public static int DeleteUnconnectedAttachments(bool useMarked)
     {
         int totalSellBack = 0;
-
+        
         if (useMarked)
         {
             foreach (Attachments attachment in markedAttachments)
             {
-                totalSellBack += attachment.sellBackAmount;
-                Object.Destroy(attachment.gameObject);
+                totalSellBack += attachment.cost;
+                attachment.gameObject.SetActive(false);
+                Destroy(attachment.gameObject);
             }
 
             ResetAttachmentCohesionChecker();
@@ -105,14 +111,14 @@ public abstract class BaseCohesionManager {
         {
             foreach (Attachments attachment in GameObject.FindObjectsOfType<Attachments>())
             {
-                if (!attachment.wasFound)
+                if (!attachment.wasFound && attachment.gameObject != null)
                 {
-                    Object.Destroy(attachment.gameObject);
+                    Destroy(attachment.gameObject);
                 }
             }
         }
 
-        return totalSellBack;
+        return totalSellBack * 7 / 10;
     }
 
     private static void TurnRed(Transform targetPiece, bool red)

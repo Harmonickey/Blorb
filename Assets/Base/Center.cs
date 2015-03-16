@@ -20,12 +20,16 @@ public class Center : MonoBehaviour {
 
     private const float placementOffset = 0.81f;
 	private float turretDamage = 10f;
-	private float fireDelay = 0.25f;
+	private float fireDelay = 0.2f;
 	private float nextFireTime;
+	public AudioClip fireSound;
 	
 	private float healthInternal;
 
     public float speed;
+
+    public bool HasPath;
+    public bool PathIsSet;
 
 	public float health
 	{
@@ -76,20 +80,21 @@ public class Center : MonoBehaviour {
 		enabled = false;
         playerBottom.renderer.enabled = false;
 		centerTurret.renderer.enabled = false;
+
+        HasPath = false;
+        PathIsSet = false;
 	}
 
     public void FindAllPossiblePlacements()
     {
         //start with the center
         for (int i = 0; i < BuildingManager.Directions.Count; i++)
-        {
-            //place down a placement spot, don't have to worry about 
             if (!BuildingManager.DetectOtherObjects(BuildingManager.ToDirFromSpot(i), this.transform))
                 SetPlacement(BuildingManager.ToDirFromSpot(i), this.transform);
-        }
 
+        //go through all the children
         foreach (Transform child in basePiece)
-            if (child.GetComponent<Attachments>() != null)
+            if (child != null && child.gameObject.activeSelf && child.GetComponent<Attachments>() != null)
                 child.GetComponent<Attachments>().FindAllPossiblePlacements(this);
 
     }
@@ -97,13 +102,14 @@ public class Center : MonoBehaviour {
     public static void RemoveAllPossiblePlacements()
     {
         GameObject[] placements = GameObject.FindGameObjectsWithTag("Placement");
-
+        //just destroying all placements is fine for now
         foreach (GameObject placement in placements)
         {
             Destroy(placement);
         }
     }
 
+    //simply function to do both tasks at once
     public void RecalculateAllPossiblePlacements()
     {
         RemoveAllPossiblePlacements();
@@ -117,7 +123,7 @@ public class Center : MonoBehaviour {
 
 	void Update()
 	{
-		if (!WorldManager.instance.isDay) {
+		if (!WorldManager.instance.isDay && !GUIManager.Instance.OnTutorialScreen) {
 			Vector3 mouse = new Vector3(Input.mousePosition.x - Screen.width / 2f,
 			                            Input.mousePosition.y - Screen.height / 2f,
 			                            0f);
@@ -137,10 +143,21 @@ public class Center : MonoBehaviour {
 				float angle = centerTurret.eulerAngles.z * Mathf.Deg2Rad;
 				b.setDirection(new Vector3(Mathf.Cos(angle), Mathf.Sin(angle)));
 				b.setDamage(turretDamage);
+
+				float vol = Random.Range (0.5f, 1f);
+				audio.PlayOneShot(fireSound, vol);
 				
 				nextFireTime = fireDelay;
 			}
 		}
+
+        if (PathIsSet)
+        {
+            WaveManager.instance.PreWaveInit(HasPath);
+            
+            HasPath = false;
+            PathIsSet = false;
+        }
 	}
 
     void FixedUpdate()
@@ -155,10 +172,10 @@ public class Center : MonoBehaviour {
 		basePiece.position += movement * speed * Time.fixedDeltaTime;
 
         if (inputHorizontal != 0 || inputVertical != 0)
-            Placement.StopPlacement(); //quick hack to access from here...
+            Placement.StopPlacement();
     }
 
-    public void PlacePiece(PlacementPiece placementPiece)
+    public void PlacePiece(PlacementPiece placementPiece, Placement selectedTower = null)
     {
         if (!isActive) return;
 
@@ -172,7 +189,6 @@ public class Center : MonoBehaviour {
                 color = PlacementBottom.unSelectedColor;
                 break;
             case "Turret":
-            case "TestPiece":
                 placementPiece.piece = turret;
                 break;
             case "Wall":
@@ -193,7 +209,10 @@ public class Center : MonoBehaviour {
             tower.GetComponent<SpriteRenderer>().color = color;
             tower.GetComponent<PlacementBottom>().pseudoParent = placementPiece.parent;
             tower.GetComponent<SpriteRenderer>().receiveShadows = false;
-        }
+
+        } else {
+			tower.GetComponent<Attachments>().cost = placementPiece.cost;
+		}
 
         float xOffset = (placementPiece.type == "Placement"
             ? (placementPiece.parent.transform.localPosition.x  //get offset from nearest parent
@@ -211,14 +230,11 @@ public class Center : MonoBehaviour {
 
         if (placementPiece.type != "Placement")
         {
+            tower.GetComponent<FixedJoint>().anchor = tower.transform.localPosition;
+            tower.GetComponent<FixedJoint>().connectedAnchor = tower.transform.localPosition;
             tower.GetComponent<FixedJoint>().connectedBody = this.GetComponent<Rigidbody>();
-			BlorbManager.Instance.Transaction(-placementPiece.cost, tower.transform.position);
+			BlorbManager.Instance.Transaction(-placementPiece.cost, tower.transform.position, selectedTower);
         }
-    }
-
-    void RemovePiece(float[] dir, Transform parent)
-    {
-        return;
     }
 
     private float GetPixelOffset()
@@ -237,22 +253,26 @@ public class Center : MonoBehaviour {
 		}
     }
 
-    public bool HasPathToCenter()
+    public void HasPathToCenter()
     {
-        Pathfinding2D finder = this.gameObject.GetComponent<Pathfinding2D>();
-        finder.FindPath(new Vector3(20.0f + this.transform.position.x, 20.0f + this.transform.position.y, 0.0f), this.transform.position);
-        //Debug.DrawLine(new Vector3(20.0f + this.transform.position.x, 20.0f + this.transform.position.y, 0.0f),
-        //               this.transform.position, Color.red, 100.0f, false);
+        Vector3 endPos;
+        //make sure we're not on a disallowed piece, we want to be able to find a valid path
+        do {
+            float randAngle = Random.Range(0f, 2 * Mathf.PI);
+            endPos = this.transform.position + 10f * new Vector3(Mathf.Cos(randAngle), Mathf.Sin(randAngle));
+        } while (IsWithinDisallowedObject(endPos));
 
-        //Debug.Log("PATH LENGTH: " + finder.Path.Count);
-        if (finder.Path.Count > 0)
-        {
-            //Debug.Log("Found Path");
-            finder.Path.Clear();
-            return true;
-        }
-        //Debug.Log("No Path To Center");
-        return false;
+        Pathfinding2D finder = this.GetComponent<Pathfinding2D>();
+        finder.FindPath(this.transform.position, endPos, true);
+
+        //asynchronous, need to wait for message...
+    }
+
+    public void SetHasPath(bool hasPath)
+    {
+        this.HasPath = hasPath;
+
+        PathIsSet = true;
     }
 
     void OnCollisionEnter(Collision other)
@@ -262,5 +282,40 @@ public class Center : MonoBehaviour {
 			takeDamage(enemy.HitDamage);
 			ObjectPool.instance.PoolObject(enemy.gameObject);
 		}
+    }
+
+    static IEnumerator DelayAfterStoppingPlacement()
+    {
+        yield return new WaitForSeconds(0.01f);
+        Placement.isPlacingTowers = false;
+    }
+
+    public void DelayPlacementStopping()
+    {
+        StartCoroutine(DelayAfterStoppingPlacement());
+    }
+
+    private bool IsWithinDisallowedObject(Vector3 endPos)
+    {
+        GameObject[] mountains = GameObject.FindGameObjectsWithTag("Mountain");
+        GameObject[] resources = GameObject.FindGameObjectsWithTag("Resource");
+
+        foreach (GameObject mountain in mountains)
+        {
+            if (mountain.collider.bounds.Contains(endPos))
+            {
+                return true;
+            }
+        }
+
+        foreach (GameObject resource in resources)
+        {
+            if (resource.collider.bounds.Contains(endPos))
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

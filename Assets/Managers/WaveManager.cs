@@ -5,14 +5,25 @@ public class WaveManager : MonoBehaviour {
 	public static WaveManager instance;
 	public Transform enemy;
     public Transform player;
+	public AudioSource enemyDeathAudioSource;
+	public AudioClip enemyDeath;
 	private float enemySpawnDelay = 2.0f;
 	private int enemiesPerWave = 10;
+	private float healthIncreaseEachWave = 15f;
 
 	private int waveCount = 0;
 	
 	private float spawnNextEnemy;
 	private int enemiesSpawned;
 	public bool waveEnded = true;
+    private bool waveStart = false;
+
+    public bool enemyAgro = false;
+
+	public void PlayEnemyDeathSound() {
+		float vol = Random.Range (0.5f, 1f);
+		enemyDeathAudioSource.PlayOneShot (enemyDeath, vol);
+	}
 
 	void Start() {
 		instance = this;
@@ -26,41 +37,48 @@ public class WaveManager : MonoBehaviour {
 
 	void DayStart() {
         player.GetComponent<Center>().IsActive = true;
-
-//        GUIManager.Instance.RefreshTowerGUIColors();
 	}
 
 	void NightStart() {
 		waveEnded = false;
 		enemiesSpawned = 0;
-		spawnNextEnemy = enemySpawnDelay;
+        spawnNextEnemy = enemySpawnDelay;
         player.GetComponent<Center>().IsActive = false;
 
-        Pathfinder2D.Instance.MapStartPosition = new Vector2(-25 + player.position.x, -25 + player.position.y);
-        Pathfinder2D.Instance.MapEndPosition = new Vector2(25 + player.position.x, 25 + player.position.y);
+        Pathfinder2D.Instance.MapStartPosition = new Vector2(-15 + player.position.x, -15 + player.position.y);
+        Pathfinder2D.Instance.MapEndPosition = new Vector2(15 + player.position.x, 15 + player.position.y);
         Pathfinder2D.Instance.DisallowedTags.Clear();
         Pathfinder2D.Instance.DisallowedTags.AddRange(new string[5] { "Turret", "Collector", "Wall", "Mountain", "Resource" });
         Pathfinder2D.Instance.Create2DMap();
         
         //should check here if there is a path to the player
         //if not, then change the disallowed tags
-        
-        if (!player.GetComponent<Center>().HasPathToCenter())
+
+        player.GetComponent<Center>().HasPathToCenter();
+
+        Placement.StopPlacement();
+
+	}
+
+    public void PreWaveInit(bool hasPath)
+    {
+        if (!hasPath)
         {
+            enemyAgro = true;
             Pathfinder2D.Instance.DisallowedTags.Clear();
             Pathfinder2D.Instance.DisallowedTags.AddRange(new string[2] { "Mountain", "Resource" });
             Pathfinder2D.Instance.Create2DMap();
         }
-        
-        Placement.StopPlacement();
 
-		waveCount++;
-	}
+        waveCount++;
+        waveStart = true;
+    }
 
 
 	void GameStart() {
 		enabled = true;
 
+		waveCount = 0;
 		waveEnded = true;
 		enemiesSpawned = 0;
 		spawnNextEnemy = 0f;
@@ -79,12 +97,18 @@ public class WaveManager : MonoBehaviour {
 	void Update () {
 		spawnNextEnemy -= Time.deltaTime;
 
-		if (!WorldManager.instance.isDay && spawnNextEnemy < 0f && enemiesSpawned < enemiesPerWave) {
+		if (!WorldManager.instance.isDay && spawnNextEnemy < 0f && enemiesSpawned < enemiesPerWave && waveStart) {
 			GameObject newEnemy = ObjectPool.instance.GetObjectForType("Enemy", true);
 			float randAngle = Random.Range(0f, 2 * Mathf.PI);
 
 			newEnemy.transform.position = player.position + 10f * new Vector3(Mathf.Cos(randAngle), Mathf.Sin(randAngle));
             newEnemy.GetComponent<SimpleAI2D>().Player = player; //set the target as the player
+			newEnemy.GetComponent<Enemy>().Reset(100f + healthIncreaseEachWave * waveCount);
+
+			if (enemyAgro) {
+				newEnemy.GetComponent<SimpleAI2D>().Speed = 2f;
+				newEnemy.GetComponent<SpriteRenderer>().color = new Color(0.874f, 0.56f, 0.525f);
+			}
 
             enemiesSpawned++;
             spawnNextEnemy = enemySpawnDelay;
@@ -92,6 +116,8 @@ public class WaveManager : MonoBehaviour {
 
 		if (enemiesSpawned == enemiesPerWave && GameObject.FindGameObjectWithTag("Enemy") == null) {
 			waveEnded = true;
+            waveStart = false;
+            enemyAgro = false;
 		}
 	}
 }

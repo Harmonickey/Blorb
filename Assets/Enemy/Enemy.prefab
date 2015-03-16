@@ -86,7 +86,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2037c55190120f5408b68b9930288c44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HealthbarPrefab: {fileID: 435332, guid: 61f7b5e345164471f8b998321aeb1aa0, type: 2}
+  HealthBarPrefab: {fileID: 435332, guid: 61f7b5e345164471f8b998321aeb1aa0, type: 2}
 --- !u!212 &21242294
 SpriteRenderer:
   m_ObjectHideFlags: 1

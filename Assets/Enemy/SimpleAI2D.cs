@@ -34,14 +34,14 @@ public class SimpleAI2D : Pathfinding2D
             if (search == true)
             {
                 //Start the time
-                StartCoroutine(SearchTimer());
+                //StartCoroutine(SearchTimer()); //actually for debug purposes let's not
 
                 //Now check the distance to the player, if it is within the distance it will search for a new path
                 if (tempDistance < SearchDistance)
                 {
                     if (Path.Count == 0)
                     {
-                        FindPath(transform.position, Player.position);
+                        FindPath(transform.position, Player.position, false);
                     }
                 }
             }
@@ -51,6 +51,10 @@ public class SimpleAI2D : Pathfinding2D
             {
                 MoveAI();
             }
+			else
+			{
+				//Debug.Log(string.Format("search: {0} and tempDistance: {1} >= searchDistance: {2} so no path!", search, tempDistance, SearchDistance));
+			}
         }
 	}
 
@@ -58,7 +62,8 @@ public class SimpleAI2D : Pathfinding2D
     {
         //Set search to false for an amount of time, and then true again.
         search = false;
-        yield return new WaitForSeconds(1 / SearchPerSecond);
+		//Debug.Log ((1 / SearchPerSecond).ToString());
+        yield return new WaitForSeconds(0.2f); //magic number as debug
         search = true;
     }
 
@@ -89,7 +94,15 @@ public class SimpleAI2D : Pathfinding2D
 			//Debug.DrawLine(transform.position, Path[0], Color.green, 1f);
 			//Debug.DrawLine(Path[0], Path[1], Color.red, 1f);
 			//Debug.Log (Vector3.Distance(transform.position, ignoreZ).ToString());
-			transform.position = Vector3.MoveTowards(transform.position, ignoreZ, Time.deltaTime * Speed);  
+			Vector3 oldPosition = transform.position;
+			transform.position = Vector3.MoveTowards(transform.position, ignoreZ, Time.deltaTime * Speed);
+
+			//if no movement, recalcuate path
+			if (Vector3.Distance(oldPosition, transform.position) <= 0.01){
+				Path.Clear();
+				FindPath(transform.position, Player.position, false);
+				Debug.LogWarning("Recalculating Path!");
+			}
         }
     }
 }

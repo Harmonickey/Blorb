@@ -57,6 +57,10 @@ public class TileMap : MonoBehaviour {
 		chunk.tiles_x = chunk_tiles_x;
 		chunk.tiles_y = chunk_tiles_y;
 		chunk.chunkIndex = new Vector2(x, y);
+		if (chunks.ContainsKey(chunk.chunkIndex)){
+			return;
+		}
+
 		chunk.tileData = new TileData(chunk.tiles_x, chunk.tiles_y, 
 		                              mountainDistanceFactor, mountainBaseDensity, resourceDistanceFactor, resourceBaseDensity,
 		                              chunk.chunkIndex);

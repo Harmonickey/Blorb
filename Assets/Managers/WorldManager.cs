@@ -58,9 +58,11 @@ public class WorldManager : MonoBehaviour {
 			if (isDay) {
 				startNextPhase = 0f;
 				dayNightDial.localEulerAngles = new Vector3(0, 0, -90);
+				worldLight.intensity = 0.4f;
 			} else if (WaveManager.instance.waveEnded) {
 				startNextPhase = 0f;
 				dayNightDial.localEulerAngles = new Vector3(0, 0, 90);
+				worldLight.intensity = 1f;
 			}
 		}
 	}
@@ -80,18 +82,22 @@ public class WorldManager : MonoBehaviour {
 		if (startNextPhase < 0f) {
 			if (isDay) {
 				GameEventManager.TriggerNightStart();
+				worldLight.intensity = 0.4f;
 			} else {
 				GameEventManager.TriggerDayStart();
+				worldLight.intensity = 1f;
 			}
 			
 			isDay = !isDay;
 			startNextPhase = phaseDuration;
 		}
 
-		if (isDay) {
-			worldLight.intensity += (1f - worldLight.intensity) * 0.01f;
-		} else {
-			worldLight.intensity += (0.4f - worldLight.intensity) * 0.01f;
+		if (startNextPhase < 10f) {
+			if (isDay) {
+				worldLight.intensity = 0.4f + 0.06f * startNextPhase;
+			} else {
+				worldLight.intensity = 0.4f + 0.06f * (10f - startNextPhase);
+			}
 		}
 	}
 }

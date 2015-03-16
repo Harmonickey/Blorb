@@ -5,6 +5,7 @@ public class BlorbIndicator : MonoBehaviour {
 	private Vector3 pos;
 	private Color color;
 	private float startFade;
+	public SpriteRenderer blorbSymbol;
 
 	private TextMesh textMesh;
 
@@ -42,6 +43,7 @@ public class BlorbIndicator : MonoBehaviour {
 		}
 
 		textMesh.color = color;
+		blorbSymbol.color = color;
 		transform.position = pos;
 
 		if (!textMesh.renderer.enabled) {

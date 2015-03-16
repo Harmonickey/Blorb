@@ -10,6 +10,7 @@ GameObject:
   - 4: {fileID: 437512}
   - 212: {fileID: 21237512}
   - 114: {fileID: 11437514}
+  - 82: {fileID: 8220044}
   m_Layer: 9
   m_Name: Turret Tower
   m_TagString: Untagged
@@ -61,7 +62,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 479760}
   - 61: {fileID: 6179760}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: 2D Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -157,6 +158,64 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!82 &8220044
+AudioSource:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 137512}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_audioClip: {fileID: 8300000, guid: eb412c956e17d494c8b400f4c7b19441, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
 --- !u!114 &11437512
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -168,8 +227,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 817b781ff228144428fc78d532cd853b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  HealthBarPrefab: {fileID: 435332, guid: 61f7b5e345164471f8b998321aeb1aa0, type: 2}
   wasFound: 0
-  sellBackAmount: 25
+  cost: 0
 --- !u!114 &11437514
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -182,6 +242,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bullet: {fileID: 103078, guid: dc751d600c38a471c82bc52f386f623b, type: 2}
+  fireSound: {fileID: 8300000, guid: eb412c956e17d494c8b400f4c7b19441, type: 3}
   publicAngle: 0
 --- !u!138 &13815668
 FixedJoint:

@@ -43,14 +43,16 @@ public class BlorbManager : MonoBehaviour {
 
 	public bool HasEnoughResources(int cost)
 	{
-		return blorbAmount >= cost;
+        
+        return blorbAmount >= cost;
 	}
 
-	public float Transaction(int diff, Vector3 position)
+	public float Transaction(int diff, Vector3 position, Placement selectedTower = null)
 	{
 		blorbAmount += diff;
 		blorbAmountText.text = ((int)blorbAmount).ToString();
-		GUIManager.Instance.UpdateTowerGUI();
+        
+        GUIManager.Instance.UpdateTowerGUI(selectedTower);
 		
 		if (Mathf.Abs(diff) > 0f) {
 			// Add blorb indicator

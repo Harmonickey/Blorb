@@ -3,9 +3,9 @@ using System.Collections;
 
 public class Turret : MonoBehaviour {
 	public GameObject bullet;
-
+	public AudioClip fireSound;
 	public static float fireDelay = 0.25f;
-	public static float range = 100f;
+	public static float range = 50f;
 	private Transform myTarget;
 	private float nextFireTime;
     private SpriteRenderer gun;
@@ -32,10 +32,12 @@ public class Turret : MonoBehaviour {
 				
 				// set destination        
 				b.setDirection(myTarget.position - transform.position);
+				float vol = Random.Range(0.5f, 1f);
+				audio.PlayOneShot(fireSound, vol);
 			}
 
 			myTarget = GetNearestTaggedObject();
-			nextFireTime = fireDelay;
+			nextFireTime = fireDelay + Random.Range (-0.05f, 0.05f);
 		}
 
 		if (myTarget) {
