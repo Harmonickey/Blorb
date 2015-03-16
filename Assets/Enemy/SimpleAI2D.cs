@@ -99,8 +99,8 @@ public class SimpleAI2D : Pathfinding2D
 
 			//if no movement, recalcuate path
 			if (Vector3.Distance(oldPosition, transform.position) <= 0.01){
-				//Path.Clear();
-				//FindPath(transform.position, Player.position, false);
+				Path.Clear();
+				FindPath(transform.position, Player.position, false);
 				Debug.LogWarning("Recalculating Path!");
 			}
         }
